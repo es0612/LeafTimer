@@ -1,0 +1,24 @@
+PODS:
+  - Nimble (8.1.1)
+  - PureLayout (3.1.6)
+  - Quick (3.0.0)
+
+DEPENDENCIES:
+  - Nimble
+  - PureLayout
+  - Quick
+
+SPEC REPOS:
+  trunk:
+    - Nimble
+    - PureLayout
+    - Quick
+
+SPEC CHECKSUMS:
+  Nimble: 5f8a2fb6fa343a7242dfdd9d42f7267419d464b2
+  PureLayout: bd3c4ec3a3819ad387c99ebb72c6b129c3ed4d2d
+  Quick: 6d9559f40647bc4d510103842ef2fdd882d753e2
+
+PODFILE CHECKSUM: cf617cda94e9eb5630e43e4d0a0c07a7d08090ca
+
+COCOAPODS: 1.9.3

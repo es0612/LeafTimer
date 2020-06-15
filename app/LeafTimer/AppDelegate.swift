@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  LeafTimer
-//
-//  Created by Ema Shinya on 2020/06/13.
-//  Copyright © 2020 Ema Shinya. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
