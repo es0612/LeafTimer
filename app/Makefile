@@ -14,3 +14,6 @@ sort:
 	@perl ./bin/sortXcodeProject "LeafTimer.xcodeproj/project.pbxproj"
 
 tests: sort unit-tests
+
+beta:
+	@/usr/bin/time fastlane beta
