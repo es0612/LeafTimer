@@ -8,6 +8,10 @@ struct TimerView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TimerView()
+        ForEach (["iPhone 8","iPhone 11"], id: \.self) { deviceName in
+            TimerView()
+                .previewDevice(PreviewDevice(rawValue: deviceName))
+                .previewDisplayName(deviceName)
+        }
     }
 }
