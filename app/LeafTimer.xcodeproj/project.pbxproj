@@ -3,21 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
 		3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3857B9B424A7725000B21CCD /* Assets.xcassets */; };
+		3857B9BA24A77C1B00B21CCD /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 3857B9B924A77C1B00B21CCD /* ViewInspector */; };
 		3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CB2494D81D00948ACA /* AppDelegate.swift */; };
 		3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CD2494D81D00948ACA /* SceneDelegate.swift */; };
-		3864B7D02494D81D00948ACA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CF2494D81D00948ACA /* ContentView.swift */; };
+		3864B7D02494D81D00948ACA /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CF2494D81D00948ACA /* TimerView.swift */; };
 		3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3864B7D42494D82300948ACA /* Preview Assets.xcassets */; };
 		3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3864B7D62494D82300948ACA /* LaunchScreen.storyboard */; };
-		3864B7E32494D82300948ACA /* LeafTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7E22494D82300948ACA /* LeafTimerTests.swift */; };
+		3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7E22494D82300948ACA /* TimerViewSpec.swift */; };
 		3864B7EE2494D82300948ACA /* LeafTimerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7ED2494D82300948ACA /* LeafTimerUITests.swift */; };
-		77A7FD902F09040473CEAF1A /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FB5CB723853D8D23B3E76C /* Pods_LeafTimer_LeafTimerUITests.framework */; };
-		F0D92DEA66C9018445A3AA17 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B60865A7601BEF377FB2CF /* Pods_LeafTimerTests.framework */; };
+		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
+		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,28 +39,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		037C5BC22762109945219857 /* Pods-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33EC14C8994F314F6C2F6C06 /* Pods-LeafTimer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.release.xcconfig"; sourceTree = "<group>"; };
 		3857B9B424A7725000B21CCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3864B7C82494D81D00948ACA /* LeafTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3864B7CB2494D81D00948ACA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3864B7CD2494D81D00948ACA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3864B7CF2494D81D00948ACA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3864B7CF2494D81D00948ACA /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		3864B7D42494D82300948ACA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3864B7D72494D82300948ACA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3864B7D92494D82300948ACA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3864B7DE2494D82300948ACA /* LeafTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeafTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3864B7E22494D82300948ACA /* LeafTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafTimerTests.swift; sourceTree = "<group>"; };
+		3864B7E22494D82300948ACA /* TimerViewSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewSpec.swift; sourceTree = "<group>"; };
 		3864B7E42494D82300948ACA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3864B7E92494D82300948ACA /* LeafTimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeafTimerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3864B7ED2494D82300948ACA /* LeafTimerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafTimerUITests.swift; sourceTree = "<group>"; };
 		3864B7EF2494D82300948ACA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.debug.xcconfig"; sourceTree = "<group>"; };
-		42FB5CB723853D8D23B3E76C /* Pods_LeafTimer_LeafTimerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer_LeafTimerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E14D29FDEB3B5AF03C9C747 /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		72B60865A7601BEF377FB2CF /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		93D32D1BA3FD4421B609782D /* Pods-LeafTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.release.xcconfig"; sourceTree = "<group>"; };
-		990A8822B4755F724F38F980 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
-		9E3AFC90E69748AC47594B35 /* Pods-LeafTimerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		54317E73F2F3BC94B2411A11 /* Pods-LeafTimerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.release.xcconfig"; sourceTree = "<group>"; };
+		8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer_LeafTimerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -76,7 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0D92DEA66C9018445A3AA17 /* Pods_LeafTimerTests.framework in Frameworks */,
+				8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */,
+				3857B9BA24A77C1B00B21CCD /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,13 +88,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77A7FD902F09040473CEAF1A /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */,
+				62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3857B9B624A7734300B21CCD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3857B9B424A7725000B21CCD /* Assets.xcassets */,
+				3864B7CD2494D81D00948ACA /* SceneDelegate.swift */,
+				3864B7CB2494D81D00948ACA /* AppDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3857B9B724A7735000B21CCD /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				3864B7D62494D82300948ACA /* LaunchScreen.storyboard */,
+				3864B7CF2494D81D00948ACA /* TimerView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		3864B7BF2494D81D00948ACA = {
 			isa = PBXGroup;
 			children = (
@@ -116,11 +139,8 @@
 		3864B7CA2494D81D00948ACA /* LeafTimer */ = {
 			isa = PBXGroup;
 			children = (
-				3857B9B424A7725000B21CCD /* Assets.xcassets */,
-				3864B7CB2494D81D00948ACA /* AppDelegate.swift */,
-				3864B7CD2494D81D00948ACA /* SceneDelegate.swift */,
-				3864B7CF2494D81D00948ACA /* ContentView.swift */,
-				3864B7D62494D82300948ACA /* LaunchScreen.storyboard */,
+				3857B9B724A7735000B21CCD /* UI */,
+				3857B9B624A7734300B21CCD /* App */,
 				3864B7D92494D82300948ACA /* Info.plist */,
 				3864B7D32494D82300948ACA /* Preview Content */,
 			);
@@ -138,7 +158,7 @@
 		3864B7E12494D82300948ACA /* LeafTimerTests */ = {
 			isa = PBXGroup;
 			children = (
-				3864B7E22494D82300948ACA /* LeafTimerTests.swift */,
+				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
 				3864B7E42494D82300948ACA /* Info.plist */,
 			);
 			path = LeafTimerTests;
@@ -158,10 +178,12 @@
 			children = (
 				39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */,
 				33EC14C8994F314F6C2F6C06 /* Pods-LeafTimer.release.xcconfig */,
-				6E14D29FDEB3B5AF03C9C747 /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */,
-				990A8822B4755F724F38F980 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */,
-				9E3AFC90E69748AC47594B35 /* Pods-LeafTimerTests.debug.xcconfig */,
-				93D32D1BA3FD4421B609782D /* Pods-LeafTimerTests.release.xcconfig */,
+				54317E73F2F3BC94B2411A11 /* Pods-LeafTimerTests.debug.xcconfig */,
+				58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */,
+				037C5BC22762109945219857 /* Pods-LeafTimerUITests.debug.xcconfig */,
+				4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */,
+				3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */,
+				051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -170,8 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */,
-				42FB5CB723853D8D23B3E76C /* Pods_LeafTimer_LeafTimerUITests.framework */,
-				72B60865A7601BEF377FB2CF /* Pods_LeafTimerTests.framework */,
+				8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */,
+				1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -202,11 +224,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3864B7F52494D82300948ACA /* Build configuration list for PBXNativeTarget "LeafTimerTests" */;
 			buildPhases = (
-				074C7C82699C7DD1911E2E96 /* [CP] Check Pods Manifest.lock */,
+				151C643E77A065ADF7C46EB3 /* [CP] Check Pods Manifest.lock */,
 				3864B7DA2494D82300948ACA /* Sources */,
 				3864B7DB2494D82300948ACA /* Frameworks */,
 				3864B7DC2494D82300948ACA /* Resources */,
-				478EFABE4CCB11B859F0D88D /* [CP] Embed Pods Frameworks */,
+				9E5079682C28DE10A810B2CF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -214,6 +236,9 @@
 				3864B7E02494D82300948ACA /* PBXTargetDependency */,
 			);
 			name = LeafTimerTests;
+			packageProductDependencies = (
+				3857B9B924A77C1B00B21CCD /* ViewInspector */,
+			);
 			productName = LeafTimerTests;
 			productReference = 3864B7DE2494D82300948ACA /* LeafTimerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -222,11 +247,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3864B7F82494D82300948ACA /* Build configuration list for PBXNativeTarget "LeafTimerUITests" */;
 			buildPhases = (
-				FE4BF8E816D699B16A1F1E63 /* [CP] Check Pods Manifest.lock */,
+				726438AD00BC69E168052AA4 /* [CP] Check Pods Manifest.lock */,
 				3864B7E52494D82300948ACA /* Sources */,
 				3864B7E62494D82300948ACA /* Frameworks */,
 				3864B7E72494D82300948ACA /* Resources */,
-				1720C5B1E303E89CAF2C2D52 /* [CP] Embed Pods Frameworks */,
+				A9EF9F0004A73751B8DCCB65 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -270,6 +295,9 @@
 				Base,
 			);
 			mainGroup = 3864B7BF2494D81D00948ACA;
+			packageReferences = (
+				3857B9B824A77C1B00B21CCD /* XCRemoteSwiftPackageReference "ViewInspector" */,
+			);
 			productRefGroup = 3864B7C92494D81D00948ACA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -309,7 +337,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		074C7C82699C7DD1911E2E96 /* [CP] Check Pods Manifest.lock */ = {
+		151C643E77A065ADF7C46EB3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -329,23 +357,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1720C5B1E303E89CAF2C2D52 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3BF422D18A6B0318AB8B067E /* [CP] Check Pods Manifest.lock */ = {
@@ -370,41 +381,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		478EFABE4CCB11B859F0D88D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C8849EEEAFD0BEC559236045 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FE4BF8E816D699B16A1F1E63 /* [CP] Check Pods Manifest.lock */ = {
+		726438AD00BC69E168052AA4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -426,6 +403,57 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9E5079682C28DE10A810B2CF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A9EF9F0004A73751B8DCCB65 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C8849EEEAFD0BEC559236045 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -435,7 +463,7 @@
 			files = (
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
 				3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */,
-				3864B7D02494D81D00948ACA /* ContentView.swift in Sources */,
+				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,7 +471,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3864B7E32494D82300948ACA /* LeafTimerTests.swift in Sources */,
+				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,7 +668,7 @@
 		};
 		3864B7F62494D82300948ACA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E3AFC90E69748AC47594B35 /* Pods-LeafTimerTests.debug.xcconfig */;
+			baseConfigurationReference = 54317E73F2F3BC94B2411A11 /* Pods-LeafTimerTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -663,7 +691,7 @@
 		};
 		3864B7F72494D82300948ACA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93D32D1BA3FD4421B609782D /* Pods-LeafTimerTests.release.xcconfig */;
+			baseConfigurationReference = 58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -686,7 +714,7 @@
 		};
 		3864B7F92494D82300948ACA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E14D29FDEB3B5AF03C9C747 /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */;
+			baseConfigurationReference = 3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -707,7 +735,7 @@
 		};
 		3864B7FA2494D82300948ACA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 990A8822B4755F724F38F980 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */;
+			baseConfigurationReference = 051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -766,6 +794,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3857B9B824A77C1B00B21CCD /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nalexn/ViewInspector";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3857B9B924A77C1B00B21CCD /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3857B9B824A77C1B00B21CCD /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3864B7C02494D81D00948ACA /* Project object */;
 }

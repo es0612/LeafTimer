@@ -2,23 +2,27 @@ PODS:
   - Nimble (8.1.1)
   - PureLayout (3.1.6)
   - Quick (3.0.0)
+  - ViewInspector (0.3.8)
 
 DEPENDENCIES:
   - Nimble
   - PureLayout
   - Quick
+  - ViewInspector
 
 SPEC REPOS:
   trunk:
     - Nimble
     - PureLayout
     - Quick
+    - ViewInspector
 
 SPEC CHECKSUMS:
   Nimble: 5f8a2fb6fa343a7242dfdd9d42f7267419d464b2
   PureLayout: bd3c4ec3a3819ad387c99ebb72c6b129c3ed4d2d
   Quick: 6d9559f40647bc4d510103842ef2fdd882d753e2
+  ViewInspector: 3f5b65a60bbabbf4521ea5fdf78633ee55ba54b5
 
-PODFILE CHECKSUM: cf617cda94e9eb5630e43e4d0a0c07a7d08090ca
+PODFILE CHECKSUM: fc4c16a257623fba52a5f74c24eb55d7e3260bf2
 
 COCOAPODS: 1.9.3

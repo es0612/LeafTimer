@@ -1,6 +1,8 @@
+platform :ios, '13.5'
+use_frameworks!
+inhibit_all_warnings!
+
 target 'LeafTimer' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
 
   # Pods for LeafTimer
   pod 'PureLayout'
@@ -10,6 +12,7 @@ target 'LeafTimer' do
     # Pods for testing
     pod 'Quick'
     pod 'Nimble'
+    pod 'ViewInspector'
   end
 
   target 'LeafTimerUITests' do
