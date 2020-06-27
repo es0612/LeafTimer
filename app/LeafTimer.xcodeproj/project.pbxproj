@@ -3,15 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
+		3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3857B9B424A7725000B21CCD /* Assets.xcassets */; };
 		3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CB2494D81D00948ACA /* AppDelegate.swift */; };
 		3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CD2494D81D00948ACA /* SceneDelegate.swift */; };
 		3864B7D02494D81D00948ACA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CF2494D81D00948ACA /* ContentView.swift */; };
-		3864B7D22494D82300948ACA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3864B7D12494D82300948ACA /* Assets.xcassets */; };
 		3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3864B7D42494D82300948ACA /* Preview Assets.xcassets */; };
 		3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3864B7D62494D82300948ACA /* LaunchScreen.storyboard */; };
 		3864B7E32494D82300948ACA /* LeafTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7E22494D82300948ACA /* LeafTimerTests.swift */; };
@@ -39,11 +39,11 @@
 
 /* Begin PBXFileReference section */
 		33EC14C8994F314F6C2F6C06 /* Pods-LeafTimer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.release.xcconfig"; sourceTree = "<group>"; };
+		3857B9B424A7725000B21CCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3864B7C82494D81D00948ACA /* LeafTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3864B7CB2494D81D00948ACA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3864B7CD2494D81D00948ACA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		3864B7CF2494D81D00948ACA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		3864B7D12494D82300948ACA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3864B7D42494D82300948ACA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3864B7D72494D82300948ACA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3864B7D92494D82300948ACA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -116,10 +116,10 @@
 		3864B7CA2494D81D00948ACA /* LeafTimer */ = {
 			isa = PBXGroup;
 			children = (
+				3857B9B424A7725000B21CCD /* Assets.xcassets */,
 				3864B7CB2494D81D00948ACA /* AppDelegate.swift */,
 				3864B7CD2494D81D00948ACA /* SceneDelegate.swift */,
 				3864B7CF2494D81D00948ACA /* ContentView.swift */,
-				3864B7D12494D82300948ACA /* Assets.xcassets */,
 				3864B7D62494D82300948ACA /* LaunchScreen.storyboard */,
 				3864B7D92494D82300948ACA /* Info.plist */,
 				3864B7D32494D82300948ACA /* Preview Content */,
@@ -163,7 +163,6 @@
 				9E3AFC90E69748AC47594B35 /* Pods-LeafTimerTests.debug.xcconfig */,
 				93D32D1BA3FD4421B609782D /* Pods-LeafTimerTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -288,8 +287,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
+				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
-				3864B7D22494D82300948ACA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
