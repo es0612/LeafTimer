@@ -1,16 +1,21 @@
 import SwiftUI
 
 struct TimerView: View {
+    // MARK: - State
+    @State var buttonText = "START"
+
+    // MARK: - View
     var body: some View {
         VStack {
             Text("25:00")
+            Button(buttonText, action: didTapStartButton)
 
-            Button(action: {
-                print("stop")
-            }) {
-                Text("STOP")
-            }
         }
+    }
+
+    // MARK: - Private methods
+    private func didTapStartButton() {
+        buttonText = "STOP"
     }
 }
 
