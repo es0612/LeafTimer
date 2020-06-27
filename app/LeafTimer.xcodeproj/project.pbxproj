@@ -98,9 +98,9 @@
 		3857B9B624A7734300B21CCD /* App */ = {
 			isa = PBXGroup;
 			children = (
+				3864B7CB2494D81D00948ACA /* AppDelegate.swift */,
 				3857B9B424A7725000B21CCD /* Assets.xcassets */,
 				3864B7CD2494D81D00948ACA /* SceneDelegate.swift */,
-				3864B7CB2494D81D00948ACA /* AppDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -117,12 +117,12 @@
 		3864B7BF2494D81D00948ACA = {
 			isa = PBXGroup;
 			children = (
+				D2B254CEFABAFE7C4C9F1B38 /* Frameworks */,
 				3864B7CA2494D81D00948ACA /* LeafTimer */,
 				3864B7E12494D82300948ACA /* LeafTimerTests */,
 				3864B7EC2494D82300948ACA /* LeafTimerUITests */,
-				3864B7C92494D81D00948ACA /* Products */,
 				C130F0CB53CD327BD9CC537E /* Pods */,
-				D2B254CEFABAFE7C4C9F1B38 /* Frameworks */,
+				3864B7C92494D81D00948ACA /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,10 +139,10 @@
 		3864B7CA2494D81D00948ACA /* LeafTimer */ = {
 			isa = PBXGroup;
 			children = (
-				3857B9B724A7735000B21CCD /* UI */,
 				3857B9B624A7734300B21CCD /* App */,
-				3864B7D92494D82300948ACA /* Info.plist */,
 				3864B7D32494D82300948ACA /* Preview Content */,
+				3857B9B724A7735000B21CCD /* UI */,
+				3864B7D92494D82300948ACA /* Info.plist */,
 			);
 			path = LeafTimer;
 			sourceTree = "<group>";
@@ -158,8 +158,8 @@
 		3864B7E12494D82300948ACA /* LeafTimerTests */ = {
 			isa = PBXGroup;
 			children = (
-				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
 				3864B7E42494D82300948ACA /* Info.plist */,
+				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
 			);
 			path = LeafTimerTests;
 			sourceTree = "<group>";
@@ -167,8 +167,8 @@
 		3864B7EC2494D82300948ACA /* LeafTimerUITests */ = {
 			isa = PBXGroup;
 			children = (
-				3864B7ED2494D82300948ACA /* LeafTimerUITests.swift */,
 				3864B7EF2494D82300948ACA /* Info.plist */,
+				3864B7ED2494D82300948ACA /* LeafTimerUITests.swift */,
 			);
 			path = LeafTimerUITests;
 			sourceTree = "<group>";
@@ -176,14 +176,14 @@
 		C130F0CB53CD327BD9CC537E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */,
+				051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */,
 				39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */,
 				33EC14C8994F314F6C2F6C06 /* Pods-LeafTimer.release.xcconfig */,
 				54317E73F2F3BC94B2411A11 /* Pods-LeafTimerTests.debug.xcconfig */,
 				58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */,
 				037C5BC22762109945219857 /* Pods-LeafTimerUITests.debug.xcconfig */,
 				4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */,
-				3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */,
-				051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -314,8 +314,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
 				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
+				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

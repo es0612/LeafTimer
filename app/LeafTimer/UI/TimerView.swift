@@ -2,7 +2,15 @@ import SwiftUI
 
 struct TimerView: View {
     var body: some View {
-        Text("25:00")
+        VStack {
+            Text("25:00")
+
+            Button(action: {
+                print("stop")
+            }) {
+                Text("STOP")
+            }
+        }
     }
 }
 
