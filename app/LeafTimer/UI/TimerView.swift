@@ -6,10 +6,11 @@ struct TimerView: View {
 
     // MARK: - View
     var body: some View {
-        VStack {
-            Text("25:00")
-            Button(buttonText, action: didTapStartButton)
-
+        NavigationView {
+            VStack {
+                Text("25:00")
+                Button(buttonText, action: didTapStartButton)
+            }.navigationBarTitle("ポモドーロ", displayMode: .inline)
         }
     }
 
@@ -19,9 +20,9 @@ struct TimerView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach (["iPhone 8","iPhone 11"], id: \.self) { deviceName in
+        ForEach (["iPhone 11"], id: \.self) { deviceName in
             TimerView()
                 .previewDevice(PreviewDevice(rawValue: deviceName))
                 .previewDisplayName(deviceName)

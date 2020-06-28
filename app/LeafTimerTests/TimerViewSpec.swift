@@ -11,27 +11,34 @@ class TimerViewSpec: QuickSpec {
         describe("test for TimerView") {
 
             var timerView: TimerView!
+
             beforeEach {
                 timerView = TimerView()
             }
 
             it("displayed remaining time.") {
                 let textString = try timerView.body
-                    .inspect().vStack().text(0).string()
+                    .inspect().navigationView().vStack(0).text(0).string()
 
                 expect(textString).to(equal("25:00"))
             }
 
             it("displayed start button.") {
                 let startButton = try timerView.body
-                    .inspect().vStack().button(1)
+                    .inspect().navigationView().vStack(0).button(1)
 
                 expect(try startButton.text().string()).to(equal("START"))
             }
 
+            it("displayed navigation bar") {
+                let navBar = try timerView.body.inspect().navigationView()
+
+                expect(navBar).notTo(beNil())
+            }
+
             xit("displayed stop button when button tapped") {
                 let stopButton = try timerView.body
-                    .inspect().vStack().button(1)
+                .inspect().navigationView().vStack(0).button(1)
 
                 try stopButton.tap()
 
