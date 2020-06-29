@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
+		3856FB7D24A8C714007F40E5 /* StubTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB7C24A8C714007F40E5 /* StubTimerManager.swift */; };
+		3856FB7F24A8C98D007F40E5 /* DefaultTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB7E24A8C98D007F40E5 /* DefaultTimerManager.swift */; };
 		3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3857B9B424A7725000B21CCD /* Assets.xcassets */; };
 		3857B9BA24A77C1B00B21CCD /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 3857B9B924A77C1B00B21CCD /* ViewInspector */; };
 		3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CB2494D81D00948ACA /* AppDelegate.swift */; };
@@ -43,6 +45,8 @@
 		051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33EC14C8994F314F6C2F6C06 /* Pods-LeafTimer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.release.xcconfig"; sourceTree = "<group>"; };
+		3856FB7C24A8C714007F40E5 /* StubTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubTimerManager.swift; sourceTree = "<group>"; };
+		3856FB7E24A8C98D007F40E5 /* DefaultTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTimerManager.swift; sourceTree = "<group>"; };
 		3857B9B424A7725000B21CCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3864B7C82494D81D00948ACA /* LeafTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3864B7CB2494D81D00948ACA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +99,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3856FB7B24A8C3AB007F40E5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				3856FB7E24A8C98D007F40E5 /* DefaultTimerManager.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		3857B9B624A7734300B21CCD /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				3857B9B624A7734300B21CCD /* App */,
+				3856FB7B24A8C3AB007F40E5 /* Components */,
 				3864B7D32494D82300948ACA /* Preview Content */,
 				3857B9B724A7735000B21CCD /* UI */,
 				3864B7D92494D82300948ACA /* Info.plist */,
@@ -159,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				3864B7E42494D82300948ACA /* Info.plist */,
+				3856FB7C24A8C714007F40E5 /* StubTimerManager.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
 			);
 			path = LeafTimerTests;
@@ -462,6 +476,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
+				3856FB7F24A8C98D007F40E5 /* DefaultTimerManager.swift in Sources */,
 				3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 			);
@@ -471,6 +486,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3856FB7D24A8C714007F40E5 /* StubTimerManager.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

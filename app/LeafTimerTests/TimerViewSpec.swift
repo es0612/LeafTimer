@@ -11,23 +11,23 @@ class TimerViewSpec: QuickSpec {
         describe("test for TimerView") {
 
             var timerView: TimerView!
+            var stubTimerManager: StubTimerManager!
 
             beforeEach {
-                timerView = TimerView()
+                stubTimerManager = StubTimerManager()
+                timerView = TimerView(timerManager: DefaultTimerManager())
             }
 
             it("displayed remaining time.") {
-                let textString = try timerView.body
-                    .inspect().navigationView().vStack(0).text(0).string()
+                _ = try timerView.body.inspect()
 
-                expect(textString).to(equal("25:00"))
+                expect(stubTimerManager.getDisplayedTime_wasCalled).to(beTrue())
             }
 
             it("displayed start button.") {
-                let startButton = try timerView.body
-                    .inspect().navigationView().vStack(0).button(1)
+                _ = try timerView.body.inspect()
 
-                expect(try startButton.text().string()).to(equal("START"))
+                expect(stubTimerManager.getButtonState_wasCalled).to(beTrue())
             }
 
             it("displayed navigation bar") {
@@ -36,14 +36,14 @@ class TimerViewSpec: QuickSpec {
                 expect(navBar).notTo(beNil())
             }
 
-            xit("displayed stop button when button tapped") {
+            it("call timerManager methods when button tapped") {
                 let stopButton = try timerView.body
                 .inspect().navigationView().vStack(0).button(1)
 
                 try stopButton.tap()
 
-                expect(try stopButton.text().string())
-                    .toEventually(equal("STOP"))
+                expect(stubTimerManager.startTimer_wasCalled).to(beTrue())
+
             }
         }
     }
