@@ -11,23 +11,28 @@ class TimerViewSpec: QuickSpec {
         describe("test for TimerView") {
 
             var timerView: TimerView!
-            var stubTimerManager: StubTimerManager!
+            var spyTimerManager: SpyTimerManager!
 
             beforeEach {
-                stubTimerManager = StubTimerManager()
-                timerView = TimerView(timerManager: DefaultTimerManager())
+                spyTimerManager = SpyTimerManager()
+                timerView = TimerView(
+                    timverViewModel: TimerViewModel(
+                        timerManager: SpyTimerManager()
+                ))
             }
 
             it("displayed remaining time.") {
-                _ = try timerView.body.inspect()
+                let textViewString = try timerView.body
+                    .inspect().navigationView().vStack(0).text(0).string()
 
-                expect(stubTimerManager.getDisplayedTime_wasCalled).to(beTrue())
+                expect(textViewString).to(equal("25:00"))
             }
 
             it("displayed start button.") {
-                _ = try timerView.body.inspect()
+                let stopButton = try timerView.body
+                .inspect().navigationView().vStack(0).button(1)
 
-                expect(stubTimerManager.getButtonState_wasCalled).to(beTrue())
+                expect(try stopButton.text().string()).to(equal("START"))
             }
 
             it("displayed navigation bar") {
@@ -36,13 +41,15 @@ class TimerViewSpec: QuickSpec {
                 expect(navBar).notTo(beNil())
             }
 
-            it("call timerManager methods when button tapped") {
+            xit("call timerManager methods when button tapped") {
                 let stopButton = try timerView.body
                 .inspect().navigationView().vStack(0).button(1)
 
                 try stopButton.tap()
 
-                expect(stubTimerManager.startTimer_wasCalled).to(beTrue())
+                let _ = try timerView.body.inspect()
+
+                expect(spyTimerManager.start_wasCalled).toEventually(beTrue())
 
             }
         }

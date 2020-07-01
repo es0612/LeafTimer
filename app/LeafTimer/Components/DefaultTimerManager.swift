@@ -1,42 +1,29 @@
 import Foundation
 
-
-protocol TimerManager: ObservableObject {
-    func startTimer()
-    func getDisplayedTime() -> String
-    func getButtonState() -> String
+protocol TimerManager {
+    func start(target: TimerViewModel)
+    func stop()
+    func reset()
 }
 
+
 class DefaultTimerManager: TimerManager {
-    var timer: Timer?
-    var fullTimeSecond: Int = 25*60
-    var currentTimeSecond: Int = 25*60
-    var executeState = false
+    private var timer: Timer?
 
-    func startTimer() {
-        currentTimeSecond = fullTimeSecond
-        executeState = true
-
+    func start(target: TimerViewModel) {
         timer = Timer.scheduledTimer(
             timeInterval: 1,
-            target: self,
-            selector: #selector(updateTime),
+            target: target,
+            selector: #selector(target.updateTime),
             userInfo: nil,
             repeats: true)
     }
 
-    @objc func updateTime() {
-        currentTimeSecond -= 1
+    func stop() {
+        timer?.invalidate()
     }
 
-    func getDisplayedTime() -> String {
-        let minString = String(Int(currentTimeSecond/60))
-        let secondString = String(Int(currentTimeSecond % 60))
-        return minString + ":" + secondString
-    }
+    func reset() {
 
-    func getButtonState() -> String {
-        return "START"
     }
-
 }
