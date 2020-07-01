@@ -9,14 +9,23 @@ struct TimerView: View {
         NavigationView {
             VStack {
                 Text(timverViewModel.getDisplayedTime())
-                Button(timverViewModel.getButtonState(), action: didTapStartButton)
-            }.navigationBarTitle("ポモドーロ", displayMode: .inline)
+                Button(
+                    timverViewModel.getButtonState(),
+                    action: didTapTimerButton)
+            }
+            .navigationBarTitle("ポモドーロ", displayMode: .inline)
+            .navigationBarItems(trailing:
+                Button("setting", action: didTapSettingButton)
+            )
         }
     }
 
     // MARK: - Private methods
-    private func didTapStartButton() {
+    private func didTapTimerButton() {
         timverViewModel.onPressedTimerButton()
+    }
+
+    private func didTapSettingButton() {
 
     }
 }

@@ -21,14 +21,14 @@ class TimerViewSpec: QuickSpec {
                 ))
             }
 
-            it("displayed remaining time.") {
+            xit("displayed remaining time.") {
                 let textViewString = try timerView.body
                     .inspect().navigationView().vStack(0).text(0).string()
 
                 expect(textViewString).to(equal("25:00"))
             }
 
-            it("displayed start button.") {
+            xit("displayed start button.") {
                 let stopButton = try timerView.body
                 .inspect().navigationView().vStack(0).button(1)
 
@@ -39,6 +39,12 @@ class TimerViewSpec: QuickSpec {
                 let navBar = try timerView.body.inspect().navigationView()
 
                 expect(navBar).notTo(beNil())
+            }
+
+            xit("displayed navigation bar button item") {
+                let buttonItem = try timerView.body.inspect().navigationView().vStack(0).navigationBarItems(0).button()
+
+                expect(buttonItem).notTo(beNil())
             }
 
             xit("call timerManager methods when button tapped") {

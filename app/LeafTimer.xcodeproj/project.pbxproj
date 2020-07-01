@@ -11,6 +11,8 @@
 		3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */; };
 		3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */; };
 		3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */; };
+		3856FB8724AC3561007F40E5 /* warning1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3856FB8624AC3561007F40E5 /* warning1.mp3 */; };
+		3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3856FB8924AC3D5F007F40E5 /* rain1.mp3 */; };
 		3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3857B9B424A7725000B21CCD /* Assets.xcassets */; };
 		3857B9BA24A77C1B00B21CCD /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 3857B9B924A77C1B00B21CCD /* ViewInspector */; };
 		3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7CB2494D81D00948ACA /* AppDelegate.swift */; };
@@ -49,6 +51,8 @@
 		3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyTimerManager.swift; sourceTree = "<group>"; };
 		3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTimerManager.swift; sourceTree = "<group>"; };
+		3856FB8624AC3561007F40E5 /* warning1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = warning1.mp3; sourceTree = "<group>"; };
+		3856FB8924AC3D5F007F40E5 /* rain1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain1.mp3; sourceTree = "<group>"; };
 		3857B9B424A7725000B21CCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3864B7C82494D81D00948ACA /* LeafTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3864B7CB2494D81D00948ACA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +121,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		3856FB8824AC3B2D007F40E5 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				3856FB8924AC3D5F007F40E5 /* rain1.mp3 */,
+				3856FB8624AC3561007F40E5 /* warning1.mp3 */,
+			);
+			path = Sound;
+			sourceTree = "<group>";
+		};
 		3857B9B624A7734300B21CCD /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +175,7 @@
 		3864B7CA2494D81D00948ACA /* LeafTimer */ = {
 			isa = PBXGroup;
 			children = (
+				3856FB8824AC3B2D007F40E5 /* Sound */,
 				3857B9B624A7734300B21CCD /* App */,
 				3856FB7B24A8C3AB007F40E5 /* Components */,
 				3857B9B724A7735000B21CCD /* View */,
@@ -339,7 +353,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */,
 				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
+				3856FB8724AC3561007F40E5 /* warning1.mp3 in Resources */,
 				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
 			);

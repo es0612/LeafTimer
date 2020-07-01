@@ -1,6 +1,10 @@
 import Foundation
+import AVFoundation
 
 class TimerViewModel: ObservableObject {
+
+    var stopAudioPlayer: AVAudioPlayer?
+    var workingAudioPlayer: AVAudioPlayer?
 
     // MARK: - Dependency Injection
     var timerManager: TimerManager
@@ -10,26 +14,45 @@ class TimerViewModel: ObservableObject {
     @Published var currentTimeSecond: Int
     @Published var executeState: Bool
 
+    // MARK: - Initialization
     init(timerManager: TimerManager) {
         self.timerManager = timerManager
-        self.fullTimeSecond = 25*60
-        self.currentTimeSecond = 25*60
+        self.fullTimeSecond = 1*60
+        self.currentTimeSecond = 1*60
         self.executeState = false
+
+        setUpPlayer()
     }
 
+    // MARK: - methods
     func onPressedTimerButton() {
         switch executeState {
         case false:
             executeState = true
             timerManager.start(target: self)
 
+            workingAudioPlayer?.play()
+            stopAudioPlayer?.stop()
+
         case true:
             executeState = false
             timerManager.stop()
+
+            workingAudioPlayer?.stop()
+            stopAudioPlayer?.stop()
         }
     }
 
     @objc func updateTime() {
+        if currentTimeSecond == 0 {
+            timerManager.stop()
+
+            workingAudioPlayer?.stop()
+            stopAudioPlayer?.play()
+
+            return
+        }
+
         currentTimeSecond -= 1
     }
 
@@ -51,4 +74,38 @@ class TimerViewModel: ObservableObject {
             return "START"
         }
     }
+
+    func setUpPlayer() {
+      guard let path = Bundle.main.path(
+        forResource: "warning1", ofType: "mp3")
+        else {
+            return
+        }
+
+        do {
+            stopAudioPlayer = try AVAudioPlayer(
+                contentsOf: URL(fileURLWithPath: path))
+
+            stopAudioPlayer?.numberOfLoops = -1
+            stopAudioPlayer?.prepareToPlay()
+            stopAudioPlayer?.volume = 0.5
+        } catch { }
+
+        guard let workingPath = Bundle.main.path(
+          forResource: "rain1", ofType: "mp3")
+          else {
+              return
+          }
+
+          do {
+              workingAudioPlayer = try AVAudioPlayer(
+                  contentsOf: URL(fileURLWithPath: workingPath))
+
+            workingAudioPlayer?.numberOfLoops = -1
+            workingAudioPlayer?.prepareToPlay()
+            workingAudioPlayer?.volume = 0.3
+
+          } catch { }
+    }
 }
+
