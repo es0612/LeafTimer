@@ -48,6 +48,10 @@ class TimerViewModel: ObservableObject {
             timerManager.stop()
 
             workingAudioPlayer?.stop()
+
+            let systemSoundID = SystemSoundID(kSystemSoundID_Vibrate)
+            AudioServicesPlaySystemSound(systemSoundID)
+
             stopAudioPlayer?.play()
 
             return

@@ -9,6 +9,9 @@ struct TimerView: View {
         NavigationView {
             VStack {
                 Text(timverViewModel.getDisplayedTime())
+                    .fontWeight(.bold)
+                    .font(.largeTitle)
+                    .foregroundColor(.gray)
                 Button(
                     timverViewModel.getButtonState(),
                     action: didTapTimerButton)
@@ -16,7 +19,7 @@ struct TimerView: View {
             .navigationBarTitle("ポモドーロ", displayMode: .inline)
             .navigationBarItems(trailing:
                 Button("setting", action: didTapSettingButton)
-            )
+                )
         }
     }
 
