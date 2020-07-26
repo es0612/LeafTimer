@@ -208,9 +208,9 @@
 			isa = PBXGroup;
 			children = (
 				3864B7E42494D82300948ACA /* Info.plist */,
+				3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */,
 				3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
-				3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */,
 			);
 			path = LeafTimerTests;
 			sourceTree = "<group>";
@@ -529,8 +529,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
 				3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */,
+				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -690,7 +690,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"LeafTimer/View/Preview Content\"";
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				ENABLE_PREVIEWS = YES;
@@ -713,7 +713,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"LeafTimer/View/Preview Content\"";
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				ENABLE_PREVIEWS = YES;
