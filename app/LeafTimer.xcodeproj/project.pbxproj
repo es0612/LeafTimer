@@ -25,6 +25,7 @@
 		3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4424CD2272001B03E4 /* SettingView.swift */; };
 		3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */; };
 		3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4824CD3888001B03E4 /* CircleButton.swift */; };
+		3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		3865AB4424CD2272001B03E4 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAudioManager.swift; sourceTree = "<group>"; };
 		3865AB4824CD3888001B03E4 /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
+		3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyAudioManager.swift; sourceTree = "<group>"; };
 		39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.debug.xcconfig"; sourceTree = "<group>"; };
 		3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -114,8 +116,8 @@
 		3856FB7B24A8C3AB007F40E5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
+				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -152,9 +154,9 @@
 			isa = PBXGroup;
 			children = (
 				3864B7D32494D82300948ACA /* Preview Content */,
-				3864B7CF2494D81D00948ACA /* TimerView.swift */,
-				3865AB4424CD2272001B03E4 /* SettingView.swift */,
 				3865AB4824CD3888001B03E4 /* CircleButton.swift */,
+				3865AB4424CD2272001B03E4 /* SettingView.swift */,
+				3864B7CF2494D81D00948ACA /* TimerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -184,9 +186,9 @@
 		3864B7CA2494D81D00948ACA /* LeafTimer */ = {
 			isa = PBXGroup;
 			children = (
-				3856FB8824AC3B2D007F40E5 /* Sound */,
 				3857B9B624A7734300B21CCD /* App */,
 				3856FB7B24A8C3AB007F40E5 /* Components */,
+				3856FB8824AC3B2D007F40E5 /* Sound */,
 				3857B9B724A7735000B21CCD /* View */,
 				3856FB8024AC142B007F40E5 /* ViewModel */,
 				3864B7D92494D82300948ACA /* Info.plist */,
@@ -208,6 +210,7 @@
 				3864B7E42494D82300948ACA /* Info.plist */,
 				3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
+				3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */,
 			);
 			path = LeafTimerTests;
 			sourceTree = "<group>";
@@ -362,11 +365,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */,
 				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
-				3856FB8724AC3561007F40E5 /* warning1.mp3 in Resources */,
 				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
+				3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */,
+				3856FB8724AC3561007F40E5 /* warning1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,9 +515,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
+				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
 				3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */,
 				3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */,
-				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
 				3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */,
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
@@ -527,6 +530,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
+				3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
