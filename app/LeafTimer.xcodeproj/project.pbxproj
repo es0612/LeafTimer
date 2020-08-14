@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
+		3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */; };
+		3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */; };
+		3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6824E392B60070C612 /* SettingViewModel.swift */; };
 		3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */; };
 		3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */; };
 		3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */; };
@@ -26,6 +29,8 @@
 		3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */; };
 		3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4824CD3888001B03E4 /* CircleButton.swift */; };
 		3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */; };
+		38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B7261924DD85370098F3D4 /* GIFPlayerView.swift */; };
+		38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B7261B24DD85900098F3D4 /* GIFView.swift */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 /* End PBXBuildFile section */
@@ -52,6 +57,9 @@
 		051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33EC14C8994F314F6C2F6C06 /* Pods-LeafTimer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.release.xcconfig"; sourceTree = "<group>"; };
+		3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserDefaultWrapper.swift; sourceTree = "<group>"; };
+		3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimerViewModel+extensions.swift"; sourceTree = "<group>"; };
+		3818BC6824E392B60070C612 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyTimerManager.swift; sourceTree = "<group>"; };
 		3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTimerManager.swift; sourceTree = "<group>"; };
@@ -75,6 +83,8 @@
 		3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAudioManager.swift; sourceTree = "<group>"; };
 		3865AB4824CD3888001B03E4 /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyAudioManager.swift; sourceTree = "<group>"; };
+		38B7261924DD85370098F3D4 /* GIFPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFPlayerView.swift; sourceTree = "<group>"; };
+		38B7261B24DD85900098F3D4 /* GIFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFView.swift; sourceTree = "<group>"; };
 		39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.debug.xcconfig"; sourceTree = "<group>"; };
 		3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -113,11 +123,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3818BC6724E390DC0070C612 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				38B7261B24DD85900098F3D4 /* GIFView.swift */,
+				3865AB4824CD3888001B03E4 /* CircleButton.swift */,
+				38B7261924DD85370098F3D4 /* GIFPlayerView.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
 		3856FB7B24A8C3AB007F40E5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
 				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
+				3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -126,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */,
+				3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */,
+				3818BC6824E392B60070C612 /* SettingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -153,8 +176,8 @@
 		3857B9B724A7735000B21CCD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3818BC6724E390DC0070C612 /* Elements */,
 				3864B7D32494D82300948ACA /* Preview Content */,
-				3865AB4824CD3888001B03E4 /* CircleButton.swift */,
 				3865AB4424CD2272001B03E4 /* SettingView.swift */,
 				3864B7CF2494D81D00948ACA /* TimerView.swift */,
 			);
@@ -515,13 +538,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
+				38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */,
+				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
+				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
 				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
 				3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */,
 				3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */,
+				3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */,
 				3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */,
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
+				38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

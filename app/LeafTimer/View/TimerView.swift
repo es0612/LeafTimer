@@ -4,23 +4,19 @@ struct TimerView: View {
     // MARK: - State
     @ObservedObject var timverViewModel: TimerViewModel
 
-    let backGroundColor = LinearGradient(
-        gradient: Gradient(
-            colors: [
-                Color(.displayP3, red: 0.8, green: 1, blue: 0.84, opacity: 0.33),
-                Color(.displayP3, red: 0.68, green: 0.81, blue: 0.48, opacity: 0.33)
-        ]),
-        startPoint: .top,
-        endPoint: .bottom
-    )
-
     // MARK: - View
     var body: some View {
 
         NavigationView {
-
             ZStack {
-                backGroundColor.edgesIgnoringSafeArea(.all)
+                timverViewModel.getBackgroundColor()
+                    .edgesIgnoringSafeArea(.all)
+
+                VStack{
+                    GIFView(gifName: "leaf2")
+                        .frame(width: 100, height: 100, alignment: .center)
+                        .padding(.trailing, 20)
+                }
 
                 VStack {
                     Text(timverViewModel.getDisplayedTime())
@@ -28,8 +24,10 @@ struct TimerView: View {
                             size: 78, weight: .bold, design: .monospaced)
                     )
                         .foregroundColor(.gray)
+                        .padding(.bottom, 100)
 
-                    CircleButton(buttonState: self.timverViewModel.getButtonState())
+
+                    CircleButton(viewModel: timverViewModel)
                         .onTapGesture {
                             self.didTapTimerButton()
                     }
@@ -39,7 +37,7 @@ struct TimerView: View {
                     leading: Button(action: didTapResetButton) {
                         Text("Reset")
                     },
-                    trailing: NavigationLink(destination: SettingView()) {
+                    trailing: NavigationLink(destination: SettingView(settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper()))) {
                         Text("Setting")
                     }
                 )

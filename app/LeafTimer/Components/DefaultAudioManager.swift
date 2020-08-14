@@ -45,7 +45,7 @@ class DefaultAudioManager: AudioManager {
             stopAudioPlayer = try AVAudioPlayer(
                 contentsOf: URL(fileURLWithPath: path))
 
-            stopAudioPlayer?.numberOfLoops = -1
+            stopAudioPlayer?.numberOfLoops = 3
             stopAudioPlayer?.prepareToPlay()
             stopAudioPlayer?.volume = 0.5
         } catch { }
