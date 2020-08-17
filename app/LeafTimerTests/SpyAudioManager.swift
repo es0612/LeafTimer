@@ -1,6 +1,10 @@
 @testable import LeafTimer
 
 class SpyAudioManager :AudioManager{
+    func setUp(workingSound: String) {
+        
+    }
+
     func start() {
 
     }
@@ -17,9 +21,7 @@ class SpyAudioManager :AudioManager{
 
     }
 
-    func setUp() {
-        
-    }
+
 
 
 }

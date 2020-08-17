@@ -18,8 +18,8 @@ class TimerViewSpec: QuickSpec {
                 timerView = TimerView(
                     timverViewModel: TimerViewModel(
                         timerManager: SpyTimerManager(),
-                        audioManager: SpyAudioManager()
-                ))
+                        audioManager: SpyAudioManager(), userDefaultWrapper: LocalUserDefaultsWrapper()
+                ), settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper()))
             }
 
             xit("displayed remaining time.") {

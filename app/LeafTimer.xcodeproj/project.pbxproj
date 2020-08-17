@@ -132,9 +132,9 @@
 		3818BC6724E390DC0070C612 /* Elements */ = {
 			isa = PBXGroup;
 			children = (
-				38B7261B24DD85900098F3D4 /* GIFView.swift */,
 				3865AB4824CD3888001B03E4 /* CircleButton.swift */,
 				38B7261924DD85370098F3D4 /* GIFPlayerView.swift */,
+				38B7261B24DD85900098F3D4 /* GIFView.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -153,9 +153,9 @@
 		3856FB8024AC142B007F40E5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */,
-				3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */,
 				3818BC6824E392B60070C612 /* SettingViewModel.swift */,
+				3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */,
+				3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -163,8 +163,8 @@
 		3856FB8824AC3B2D007F40E5 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
-				3818BC6E24EA5B970070C612 /* river1.mp3 */,
 				3856FB8924AC3D5F007F40E5 /* rain1.mp3 */,
+				3818BC6E24EA5B970070C612 /* river1.mp3 */,
 				3856FB8624AC3561007F40E5 /* warning1.mp3 */,
 			);
 			path = Sound;
@@ -184,9 +184,9 @@
 		3857B9B724A7735000B21CCD /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */,
 				3818BC6724E390DC0070C612 /* Elements */,
 				3864B7D32494D82300948ACA /* Preview Content */,
+				3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */,
 				3865AB4424CD2272001B03E4 /* SettingView.swift */,
 				3864B7CF2494D81D00948ACA /* TimerView.swift */,
 			);
@@ -400,8 +400,8 @@
 				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
 				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
-				3818BC6F24EA5B970070C612 /* river1.mp3 in Resources */,
 				3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */,
+				3818BC6F24EA5B970070C612 /* river1.mp3 in Resources */,
 				3856FB8724AC3561007F40E5 /* warning1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -548,20 +548,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
-				38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */,
-				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
-				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
+				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
 				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
 				3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */,
 				3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */,
+				38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */,
+				38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */,
 				3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */,
 				3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */,
-				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
+				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
+				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
-				38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
