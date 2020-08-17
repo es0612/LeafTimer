@@ -6,7 +6,7 @@ protocol AudioManager {
     func stop()
     func finish()
     func vibration()
-    func setUp()
+    func setUp(workingSound: String)
 
 }
 
@@ -34,7 +34,7 @@ class DefaultAudioManager: AudioManager {
         AudioServicesPlaySystemSound(systemSoundID)
     }
 
-    func setUp() {
+    func setUp(workingSound: String) {
         guard let path = Bundle.main.path(
             forResource: "warning1", ofType: "mp3")
             else {
@@ -51,7 +51,7 @@ class DefaultAudioManager: AudioManager {
         } catch { }
 
         guard let workingPath = Bundle.main.path(
-            forResource: "rain1", ofType: "mp3")
+            forResource: workingSound, ofType: "mp3")
             else {
                 return
         }

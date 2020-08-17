@@ -46,7 +46,7 @@ extension TimerViewModel {
 
     func getColor1() -> Color {
         if breakState {
-            return Color(.init(red: 0.85, green: 0.47, blue: 0.35, alpha: 1))
+            return Color(.init(red: 0.35, green: 0.38, blue: 0.46, alpha: 1))
         } else {
             return Color(.init(red: 0.35, green: 0.47, blue: 0.35, alpha: 1))
         }
@@ -54,15 +54,44 @@ extension TimerViewModel {
     }
 
     func getColor2() -> Color {
-        return Color(.init(red: 0.57, green: 0.73, blue: 0.52, alpha: 1))
+        if breakState {
+            return Color(.init(red: 0.52, green: 0.66, blue: 0.73, alpha: 1))
+        } else {
+            return Color(.init(red: 0.57, green: 0.73, blue: 0.52, alpha: 1))
+        }
     }
 
     func getColor3() -> Color {
-        return Color(.init(red: 0.49, green: 0.71, blue: 0.41, alpha: 1))
+        if breakState {
+            return Color(.init(red: 0.41, green: 0.57, blue: 0.71, alpha: 1))
+        } else {
+            return Color(.init(red: 0.49, green: 0.71, blue: 0.41, alpha: 1))
+        }
     }
 
     func getColor4() -> Color {
-        return Color(.init(red: 0.35, green: 0.68, blue: 0.29, alpha: 1))
+        if breakState {
+            return Color(.init(red: 0.29, green: 0.45, blue: 0.67, alpha: 1))
+        } else {
+            return Color(.init(red: 0.35, green: 0.68, blue: 0.29, alpha: 1))
+        }
+    }
+
+    func getLeafPattern() -> LeafPattern {
+        let percent = Double(currentTimeSecond) / Double(fullTimeSecond)
+
+        if percent > 0.7 {
+            return .small
+        } else if percent > 0.3 {
+            return .mid
+        } else {
+            return .big
+        }
     }
 }
 
+enum LeafPattern{
+    case small
+    case mid
+    case big
+}

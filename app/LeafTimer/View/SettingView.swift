@@ -1,50 +1,86 @@
-//
-//  SettingView.swift
-//  LeafTimer
-//
-//  Created by Ema Shinya on 2020/07/26.
-//  Copyright © 2020 Ema Shinya. All rights reserved.
-//
-
 import SwiftUI
 
 struct SettingView: View {
     // MARK: - State
     @ObservedObject var settingViewModel: SettingViewModel
 
-    let products = ["Mac", "iPod", "touch", "iPhone", "TV", "Watch"]
-
     var body: some View {
         NavigationView{
             Form{
+                Section(header: Text("タイマー")){
+                    Picker("作業時間", selection: Binding(
+                        get: { self.settingViewModel.workingTime },
+                        set: { self.settingViewModel.workingTime = $0 }
+                    ).onChange({ selected in
+                        self.settingViewModel
+                            .write(selected: selected, item: UserDefaultItem.workingTime.rawValue)
 
-//                Section(header: Text("タイマー")){
-//                    Picker("test", selection: settingViewModel.workingSound) {
-//                        ForEach(0..<6) {
-//                           Text(self.products[$0]).tag($0)
-//                        }
-//                    }
-//                }
+                    }))
+                    {
+                        ForEach(0..<ItemValue.workingTimeListString.count) {
+                            Text(ItemValue.workingTimeListString[$0]).tag($0)
+                        }
+                    }
+
+                    Picker("休憩時間", selection: Binding(
+                        get: { self.settingViewModel.breakTime },
+                        set: { self.settingViewModel.breakTime = $0 }
+                    ).onChange({ selected in
+                        self.settingViewModel
+                            .write(selected: selected, item: UserDefaultItem.breakTime.rawValue)
+                    })
+                    ) {
+                        ForEach(0..<ItemValue.breakTimeListString.count) {
+                            Text(ItemValue.breakTimeListString[$0]).tag($0)
+                        }
+                    }
+                }
 
                 Section(header: Text("サウンド")){
-                    Text("test")
+                    Picker("作業中", selection: Binding(
+                        get: { self.settingViewModel.workingSound },
+                        set: { self.settingViewModel.workingSound = $0 }
+                    ).onChange({ selected in
+                        self.settingViewModel
+                            .write(selected: selected, item: UserDefaultItem.workingSound.rawValue)
+
+                    })
+                    ) {
+                        ForEach(0..<ItemValue.soundList.count) {
+                            Text(ItemValue.soundList[$0]).tag($0)
+                        }
+                    }
+
+//                    Picker("休憩中", selection: Binding(
+//                        get: { self.settingViewModel.breakSound },
+//                        set: { self.settingViewModel.breakSound = $0 }
+//                    ).onChange({ selected in
+//                        self.settingViewModel
+//                            .write(selected: selected, item: UserDefaultItem.breakSound.rawValue)
+//                    })) {
+//                        ForEach(0..<ItemValue.soundList.count) {
+//                            Text(ItemValue.soundList[$0]).tag($0)
+//                        }
+//                    }
+
                     Toggle("バイブレーション", isOn: Binding(
                         get: { self.settingViewModel.vibrationIsOn },
                         set: { self.settingViewModel.vibrationIsOn = $0 }
                     )
+                        .onChange({ isOn in
+                            self.settingViewModel.write(isOn: isOn, item: UserDefaultItem.vibration.rawValue)
+                        })
                     )
                 }
 
                 Section(header: Text("モード")){
                     Text("ポモドーロ")
                 }
-
-
             }
-            .navigationBarTitle(
-                "設定",displayMode: .inline
-            )
-            
+        }
+        .navigationBarTitle("設定",displayMode: .inline)
+        .onAppear() {
+            self.settingViewModel.readData()
         }
     }
 }

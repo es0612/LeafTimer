@@ -11,6 +11,9 @@
 		3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */; };
 		3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */; };
 		3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6824E392B60070C612 /* SettingViewModel.swift */; };
+		3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */; };
+		3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */; };
+		3818BC6F24EA5B970070C612 /* river1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3818BC6E24EA5B970070C612 /* river1.mp3 */; };
 		3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */; };
 		3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */; };
 		3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */; };
@@ -60,6 +63,9 @@
 		3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserDefaultWrapper.swift; sourceTree = "<group>"; };
 		3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimerViewModel+extensions.swift"; sourceTree = "<group>"; };
 		3818BC6824E392B60070C612 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+extension.swift"; sourceTree = "<group>"; };
+		3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultItem.swift; sourceTree = "<group>"; };
+		3818BC6E24EA5B970070C612 /* river1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = river1.mp3; sourceTree = "<group>"; };
 		3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyTimerManager.swift; sourceTree = "<group>"; };
 		3856FB8224AC19F7007F40E5 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTimerManager.swift; sourceTree = "<group>"; };
@@ -139,6 +145,7 @@
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
 				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
 				3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */,
+				3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -156,6 +163,7 @@
 		3856FB8824AC3B2D007F40E5 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
+				3818BC6E24EA5B970070C612 /* river1.mp3 */,
 				3856FB8924AC3D5F007F40E5 /* rain1.mp3 */,
 				3856FB8624AC3561007F40E5 /* warning1.mp3 */,
 			);
@@ -176,6 +184,7 @@
 		3857B9B724A7735000B21CCD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */,
 				3818BC6724E390DC0070C612 /* Elements */,
 				3864B7D32494D82300948ACA /* Preview Content */,
 				3865AB4424CD2272001B03E4 /* SettingView.swift */,
@@ -391,6 +400,7 @@
 				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
 				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
+				3818BC6F24EA5B970070C612 /* river1.mp3 in Resources */,
 				3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */,
 				3856FB8724AC3561007F40E5 /* warning1.mp3 in Resources */,
 			);
@@ -546,9 +556,11 @@
 				3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */,
 				3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */,
 				3864B7CE2494D81D00948ACA /* SceneDelegate.swift in Sources */,
+				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
+				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
 				38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

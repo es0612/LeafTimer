@@ -9,8 +9,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let contentView = TimerView(
             timverViewModel: TimerViewModel(
                 timerManager: DefaultTimerManager(),
-                audioManager: DefaultAudioManager()
-        ))
+                audioManager: DefaultAudioManager(),
+                userDefaultWrapper: LocalUserDefaultsWrapper()
+        ),
+            settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
+        )
 
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)

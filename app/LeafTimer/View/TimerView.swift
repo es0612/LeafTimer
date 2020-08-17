@@ -3,6 +3,7 @@ import SwiftUI
 struct TimerView: View {
     // MARK: - State
     @ObservedObject var timverViewModel: TimerViewModel
+    @ObservedObject var settingViewModel: SettingViewModel
 
     // MARK: - View
     var body: some View {
@@ -13,9 +14,33 @@ struct TimerView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack{
-                    GIFView(gifName: "leaf2")
-                        .frame(width: 100, height: 100, alignment: .center)
-                        .padding(.trailing, 20)
+
+                    if timverViewModel.breakState {
+                        GIFView(gifName: "leaf3")
+                            .frame(width: 350, height: 350, alignment: .center)
+                            .padding(.bottom, 200)
+                        
+                    } else {
+                        if timverViewModel.getLeafPattern() == LeafPattern.small {
+                            GIFView(gifName: "leaf1")
+                                .frame(width: 100, height: 100, alignment: .center)
+                                .padding(.trailing, 22)
+                                .padding(.bottom, -25)
+                        }
+
+                        if timverViewModel.getLeafPattern() == LeafPattern.mid {
+                            GIFView(gifName: "leaf2")
+                                .frame(width: 200, height: 200, alignment: .center)
+                                .padding(.leading, 10)
+                                .padding(.bottom, 60)
+                        }
+
+                        if timverViewModel.getLeafPattern() == LeafPattern.big {
+                            GIFView(gifName: "leaf3")
+                                .frame(width: 350, height: 350, alignment: .center)
+                                .padding(.bottom, 200)
+                        }
+                    }
                 }
 
                 VStack {
@@ -37,10 +62,14 @@ struct TimerView: View {
                     leading: Button(action: didTapResetButton) {
                         Text("Reset")
                     },
-                    trailing: NavigationLink(destination: SettingView(settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper()))) {
+                    trailing: NavigationLink(destination: SettingView(settingViewModel: settingViewModel)) {
                         Text("Setting")
                     }
                 )
+                    .onAppear() {
+                        self.timverViewModel.readData()
+                        self.timverViewModel.openScreen()
+                }
             }
         }
     }
@@ -61,8 +90,11 @@ struct TimerView_Previews: PreviewProvider {
             TimerView(
                 timverViewModel: TimerViewModel(
                     timerManager: DefaultTimerManager(),
-                    audioManager: DefaultAudioManager()
-            ))
+                    audioManager: DefaultAudioManager(),
+                    userDefaultWrapper: LocalUserDefaultsWrapper()
+                ),
+                settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
+            )
                 .previewDevice(PreviewDevice(rawValue: deviceName))
                 .previewDisplayName(deviceName)
         }
