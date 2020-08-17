@@ -25,8 +25,8 @@ extension TimerViewModel {
             return LinearGradient(
                 gradient: Gradient(
                     colors: [
-                        Color(.displayP3, red: 0.18, green: 0.31, blue: 0.74, opacity: 0.33),
-                        Color(.displayP3, red: 0.58, green: 0.79, blue: 0.84, opacity: 0.33)
+                        Color(.displayP3, red: 0.77, green: 0.80, blue: 0.88),
+                        Color(.displayP3, red: 0.94, green: 0.96, blue: 0.98)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
@@ -35,8 +35,8 @@ extension TimerViewModel {
             return LinearGradient(
                 gradient: Gradient(
                     colors: [
-                        Color(.displayP3, red: 0.8, green: 1, blue: 0.84, opacity: 0.33),
-                        Color(.displayP3, red: 0.68, green: 0.81, blue: 0.48, opacity: 0.33)
+                        Color(.displayP3, red: 0.95, green: 0.98, blue: 0.95),
+                        Color(.displayP3, red: 0.89, green: 0.93, blue: 0.88)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
@@ -95,3 +95,4 @@ enum LeafPattern{
     case mid
     case big
 }
+

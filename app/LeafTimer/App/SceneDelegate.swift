@@ -19,7 +19,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
 
             let vc = UIHostingController(rootView: contentView)
-            vc.view.backgroundColor = .white
             
             window.rootViewController = vc
 

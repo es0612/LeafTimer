@@ -19,7 +19,7 @@ struct TimerView: View {
                         GIFView(gifName: "leaf3")
                             .frame(width: 350, height: 350, alignment: .center)
                             .padding(.bottom, 200)
-                        
+
                     } else {
                         if timverViewModel.getLeafPattern() == LeafPattern.small {
                             GIFView(gifName: "leaf1")
@@ -48,7 +48,7 @@ struct TimerView: View {
                         .font(.system(
                             size: 78, weight: .bold, design: .monospaced)
                     )
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6,opacity: 0.8))
                         .padding(.bottom, 100)
 
 
