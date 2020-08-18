@@ -31,7 +31,7 @@ struct TimerView: View {
                         if timverViewModel.getLeafPattern() == LeafPattern.mid {
                             GIFView(gifName: "leaf2")
                                 .frame(width: 200, height: 200, alignment: .center)
-                                .padding(.leading, 10)
+                                .padding(.leading, 11)
                                 .padding(.bottom, 60)
                         }
 
