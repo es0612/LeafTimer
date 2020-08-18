@@ -14,7 +14,7 @@ struct ItemValue{
     static let breakTimeList = [3*60, 5*60, 7*60, 10*60]
     static let breakTimeListString = ["3分", "5分", "7分", "10分"]
 
-    static let soundList = ["雨音", "川のせせらぎ"]
-    static let soundListFileName = ["rain1", "river1"]
+    static let soundList = ["なし", "雨音", "川のせせらぎ"]
+    static let soundListFileName = ["noSound", "rain1", "river1"]
 
 }
