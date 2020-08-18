@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // タスクが止まらないようにアップデート
         timer = Timer.scheduledTimer(
-            withTimeInterval: 30,
+            withTimeInterval: 10,
             repeats: true,
             block: { _ in
                 self.oldBackgroundTaskID = self.backgroundTaskID

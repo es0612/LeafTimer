@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class TimerViewModel: ObservableObject {
     
@@ -48,6 +49,7 @@ class TimerViewModel: ObservableObject {
         case false:
             executeState = true
             timerManager.start(target: self)
+            UIApplication.shared.isIdleTimerDisabled = true
 
             if !breakState {
                 audioManager.start()
@@ -57,6 +59,8 @@ class TimerViewModel: ObservableObject {
             executeState = false
             timerManager.stop()
             audioManager.stop()
+
+            UIApplication.shared.isIdleTimerDisabled = false
         }
     }
     
