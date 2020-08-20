@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,6 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
 
+        do {
+            try AVAudioSession.sharedInstance().setCategory(
+                .playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print(error)
+        }
+
         return true
     }
 
@@ -44,25 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.endBackgroundTask((self?.backgroundTaskID)!)
             self?.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
-
-        // タスクが止まらないようにアップデート
-        timer = Timer.scheduledTimer(
-            withTimeInterval: 10,
-            repeats: true,
-            block: { _ in
-                self.oldBackgroundTaskID = self.backgroundTaskID
-
-                // 新しいタスクを登録
-                self.backgroundTaskID = application.beginBackgroundTask() {
-                    [weak self] in
-
-                    application.endBackgroundTask((self?.backgroundTaskID)!)
-                    self?.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
-                }
-                // 前のタスクを削除
-                application.endBackgroundTask(self.oldBackgroundTaskID)
-        }
-        )
     }
     
     //アプリがアクティブになる度に呼ばれる
@@ -71,6 +61,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         timer?.invalidate()
         application.endBackgroundTask(self.backgroundTaskID)
     }
-
-
 }
