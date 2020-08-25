@@ -51,18 +51,6 @@ struct SettingView: View {
                         }
                     }
 
-//                    Picker("休憩中", selection: Binding(
-//                        get: { self.settingViewModel.breakSound },
-//                        set: { self.settingViewModel.breakSound = $0 }
-//                    ).onChange({ selected in
-//                        self.settingViewModel
-//                            .write(selected: selected, item: UserDefaultItem.breakSound.rawValue)
-//                    })) {
-//                        ForEach(0..<ItemValue.soundList.count) {
-//                            Text(ItemValue.soundList[$0]).tag($0)
-//                        }
-//                    }
-
                     Toggle("バイブレーション", isOn: Binding(
                         get: { self.settingViewModel.vibrationIsOn },
                         set: { self.settingViewModel.vibrationIsOn = $0 }

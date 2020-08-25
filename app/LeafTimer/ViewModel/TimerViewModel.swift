@@ -31,8 +31,8 @@ class TimerViewModel: ObservableObject {
         self.audioManager = audioManager
         self.userDefaultWrapper = userDefaultWrapper
         
-        self.fullTimeSecond = 15*60
-        self.currentTimeSecond = 15*10
+        self.fullTimeSecond = 25*60
+        self.currentTimeSecond = 25*60
         self.executeState = false
         
         self.fullBreakTimeSecond = 5*60

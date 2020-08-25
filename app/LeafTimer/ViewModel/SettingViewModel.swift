@@ -7,8 +7,8 @@ class SettingViewModel: ObservableObject {
     var userDefaultWrapper: UserDefaultsWrapper
 
     // MARK: - Observed Parameter
-    @Published var workingTime: Int = 0
-    @Published var breakTime: Int = 0
+    @Published var workingTime: Int = 4
+    @Published var breakTime: Int = 4
 
     @Published var workingSound: Int = 0
     @Published var breakSound: Int = 0
