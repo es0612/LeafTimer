@@ -25,8 +25,8 @@ extension TimerViewModel {
             return LinearGradient(
                 gradient: Gradient(
                     colors: [
-                        Color(.displayP3, red: 0.77, green: 0.80, blue: 0.88),
-                        Color(.displayP3, red: 0.94, green: 0.96, blue: 0.98)
+                        Color(.displayP3, red: 0.94, green: 0.96, blue: 0.98),
+                        Color(.displayP3, red: 0.77, green: 0.80, blue: 0.88)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
@@ -36,7 +36,7 @@ extension TimerViewModel {
                 gradient: Gradient(
                     colors: [
                         Color(.displayP3, red: 0.95, green: 0.98, blue: 0.95),
-                        Color(.displayP3, red: 0.89, green: 0.93, blue: 0.88)
+                        Color(.displayP3, red: 0.87, green: 0.91, blue: 0.85)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom

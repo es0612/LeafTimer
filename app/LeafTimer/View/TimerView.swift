@@ -46,13 +46,14 @@ struct TimerView: View {
                 VStack {
                     Text(timverViewModel.getDisplayedTime())
                         .font(.system(
-                            size: 78, weight: .bold, design: .monospaced)
+                            size: 84, weight: .bold, design: .monospaced)
                     )
-                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6,opacity: 0.8))
-                        .padding(.bottom, 100)
-
+                        .foregroundColor(Color(red: 0.65, green: 0.65, blue: 0.65, opacity: 0.9))
+                        .shadow(color: .gray, radius: 1, x: 1, y: 2)
+                        .padding(.bottom, 85)
 
                     CircleButton(viewModel: timverViewModel)
+                        .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .onTapGesture {
                             self.didTapTimerButton()
                     }
@@ -100,3 +101,5 @@ struct TimerView_Previews: PreviewProvider {
         }
     }
 }
+
+
