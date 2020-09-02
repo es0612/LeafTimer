@@ -6,7 +6,6 @@ class TimerViewModel: ObservableObject {
     // MARK: - Dependency Injection
     var timerManager: TimerManager
     var audioManager: AudioManager
-
     var userDefaultWrapper: UserDefaultsWrapper
     
     // MARK: - Observed Parameter
@@ -18,6 +17,7 @@ class TimerViewModel: ObservableObject {
     
     @Published var breakState: Bool
     @Published var vibration: Bool
+    @Published var todaysCount: Int
 
     private var isFirstOpen = true
     
@@ -39,7 +39,10 @@ class TimerViewModel: ObservableObject {
         self.breakState = false
 
         self.vibration = true
-        
+
+        self.todaysCount = 0
+
+        loadCount()
     }
     
     
@@ -108,6 +111,7 @@ class TimerViewModel: ObservableObject {
         } else {
             breakState = true
             audioManager.finish()
+            countWork()
         }
     }
 
@@ -131,6 +135,15 @@ class TimerViewModel: ObservableObject {
                 audioManager.start()
             }
         }
+    }
+
+    func countWork() {
+        todaysCount += 1
+        userDefaultWrapper.saveData(key: DateManager.getToday(), value: todaysCount)
+    }
+
+    func loadCount() {
+        todaysCount = userDefaultWrapper.loadData(key: DateManager.getToday())
     }
 }
 
