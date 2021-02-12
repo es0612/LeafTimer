@@ -30,10 +30,10 @@ class TimerViewSpec: QuickSpec {
             }
 
             xit("displayed start button.") {
-                let stopButton = try timerView.body
-                .inspect().navigationView().vStack(0).button(1)
-
-                expect(try stopButton.text().string()).to(equal("START"))
+//                let stopButton = try timerView.body
+//                .inspect().navigationView().vStack(0).button(1)
+//
+//                expect(try stopButton.text().string()).to(equal("START"))
             }
 
             it("displayed navigation bar") {
