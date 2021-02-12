@@ -23,9 +23,9 @@ struct TimerView: View {
                     } else {
                         if timverViewModel.getLeafPattern() == LeafPattern.small {
                             GIFView(gifName: "leaf1")
-                                .frame(width: 100, height: 100, alignment: .center)
+                                .frame(width: 90, height: 90, alignment: .center)
                                 .padding(.trailing, 22)
-                                .padding(.bottom, 90)
+                                .padding(.bottom, 105)
                         }
 
                         if timverViewModel.getLeafPattern() == LeafPattern.mid {
@@ -92,7 +92,7 @@ struct TimerView: View {
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach (["iPhone 11"], id: \.self) { deviceName in
+        ForEach (["iPhone 12"], id: \.self) { deviceName in
             TimerView(
                 timverViewModel: TimerViewModel(
                     timerManager: DefaultTimerManager(),
