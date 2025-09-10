@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
 
         let contentView = TimerView(
-            timverViewModel: TimerViewModel(
+            timerViewModel: TimerViewModel(
                 timerManager: DefaultTimerManager(),
                 audioManager: DefaultAudioManager(),
                 userDefaultWrapper: LocalUserDefaultsWrapper()

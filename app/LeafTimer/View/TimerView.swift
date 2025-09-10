@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TimerView: View {
     // MARK: - State
-    @ObservedObject var timverViewModel: TimerViewModel
+    @ObservedObject var timerViewModel: TimerViewModel
     @ObservedObject var settingViewModel: SettingViewModel
 
     // MARK: - View
@@ -10,32 +10,32 @@ struct TimerView: View {
 
         NavigationView {
             ZStack {
-                timverViewModel.getBackgroundColor()
+                timerViewModel.getBackgroundColor()
                     .edgesIgnoringSafeArea(.all)
 
                 VStack{
 
-                    if timverViewModel.breakState {
+                    if timerViewModel.breakState {
                         GIFView(gifName: "leaf3")
                             .frame(width: 350, height: 350, alignment: .center)
                             .padding(.bottom, 300)
 
                     } else {
-                        if timverViewModel.getLeafPattern() == LeafPattern.small {
+                        if timerViewModel.getLeafPattern() == LeafPattern.small {
                             GIFView(gifName: "leaf1")
                                 .frame(width: 90, height: 90, alignment: .center)
                                 .padding(.trailing, 22)
                                 .padding(.bottom, 105)
                         }
 
-                        if timverViewModel.getLeafPattern() == LeafPattern.mid {
+                        if timerViewModel.getLeafPattern() == LeafPattern.mid {
                             GIFView(gifName: "leaf2")
                                 .frame(width: 200, height: 200, alignment: .center)
                                 .padding(.leading, 11)
                                 .padding(.bottom, 150)
                         }
 
-                        if timverViewModel.getLeafPattern() == LeafPattern.big {
+                        if timerViewModel.getLeafPattern() == LeafPattern.big {
                             GIFView(gifName: "leaf3")
                                 .frame(width: 350, height: 350, alignment: .center)
                                 .padding(.bottom, 300)
@@ -44,7 +44,7 @@ struct TimerView: View {
                 }
 
                 VStack {
-                    Text(timverViewModel.getDisplayedTime())
+                    Text(timerViewModel.getDisplayedTime())
                         .font(.system(
                             size: 78, weight: .bold, design: .monospaced)
                     )
@@ -52,13 +52,13 @@ struct TimerView: View {
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .padding(.bottom, 50)
 
-                    CircleButton(viewModel: timverViewModel)
+                    CircleButton(viewModel: timerViewModel)
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .onTapGesture {
                             self.didTapTimerButton()
                     }
 
-                    Text("今日のポモドーロ数：" + String(timverViewModel.todaysCount))
+                    Text("今日のポモドーロ数：" + String(timerViewModel.todaysCount))
                         .foregroundColor(Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.9))
                         .padding()
                         .padding(.top, 20)
@@ -73,8 +73,8 @@ struct TimerView: View {
                     }
                 )
                     .onAppear() {
-                        self.timverViewModel.readData()
-                        self.timverViewModel.openScreen()
+                        self.timerViewModel.readData()
+                        self.timerViewModel.openScreen()
                 }
             }
         }
@@ -82,11 +82,11 @@ struct TimerView: View {
 
     // MARK: - Private methods
     private func didTapTimerButton() {
-        timverViewModel.onPressedTimerButton()
+        timerViewModel.onPressedTimerButton()
     }
 
     private func didTapResetButton() {
-        timverViewModel.reset()
+        timerViewModel.reset()
     }
 }
 
@@ -94,7 +94,7 @@ struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
         ForEach (["iPhone 12"], id: \.self) { deviceName in
             TimerView(
-                timverViewModel: TimerViewModel(
+                timerViewModel: TimerViewModel(
                     timerManager: DefaultTimerManager(),
                     audioManager: DefaultAudioManager(),
                     userDefaultWrapper: LocalUserDefaultsWrapper()

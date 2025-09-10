@@ -1,14 +1,12 @@
-platform :ios, '13.5'
+platform :ios, '17.0'
 use_frameworks!
 inhibit_all_warnings!
 
 target 'LeafTimer' do
 
-  # Pods for LeafTimer
-  pod 'PureLayout'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/AdMob'
-  pod 'Google-Mobile-Ads-SDK'
+  # Pods for LeafTimer - Updated for iOS 17 and Xcode 15
+  pod 'Firebase/Analytics', '~> 10.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.0'
 
   target 'LeafTimerTests' do
     inherit! :search_paths

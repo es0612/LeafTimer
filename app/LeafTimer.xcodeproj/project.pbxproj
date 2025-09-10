@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -34,13 +34,13 @@
 		3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */; };
 		38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B7261924DD85370098F3D4 /* GIFPlayerView.swift */; };
 		38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B7261B24DD85900098F3D4 /* GIFView.swift */; };
-		38C95E6C25D720DE00D80736 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C95E6B25D720DE00D80736 /* GoogleService-Info.plist */; };
 		38C95EF325D7270D00D80736 /* AdsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C95EF225D7270D00D80736 /* AdsView.swift */; };
 		38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C95EF725D7326A00D80736 /* KeyManager.swift */; };
-		38C95EFD25D7332C00D80736 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C95EFC25D7332C00D80736 /* Keys.plist */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
+		D51DACE92E51C175006B8B3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACE82E51C175006B8B3D /* GoogleService-Info.plist */; };
+		D51DACEB2E51C437006B8B3D /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACEA2E51C437006B8B3D /* Keys.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,10 +96,8 @@
 		3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyAudioManager.swift; sourceTree = "<group>"; };
 		38B7261924DD85370098F3D4 /* GIFPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFPlayerView.swift; sourceTree = "<group>"; };
 		38B7261B24DD85900098F3D4 /* GIFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFView.swift; sourceTree = "<group>"; };
-		38C95E6B25D720DE00D80736 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		38C95EF225D7270D00D80736 /* AdsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsView.swift; sourceTree = "<group>"; };
 		38C95EF725D7326A00D80736 /* KeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManager.swift; sourceTree = "<group>"; };
-		38C95EFC25D7332C00D80736 /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Keys.plist; path = LeafTimer/Keys.plist; sourceTree = SOURCE_ROOT; };
 		39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.debug.xcconfig"; sourceTree = "<group>"; };
 		3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,6 +107,8 @@
 		93FFE81224FE3E8E00AA1BD1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		93FFE81324FF1BE500AA1BD1 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D51DACE82E51C175006B8B3D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D51DACEA2E51C437006B8B3D /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,9 +156,9 @@
 				93FFE81324FF1BE500AA1BD1 /* DateManager.swift */,
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
 				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
+				38C95EF725D7326A00D80736 /* KeyManager.swift */,
 				3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */,
 				3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */,
-				38C95EF725D7326A00D80736 /* KeyManager.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -199,11 +199,10 @@
 			children = (
 				3818BC6724E390DC0070C612 /* Elements */,
 				3864B7D32494D82300948ACA /* Preview Content */,
+				38C95EF225D7270D00D80736 /* AdsView.swift */,
 				3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */,
 				3865AB4424CD2272001B03E4 /* SettingView.swift */,
 				3864B7CF2494D81D00948ACA /* TimerView.swift */,
-				38C95EF225D7270D00D80736 /* AdsView.swift */,
-				38C95EFC25D7332C00D80736 /* Keys.plist */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -211,13 +210,14 @@
 		3864B7BF2494D81D00948ACA = {
 			isa = PBXGroup;
 			children = (
-				38C95E6B25D720DE00D80736 /* GoogleService-Info.plist */,
 				D2B254CEFABAFE7C4C9F1B38 /* Frameworks */,
 				3864B7CA2494D81D00948ACA /* LeafTimer */,
 				3864B7E12494D82300948ACA /* LeafTimerTests */,
 				3864B7EC2494D82300948ACA /* LeafTimerUITests */,
 				C130F0CB53CD327BD9CC537E /* Pods */,
 				3864B7C92494D81D00948ACA /* Products */,
+				D51DACE82E51C175006B8B3D /* GoogleService-Info.plist */,
+				D51DACEA2E51C437006B8B3D /* Keys.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -309,6 +309,7 @@
 				3864B7C52494D81D00948ACA /* Frameworks */,
 				3864B7C62494D81D00948ACA /* Resources */,
 				C8849EEEAFD0BEC559236045 /* [CP] Embed Pods Frameworks */,
+				01F548F9B56FFEF23FFA94D9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -351,6 +352,7 @@
 				3864B7E62494D82300948ACA /* Frameworks */,
 				3864B7E72494D82300948ACA /* Resources */,
 				A9EF9F0004A73751B8DCCB65 /* [CP] Embed Pods Frameworks */,
+				CE44FDE556B75CE524C8AB62 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -415,12 +417,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
-				38C95E6C25D720DE00D80736 /* GoogleService-Info.plist in Resources */,
+				D51DACE92E51C175006B8B3D /* GoogleService-Info.plist in Resources */,
+				D51DACEB2E51C437006B8B3D /* Keys.plist in Resources */,
 				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
 				3818BC7124EB4E9A0070C612 /* noSound.mp3 in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
 				3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */,
-				38C95EFD25D7332C00D80736 /* Keys.plist in Resources */,
 				3818BC6F24EA5B970070C612 /* river1.mp3 in Resources */,
 				3856FB8724AC3561007F40E5 /* warning1.mp3 in Resources */,
 			);
@@ -443,6 +445,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		01F548F9B56FFEF23FFA94D9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		151C643E77A065ADF7C46EB3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -517,9 +540,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -534,9 +561,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -551,13 +582,38 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
+			outputPaths = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE44FDE556B75CE524C8AB62 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -567,6 +623,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38C95EF325D7270D00D80736 /* AdsView.swift in Sources */,
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
 				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
@@ -575,13 +632,12 @@
 				3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */,
 				38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */,
 				38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */,
+				38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */,
 				3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */,
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
-				38C95EF325D7270D00D80736 /* AdsView.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
-				38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
 			);
@@ -685,7 +741,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -741,7 +797,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -769,7 +825,7 @@
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ema.LeafTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -793,7 +849,7 @@
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ema.LeafTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -808,7 +864,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				INFOPLIST_FILE = LeafTimerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -816,7 +872,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ema.LeafTimerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LeafTimer.app/LeafTimer";
 			};
@@ -831,7 +887,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				INFOPLIST_FILE = LeafTimerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -839,7 +895,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ema.LeafTimerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LeafTimer.app/LeafTimer";
 			};
@@ -860,7 +916,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ema.LeafTimerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = LeafTimer;
 			};
@@ -881,7 +937,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ema.LeafTimerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = LeafTimer;
 			};

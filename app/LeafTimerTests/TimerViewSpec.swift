@@ -16,7 +16,7 @@ class TimerViewSpec: QuickSpec {
             beforeEach {
                 spyTimerManager = SpyTimerManager()
                 timerView = TimerView(
-                    timverViewModel: TimerViewModel(
+                    timerViewModel: TimerViewModel(
                         timerManager: SpyTimerManager(),
                         audioManager: SpyAudioManager(), userDefaultWrapper: LocalUserDefaultsWrapper()
                 ), settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper()))

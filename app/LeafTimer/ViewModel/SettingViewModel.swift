@@ -31,21 +31,21 @@ class SettingViewModel: ObservableObject {
         userDefaultWrapper.saveData(key: item, value: isOn)
     }
 
-    func read(item: String) -> Int {
+    func readInt(item: String) -> Int {
         return userDefaultWrapper.loadData(key: item)
     }
 
-    func read(item: String) -> Bool {
+    func readBool(item: String) -> Bool {
         return userDefaultWrapper.loadData(key: item)
     }
 
     func readData() {
-        workingTime = read(item: UserDefaultItem.workingTime.rawValue)
-        breakTime = read(item: UserDefaultItem.breakTime.rawValue)
-        vibrationIsOn = read(item: UserDefaultItem.vibration.rawValue)
+        workingTime = readInt(item: UserDefaultItem.workingTime.rawValue)
+        breakTime = readInt(item: UserDefaultItem.breakTime.rawValue)
+        vibrationIsOn = readBool(item: UserDefaultItem.vibration.rawValue)
 
-        workingSound = read(item: UserDefaultItem.workingSound.rawValue)
-        breakSound = read(item: UserDefaultItem.breakSound.rawValue)
+        workingSound = readInt(item: UserDefaultItem.workingSound.rawValue)
+        breakSound = readInt(item: UserDefaultItem.breakSound.rawValue)
     }
 
 }

@@ -10,14 +10,14 @@
 ## Frontend Technology
 - **Language**: Swift 5+
 - **UI Framework**: SwiftUI
-- **Target Platform**: iOS 13.5以降
-- **Layout**: PureLayout（AutoLayoutヘルパー）
+- **Target Platform**: iOS 17.0以降
+- **Layout**: SwiftUIネイティブレイアウト（iOS 17最適化）
 - **Animation**: SwiftUIネイティブアニメーション + GIFアニメーション
 - **Device Support**: iPhone（縦向きのみ）、iPad（全方向対応）
 
 ## Backend/Services
 - **Analytics**: Firebase Analytics
-- **Monetization**: Firebase AdMob + Google Mobile Ads SDK
+- **Monetization**: Google Mobile Ads SDK（AdMob統合）
 - **Local Storage**: UserDefaults（設定データ、日別カウント）
 - **Audio Management**: AVFoundation
 - **Background Processing**: Timer + Background audio capabilities
@@ -25,7 +25,7 @@
 ## Development Environment
 
 ### Required Tools
-- **Xcode**: 12.0以降（iOS 13.5サポートのため）
+- **Xcode**: 15.0以降（iOS 17.0サポートのため）
 - **CocoaPods**: 依存関係管理
 - **fastlane**: CI/CD自動化
 - **Make**: コマンド簡素化
@@ -33,14 +33,13 @@
 
 ### Dependencies (Podfile)
 ```ruby
-platform :ios, '13.5'
+platform :ios, '17.0'
 use_frameworks!
+inhibit_all_warnings!
 
 # Main App Dependencies
-pod 'PureLayout'                # AutoLayoutヘルパー
-pod 'Firebase/Analytics'        # 利用分析
-pod 'Firebase/AdMob'           # 広告配信
-pod 'Google-Mobile-Ads-SDK'    # 広告SDK
+pod 'Firebase/Analytics', '~> 10.0'  # 利用分析
+pod 'Google-Mobile-Ads-SDK', '~> 11.0'  # 広告SDK（AdMob統合）
 
 # Testing Dependencies
 pod 'Quick'                    # BDD testing framework
@@ -88,6 +87,8 @@ make sort       # Xcode project file organization
 
 ### Firebase Configuration
 - `GADApplicationIdentifier`: AdMob アプリケーションID
+- `GoogleService-Info.plist`: Firebase設定ファイル
+- `Keys.plist`: アプリケーション固有設定
 - SKAdNetwork設定（iOS 14.5+ ATT対応）
 
 ## Port Configuration
@@ -96,7 +97,7 @@ N/A（iOSアプリのためサーバーポート設定なし）
 ## Build Settings
 
 ### iOS Deployment Target
-- **Minimum iOS Version**: 13.5
+- **Minimum iOS Version**: 17.0
 - **Device Family**: iPhone, iPad
 - **Orientation**: Portrait (iPhone), All (iPad)
 
@@ -120,8 +121,8 @@ N/A（iOSアプリのためサーバーポート設定なし）
 - **Target**: Core user flows and timer functionality
 
 ### Testing Devices
-- **Primary**: iPhone 11 (simulator)
-- **Secondary**: iPhone 12 (fastlane)
+- **Primary**: iPhone 16 (simulator)
+- **Secondary**: Latest device (fastlane)
 
 ## CI/CD Pipeline (fastlane)
 
