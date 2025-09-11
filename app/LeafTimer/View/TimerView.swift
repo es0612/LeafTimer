@@ -61,12 +61,12 @@ struct TimerView: View {
                             didTapTimerButton()
                         }
 
-                    Text("今日のポモドーロ数：" + String(timerViewModel.todaysCount))
+                    Text(NSLocalizedString("timer.todays_count", comment: "Today's pomodoro count label") + String(timerViewModel.todaysCount))
                         .foregroundColor(Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.9))
                         .padding()
                         .padding(.top, 20)
                 }
-                .navigationTitle("ポモドーロ")
+                .navigationTitle(NSLocalizedString("timer.title", comment: "Timer navigation title"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {

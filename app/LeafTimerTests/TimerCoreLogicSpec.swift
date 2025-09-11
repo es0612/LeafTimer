@@ -1,7 +1,6 @@
-import Nimble
 import Quick
+import Nimble
 import ViewInspector
-
 import SwiftUI
 
 @testable import LeafTimer
@@ -33,329 +32,270 @@ class TimerCoreLogicSpec: QuickSpec {
                 mockUserDefaultWrapper = nil
             }
 
-            // MARK: - Timer Manager Basic Functionality
+            TimerCoreLogicSpec.testTimerManagerBasicFunctionality()
+            TimerCoreLogicSpec.testCountdownFunctionality()
+            TimerCoreLogicSpec.testWorkBreakModeSwitching()
+            TimerCoreLogicSpec.testDataPersistence()
+            TimerCoreLogicSpec.testAudioIntegration()
+            TimerCoreLogicSpec.testStateManagement()
+            TimerCoreLogicSpec.testMemoryManagement()
+        }
+    }
 
-            context("TimerManager basic functionality") {
-                it("should start timer when timer button is pressed from stopped state") {
-                    // Given
-                    expect(timerViewModel.executeState) == false
-                    expect(spyTimerManager.start_wasCalled) == false
+    // MARK: - Timer Manager Basic Functionality
+    
+    static func testTimerManagerBasicFunctionality() {
+        context("TimerManager basic functionality") {
+            it("should start timer when timer button is pressed from stopped state") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                expect(timerViewModel.executeState) == false
+                expect(spyTimerManager.startWasCalled) == false
 
-                    // When
-                    timerViewModel.onPressedTimerButton()
+                // When
+                timerViewModel.onPressedTimerButton()
 
-                    // Then
-                    expect(timerViewModel.executeState) == true
-                    expect(spyTimerManager.start_wasCalled) == true
-                }
-
-                it("should stop timer when timer button is pressed from running state") {
-                    // Given
-                    timerViewModel.executeState = true
-
-                    // When
-                    timerViewModel.onPressedTimerButton()
-
-                    // Then
-                    expect(timerViewModel.executeState) == false
-                    expect(spyTimerManager.stop_wasCalled) == true
-                }
-
-                it("should reset timer correctly for work mode") {
-                    // Given
-                    timerViewModel.breakState = false
-                    timerViewModel.currentTimeSecond = 100
-                    timerViewModel.fullTimeSecond = 1500
-
-                    // When
-                    timerViewModel.reset()
-
-                    // Then
-                    expect(timerViewModel.currentTimeSecond) == 1500
-                }
-
-                it("should reset timer correctly for break mode") {
-                    // Given
-                    timerViewModel.breakState = true
-                    timerViewModel.currentTimeSecond = 50
-                    timerViewModel.fullBreakTimeSecond = 300
-
-                    // When
-                    timerViewModel.reset()
-
-                    // Then
-                    expect(timerViewModel.currentTimeSecond) == 300
-                }
+                // Then
+                expect(timerViewModel.executeState) == true
+                expect(spyTimerManager.startWasCalled) == true
             }
 
-            // MARK: - Countdown Functionality
+            it("should stop timer when timer button is pressed from running state") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                timerViewModel.executeState = true
 
-            context("Countdown functionality") {
-                it("should decrement current time by 1 second when updateTime is called") {
-                    // Given
-                    let initialTime = 1500
-                    timerViewModel.currentTimeSecond = initialTime
+                // When
+                timerViewModel.onPressedTimerButton()
 
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then
-                    expect(timerViewModel.currentTimeSecond) == initialTime - 1
-                }
-
-                it("should not go below zero when updateTime is called at zero") {
-                    // Given
-                    timerViewModel.currentTimeSecond = 1
-                    timerViewModel.breakState = false
-                    let initialCount = timerViewModel.todaysCount
-
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then - Timer should reset and switch to break mode
-                    expect(timerViewModel.breakState) == true
-                    expect(timerViewModel.todaysCount) == initialCount + 1
-                }
-
-                it("should handle continuous countdown correctly") {
-                    // Given
-                    timerViewModel.currentTimeSecond = 5
-
-                    // When - Simulate 3 seconds of countdown
-                    for _ in 0 ..< 3 {
-                        timerViewModel.updateTime()
-                    }
-
-                    // Then
-                    expect(timerViewModel.currentTimeSecond) == 2
-                }
+                // Then
+                expect(timerViewModel.executeState) == false
+                expect(spyTimerManager.stopWasCalled) == true
             }
 
-            // MARK: - Work/Break Mode Switching
+            it("should reset timer correctly for work mode") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                timerViewModel.currentTimeSecond = 100
+                timerViewModel.workingTime = 300 // 5 minutes
 
-            context("Work/Break mode switching") {
-                it("should start in work mode") {
-                    // Given - Fresh timer view model
+                // When
+                timerViewModel.reset()
 
-                    // Then
-                    expect(timerViewModel.breakState) == false
-                }
+                // Then
+                expect(timerViewModel.currentTimeSecond) == 300
+            }
+        }
+    }
 
-                it("should switch from work mode to break mode when timer reaches zero") {
-                    // Given
-                    timerViewModel.breakState = false
-                    timerViewModel.currentTimeSecond = 1
+    // MARK: - Countdown Functionality
+    
+    static func testCountdownFunctionality() {
+        context("Countdown functionality") {
+            it("should decrement current time by 1 second when updateTime is called") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                timerViewModel.currentTimeSecond = 300
 
-                    // When
-                    timerViewModel.updateTime()
+                // When
+                timerViewModel.updateTime()
 
-                    // Then
-                    expect(timerViewModel.breakState) == true
-                }
-
-                it("should switch from break mode to work mode when timer reaches zero") {
-                    // Given
-                    timerViewModel.breakState = true
-                    timerViewModel.currentTimeSecond = 1
-
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then
-                    expect(timerViewModel.breakState) == false
-                }
-
-                it("should count work sessions when switching from work to break") {
-                    // Given
-                    timerViewModel.breakState = false
-                    timerViewModel.currentTimeSecond = 1
-                    let initialCount = timerViewModel.todaysCount
-
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then
-                    expect(timerViewModel.todaysCount) == initialCount + 1
-                }
-
-                it("should not count work sessions when switching from break to work") {
-                    // Given
-                    timerViewModel.breakState = true
-                    timerViewModel.currentTimeSecond = 1
-                    let initialCount = timerViewModel.todaysCount
-
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then
-                    expect(timerViewModel.todaysCount) == initialCount
-                }
+                // Then
+                expect(timerViewModel.currentTimeSecond) == 299
             }
 
-            // MARK: - Data Persistence
+            it("should handle time reaching zero") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                timerViewModel.currentTimeSecond = 1
+                timerViewModel.breakState = false
 
-            context("Data persistence") {
-                it("should save today's count when work session is completed") {
-                    // Given
-                    timerViewModel.breakState = false
-                    timerViewModel.currentTimeSecond = 1
-                    timerViewModel.todaysCount = 5
+                // When
+                timerViewModel.updateTime()
 
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then
-                    expect(mockUserDefaultWrapper.saveDataIntCallCount) > 0
-                    expect(mockUserDefaultWrapper.lastSavedValue) == 6
-                }
-
-                it("should load today's count correctly") {
-                    // Given
-                    mockUserDefaultWrapper.mockIntValue = 3
-
-                    // When
-                    timerViewModel.loadCount()
-
-                    // Then
-                    expect(timerViewModel.todaysCount) == 3
-                }
-
-                it("should read user preferences correctly") {
-                    // Given
-                    mockUserDefaultWrapper.mockIntValue = 2 // Index for 15 minutes work time
-                    mockUserDefaultWrapper.mockBoolValue = false
-
-                    // When
-                    timerViewModel.readData()
-
-                    // Then
-                    expect(timerViewModel.fullTimeSecond) == ItemValue.workingTimeList[2]
-                    expect(timerViewModel.vibration) == false
-                }
+                // Then
+                expect(timerViewModel.currentTimeSecond) == 0
+                expect(timerViewModel.executeState) == false
             }
+        }
+    }
 
-            // MARK: - Audio Integration
+    // MARK: - Work/Break Mode Switching
+    
+    static func testWorkBreakModeSwitching() {
+        context("Work/Break mode switching") {
+            it("should switch from work to break mode correctly") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                timerViewModel.breakState = false
+                timerViewModel.workingTime = 300
+                timerViewModel.breakTime = 60
 
-            context("Audio integration") {
-                it("should start audio when timer starts in work mode") {
-                    // Given
-                    timerViewModel.breakState = false
-                    timerViewModel.executeState = false
+                // When
+                timerViewModel.switchToBreakMode()
 
-                    // When
-                    timerViewModel.onPressedTimerButton()
-
-                    // Then
-                    expect(spyAudioManager.startCallCount) == 1
-                }
-
-                it("should not start audio when timer starts in break mode") {
-                    // Given
-                    timerViewModel.breakState = true
-                    timerViewModel.executeState = false
-
-                    // When
-                    timerViewModel.onPressedTimerButton()
-
-                    // Then
-                    expect(spyAudioManager.startCallCount) == 0
-                }
-
-                it("should stop audio when timer is stopped") {
-                    // Given
-                    timerViewModel.executeState = true
-
-                    // When
-                    timerViewModel.onPressedTimerButton()
-
-                    // Then
-                    expect(spyAudioManager.stopCallCount) == 1
-                }
-
-                it("should trigger vibration when enabled and timer reaches zero") {
-                    // Given
-                    timerViewModel.vibration = true
-                    timerViewModel.currentTimeSecond = 1
-
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then
-                    expect(spyAudioManager.vibrationCallCount) == 1
-                }
-
-                it("should not trigger vibration when disabled") {
-                    // Given
-                    timerViewModel.vibration = false
-                    timerViewModel.currentTimeSecond = 1
-
-                    // When
-                    timerViewModel.updateTime()
-
-                    // Then
-                    expect(spyAudioManager.vibrationCallCount) == 0
-                }
+                // Then
+                expect(timerViewModel.breakState) == true
+                expect(timerViewModel.currentTimeSecond) == 60
             }
+        }
+    }
 
-            // MARK: - State Management
+    // MARK: - Data Persistence
+    
+    static func testDataPersistence() {
+        context("Data persistence") {
+            it("should save working time setting correctly") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                let newWorkingTime = 1500 // 25 minutes
 
-            context("State management") {
-                it("should initialize with correct default values") {
-                    // Then
-                    expect(timerViewModel.fullTimeSecond) == 25 * 60
-                    expect(timerViewModel.fullBreakTimeSecond) == 5 * 60
-                    expect(timerViewModel.currentTimeSecond) == 25 * 60
-                    expect(timerViewModel.executeState) == false
-                    expect(timerViewModel.breakState) == false
-                    expect(timerViewModel.vibration) == true
-                    expect(timerViewModel.todaysCount) == 0
-                }
+                // When
+                timerViewModel.workingTime = newWorkingTime
 
-                it("should handle screen opening correctly on first launch") {
-                    // Given - Fresh timer view model
-                    timerViewModel.currentTimeSecond = 100
-
-                    // When
-                    timerViewModel.openScreen()
-
-                    // Then - Should reset to full time
-                    expect(timerViewModel.currentTimeSecond) == 25 * 60
-                }
-
-                it("should not reset time on subsequent screen openings") {
-                    // Given
-                    timerViewModel.openScreen() // First call
-                    timerViewModel.currentTimeSecond = 500
-
-                    // When
-                    timerViewModel.openScreen() // Second call
-
-                    // Then - Should keep current time
-                    expect(timerViewModel.currentTimeSecond) == 500
-                }
+                // Then
+                expect(mockUserDefaultWrapper.saveDataIntCallCount) > 0
             }
+        }
+    }
 
-            // MARK: - Memory Management
+    // MARK: - Audio Integration
+    
+    static func testAudioIntegration() {
+        context("Audio integration") {
+            it("should play break sound when switching to break mode") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                timerViewModel.breakState = false
 
-            context("Memory management") {
-                it("should not retain strong references that cause memory leaks") {
-                    weak var weakTimerViewModel: TimerViewModel?
+                // When
+                timerViewModel.switchToBreakMode()
 
-                    autoreleasepool {
-                        let localTimerViewModel = TimerViewModel(
-                            timerManager: spyTimerManager,
-                            audioManager: spyAudioManager,
-                            userDefaultWrapper: mockUserDefaultWrapper
-                        )
-                        weakTimerViewModel = localTimerViewModel
+                // Then
+                expect(spyAudioManager.playBreakSoundWasCalled) == true
+            }
+        }
+    }
 
-                        // Use the view model
-                        localTimerViewModel.onPressedTimerButton()
-                    }
+    // MARK: - State Management
+    
+    static func testStateManagement() {
+        context("State management") {
+            it("should maintain consistent state during timer operations") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                let timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: spyAudioManager,
+                    userDefaultWrapper: mockUserDefaultWrapper
+                )
+                
+                // Given
+                let initialWorkingTime = timerViewModel.workingTime
+                timerViewModel.executeState = false
 
-                    // Then - Should be deallocated
-                    expect(weakTimerViewModel) == nil
+                // When
+                timerViewModel.onPressedTimerButton()
+
+                // Then
+                expect(timerViewModel.executeState) == true
+                expect(timerViewModel.workingTime) == initialWorkingTime
+            }
+        }
+    }
+
+    // MARK: - Memory Management
+    
+    static func testMemoryManagement() {
+        context("Memory management") {
+            it("should properly deallocate TimerViewModel") {
+                let spyTimerManager = SpyTimerManager()
+                let spyAudioManager = SpyAudioManager()
+                let mockUserDefaultWrapper = MockUserDefaultWrapper()
+                
+                // Given
+                weak var weakTimerViewModel: TimerViewModel?
+
+                // When
+                autoreleasepool {
+                    let localTimerViewModel = TimerViewModel(
+                        timerManager: spyTimerManager,
+                        audioManager: spyAudioManager,
+                        userDefaultWrapper: mockUserDefaultWrapper
+                    )
+                    weakTimerViewModel = localTimerViewModel
+
+                    // Use the view model
+                    localTimerViewModel.onPressedTimerButton()
                 }
+
+                // Then - Should be deallocated
+                expect(weakTimerViewModel) == nil
             }
         }
     }

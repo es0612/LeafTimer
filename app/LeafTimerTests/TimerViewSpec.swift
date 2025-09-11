@@ -59,7 +59,7 @@ class TimerViewSpec: QuickSpec {
 
                 _ = try timerView.body.inspect()
 
-                expect(spyTimerManager.start_wasCalled).toEventually(beTrue())
+                expect(spyTimerManager.startWasCalled).toEventually(beTrue())
             }
         }
     }

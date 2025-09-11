@@ -3,18 +3,18 @@ import Foundation
 @testable import LeafTimer
 
 class SpyTimerManager: TimerManager {
-    private(set) var start_wasCalled = false
+    private(set) var startWasCalled = false
     func start(target: TimerViewModel) {
-        start_wasCalled = true
+        startWasCalled = true
     }
 
-    private(set) var stop_wasCalled = false
+    private(set) var stopWasCalled = false
     func stop() {
-        stop_wasCalled = true
+        stopWasCalled = true
     }
 
-    private(set) var reset_wasCalled = false
+    private(set) var resetWasCalled = false
     func reset() {
-        reset_wasCalled = true
+        resetWasCalled = true
     }
 }

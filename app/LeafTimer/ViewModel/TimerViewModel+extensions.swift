@@ -13,10 +13,10 @@ extension TimerViewModel {
     func getButtonState() -> String {
         switch executeState {
         case true:
-            "STOP"
+            NSLocalizedString("button.stop", comment: "Stop button")
 
         case false:
-            "START"
+            NSLocalizedString("button.start", comment: "Start button")
         }
     }
 

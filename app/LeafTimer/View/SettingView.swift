@@ -9,8 +9,8 @@ struct SettingView: View {
         NavigationView {
             VStack {
                 Form {
-                    Section(header: Text("タイマー")) {
-                        Picker("作業時間", selection: Binding(
+                    Section(header: Text(NSLocalizedString("settings.timer_section", comment: "Timer section header"))) {
+                        Picker(NSLocalizedString("settings.working_time", comment: "Working time setting"), selection: Binding(
                             get: { settingViewModel.workingTime },
                             set: { settingViewModel.workingTime = $0 }
                         ).onChange { selected in
@@ -24,7 +24,7 @@ struct SettingView: View {
                         }
 
                         Picker(
-                            "休憩時間",
+                            NSLocalizedString("settings.break_time", comment: "Break time setting"),
                             selection: Binding(
                                 get: { settingViewModel.breakTime },
                                 set: { settingViewModel.breakTime = $0 }
@@ -39,9 +39,9 @@ struct SettingView: View {
                         }
                     }
 
-                    Section(header: Text("サウンド")) {
+                    Section(header: Text(NSLocalizedString("settings.sound_section", comment: "Sound section header"))) {
                         Picker(
-                            "作業中",
+                            NSLocalizedString("settings.working_sound", comment: "Working sound setting"),
                             selection: Binding(
                                 get: { settingViewModel.workingSound },
                                 set: { settingViewModel.workingSound = $0 }
@@ -56,7 +56,7 @@ struct SettingView: View {
                         }
 
                         Toggle(
-                            "バイブレーション",
+                            NSLocalizedString("settings.vibration", comment: "Vibration setting"),
                             isOn: Binding(
                                 get: { settingViewModel.vibrationIsOn },
                                 set: { settingViewModel.vibrationIsOn = $0 }
@@ -67,14 +67,14 @@ struct SettingView: View {
                         )
                     }
 
-                    Section(header: Text("モード")) {
-                        Text("ポモドーロ")
+                    Section(header: Text(NSLocalizedString("settings.mode_section", comment: "Mode section header"))) {
+                        Text(NSLocalizedString("settings.pomodoro_mode", comment: "Pomodoro mode"))
                     }
                 }
                 AdsView().frame(width: nil, height: 50, alignment: /*@START_MENU_TOKEN@*/ .center/*@END_MENU_TOKEN@*/)
             }
         }
-        .navigationBarTitle("設定", displayMode: .inline)
+        .navigationBarTitle(NSLocalizedString("settings.title", comment: "Settings navigation title"), displayMode: .inline)
         .onAppear {
             settingViewModel.readData()
         }

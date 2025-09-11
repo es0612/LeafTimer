@@ -1,0 +1,47 @@
+/* 
+   Localizable.strings
+   LeafTimer
+   
+   Japanese localization for LeafTimer app
+*/
+
+// MARK: - Timer View
+"timer.title" = "ポモドーロ";
+"timer.todays_count" = "今日のポモドーロ数：";
+
+// MARK: - Settings View
+"settings.title" = "設定";
+"settings.timer_section" = "タイマー";
+"settings.working_time" = "作業時間";
+"settings.break_time" = "休憩時間";
+"settings.sound_section" = "サウンド";
+"settings.working_sound" = "作業中";
+"settings.vibration" = "バイブレーション";
+"settings.mode_section" = "モード";
+"settings.pomodoro_mode" = "ポモドーロ";
+
+// MARK: - Time Options
+"time.5_minutes" = "5分";
+"time.10_minutes" = "10分";
+"time.15_minutes" = "15分";
+"time.20_minutes" = "20分";
+"time.25_minutes" = "25分";
+"time.30_minutes" = "30分";
+
+"time.1_minute" = "1分";
+"time.2_minutes" = "2分";
+"time.3_minutes" = "3分";
+"time.4_minutes" = "4分";
+"time.6_minutes" = "6分";
+"time.7_minutes" = "7分";
+"time.8_minutes" = "8分";
+"time.9_minutes" = "9分";
+
+// MARK: - Sound Options
+"sound.none" = "なし";
+"sound.rain" = "雨音";
+"sound.river" = "川のせせらぎ";
+
+// MARK: - Button Labels
+"button.start" = "START";
+"button.stop" = "STOP";
