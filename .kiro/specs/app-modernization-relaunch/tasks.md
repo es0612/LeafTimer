@@ -8,10 +8,11 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 
 ### 1.1 Development Environment Setup
 
-#### Task 1.1.1: Xcode 15 Compatibility
+#### Task 1.1.1: Xcode 15 Compatibility ✅
 **Priority**: Critical  
 **Estimated Time**: 1-2 days  
-**Dependencies**: None
+**Dependencies**: None  
+**Status**: COMPLETED
 
 **Implementation Steps:**
 1. Xcode 15以降でプロジェクトを開く
@@ -29,10 +30,11 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 - `app/LeafTimer.xcodeproj/project.pbxproj`
 - `app/LeafTimer/Info.plist`
 
-#### Task 1.1.2: Dependencies Update
+#### Task 1.1.2: Dependencies Update ✅
 **Priority**: Critical  
 **Estimated Time**: 1-2 days  
-**Dependencies**: 1.1.1
+**Dependencies**: 1.1.1  
+**Status**: COMPLETED
 
 **Implementation Steps:**
 1. Podfileの依存関係を最新バージョンに更新
@@ -50,10 +52,11 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 - `app/Podfile`
 - `app/Podfile.lock`
 
-#### Task 1.1.3: Swift API Modernization
+#### Task 1.1.3: Swift API Modernization 🔄
 **Priority**: High  
 **Estimated Time**: 2-3 days  
-**Dependencies**: 1.1.2
+**Dependencies**: 1.1.2  
+**Status**: IN PROGRESS - Code updated, tests need fixes
 
 **Implementation Steps:**
 1. deprecated APIの使用箇所特定
@@ -73,10 +76,11 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 
 ### 1.2 Core Functionality Verification
 
-#### Task 1.2.1: Timer Core Logic Testing
+#### Task 1.2.1: Timer Core Logic Testing ❌
 **Priority**: Critical  
 **Estimated Time**: 1 day  
-**Dependencies**: 1.1.3
+**Dependencies**: 1.1.3  
+**Status**: BLOCKED - Test code needs fixing
 
 **Implementation Steps:**
 1. 既存TimerManagerの動作確認
@@ -94,10 +98,11 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 - `app/LeafTimer/Components/DefaultTimerManager.swift`
 - `app/LeafTimer/ViewModel/TimerViewModel.swift`
 
-#### Task 1.2.2: Audio System Verification
+#### Task 1.2.2: Audio System Verification ⏳
 **Priority**: High  
 **Estimated Time**: 1 day  
-**Dependencies**: 1.2.1
+**Dependencies**: 1.2.1  
+**Status**: PENDING - Waiting for test fixes
 
 **Implementation Steps:**
 1. 音声再生機能の動作確認
@@ -114,10 +119,11 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 **Files to Test:**
 - `app/LeafTimer/Components/DefaultAudioManager.swift`
 
-#### Task 1.2.3: Data Persistence Testing
+#### Task 1.2.3: Data Persistence Testing ⏳
 **Priority**: Medium  
 **Estimated Time**: 1 day  
-**Dependencies**: 1.2.2
+**Dependencies**: 1.2.2  
+**Status**: PENDING - Waiting for test fixes
 
 **Implementation Steps:**
 1. UserDefaults保存・読み込みテスト
