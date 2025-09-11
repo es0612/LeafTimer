@@ -1,0 +1,47 @@
+/*
+   Localizable.strings (English)
+   LeafTimer
+*/
+
+// MARK: - Timer View
+"timer.title" = "Pomodoro";
+"timer.todays_count" = "Today's Pomodoros: ";
+
+// MARK: - Settings View
+"settings.title" = "Settings";
+"settings.timer_section" = "Timer";
+"settings.working_time" = "Work Time";
+"settings.break_time" = "Break Time";
+"settings.sound_section" = "Sound";
+"settings.working_sound" = "During Work";
+"settings.vibration" = "Vibration";
+"settings.mode_section" = "Mode";
+"settings.pomodoro_mode" = "Pomodoro";
+
+// MARK: - Time Options
+"time.5_minutes" = "5 min";
+"time.10_minutes" = "10 min";
+"time.15_minutes" = "15 min";
+"time.20_minutes" = "20 min";
+"time.25_minutes" = "25 min";
+"time.30_minutes" = "30 min";
+
+"time.1_minute" = "1 min";
+"time.2_minutes" = "2 min";
+"time.3_minutes" = "3 min";
+"time.4_minutes" = "4 min";
+"time.6_minutes" = "6 min";
+"time.7_minutes" = "7 min";
+"time.8_minutes" = "8 min";
+"time.9_minutes" = "9 min";
+"time.10_minutes" = "10 min";
+
+// MARK: - Sound Options
+"sound.none" = "None";
+"sound.rain" = "Rain";
+"sound.river" = "River";
+
+// MARK: - Button Labels
+"button.start" = "START";
+"button.stop" = "STOP";
+
