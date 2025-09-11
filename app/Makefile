@@ -13,7 +13,30 @@ unit-tests:
 sort:
 	@perl ./bin/sortXcodeProject "LeafTimer.xcodeproj/project.pbxproj"
 
-tests: sort unit-tests
+lint:
+	@echo "Running SwiftLint..."
+	@swiftlint lint
+
+lint-strict:
+	@echo "Running SwiftLint in strict mode..."
+	@swiftlint lint --strict
+
+lint-fix:
+	@echo "Running SwiftLint with auto-correct..."
+	@swiftlint lint --fix
+
+format:
+	@echo "Running SwiftFormat..."
+	@swiftformat .
+
+format-check:
+	@echo "Checking SwiftFormat..."
+	@swiftformat --lint .
+
+quality: lint format-check
+	@echo "Code quality checks completed"
+
+tests: sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta

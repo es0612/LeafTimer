@@ -32,10 +32,10 @@ struct CircleButton: View {
                                             .font(.title)
                                             .fontWeight(.bold)
                                             .foregroundColor(.white)
-                                )
-                        )
-                )
-        ).shadow(color: .gray, radius: 1, x: 0, y: 1)
+                                    )
+                            )
+                    )
+            ).shadow(color: .gray, radius: 1, x: 0, y: 1)
     }
 }
 

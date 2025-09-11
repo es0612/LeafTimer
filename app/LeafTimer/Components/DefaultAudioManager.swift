@@ -1,5 +1,5 @@
-import Foundation
 import AVFoundation
+import Foundation
 import UIKit
 
 protocol AudioManager {
@@ -15,11 +15,11 @@ class DefaultAudioManager: AudioManager {
     private var stopAudioPlayer: AVAudioPlayer?
     private var workingAudioPlayer: AVAudioPlayer?
     private let audioSession = AVAudioSession.sharedInstance()
-    
+
     init() {
         setupAudioSession()
     }
-    
+
     // iOS 17: Optimize audio session for background timer app
     private func setupAudioSession() {
         do {
@@ -42,14 +42,14 @@ class DefaultAudioManager: AudioManager {
     func stop() {
         workingAudioPlayer?.stop()
         stopAudioPlayer?.stop()
-        
+
         // iOS 17: Deactivate session when not needed to save battery
         deactivateAudioSessionIfNeeded()
     }
 
     func finish() {
         workingAudioPlayer?.stop()
-        
+
         // iOS 17: Ensure audio session is active for notification sound
         activateAudioSessionIfNeeded()
         stopAudioPlayer?.play()
@@ -72,7 +72,7 @@ class DefaultAudioManager: AudioManager {
         setupStopAudio()
         setupWorkingAudio(workingSound: workingSound)
     }
-    
+
     // iOS 17: Improved error handling and resource management
     private func setupStopAudio() {
         guard let path = Bundle.main.path(forResource: "warning1", ofType: "mp3") else {
@@ -89,11 +89,12 @@ class DefaultAudioManager: AudioManager {
             print("Failed to setup stop audio: \(error)")
         }
     }
-    
+
     private func setupWorkingAudio(workingSound: String) {
         // Handle "noSound" case gracefully
         guard workingSound != "noSound",
-              let workingPath = Bundle.main.path(forResource: workingSound, ofType: "mp3") else {
+              let workingPath = Bundle.main.path(forResource: workingSound, ofType: "mp3")
+        else {
             workingAudioPlayer = nil // Clear existing player for "noSound"
             return
         }
@@ -107,7 +108,7 @@ class DefaultAudioManager: AudioManager {
             print("Failed to setup working audio: \(error)")
         }
     }
-    
+
     // iOS 17: Smart audio session management for battery optimization
     private func activateAudioSessionIfNeeded() {
         do {
@@ -116,20 +117,20 @@ class DefaultAudioManager: AudioManager {
             print("Failed to activate audio session: \(error)")
         }
     }
-    
+
     private func deactivateAudioSessionIfNeeded() {
         // Only deactivate if no audio is playing
-        guard workingAudioPlayer?.isPlaying != true && stopAudioPlayer?.isPlaying != true else {
+        guard workingAudioPlayer?.isPlaying != true, stopAudioPlayer?.isPlaying != true else {
             return
         }
-        
+
         do {
             try audioSession.setActive(false, options: [.notifyOthersOnDeactivation])
         } catch {
             print("Failed to deactivate audio session: \(error)")
         }
     }
-    
+
     // iOS 17: Proper cleanup for memory management
     deinit {
         stop()

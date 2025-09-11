@@ -2,51 +2,60 @@ import Foundation
 import UIKit
 
 class TimerViewModel: ObservableObject {
-    
     // MARK: - Dependency Injection
+
     var timerManager: TimerManager
     var audioManager: AudioManager
     var userDefaultWrapper: UserDefaultsWrapper
-    
+
     // MARK: - Observed Parameter
-    @Published var fullTimeSecond: Int
-    @Published var fullBreakTimeSecond: Int
-    
-    @Published var currentTimeSecond: Int
-    @Published var executeState: Bool
-    
-    @Published var breakState: Bool
-    @Published var vibration: Bool
-    @Published var todaysCount: Int
+
+    @Published
+    var fullTimeSecond: Int
+    @Published
+    var fullBreakTimeSecond: Int
+
+    @Published
+    var currentTimeSecond: Int
+    @Published
+    var executeState: Bool
+
+    @Published
+    var breakState: Bool
+    @Published
+    var vibration: Bool
+    @Published
+    var todaysCount: Int
 
     private var isFirstOpen = true
-    
-    
-    // MARK: - Initialization
-    init(timerManager: TimerManager,
-         audioManager: AudioManager,
-         userDefaultWrapper: UserDefaultsWrapper) {
 
+    // MARK: - Initialization
+
+    init(
+        timerManager: TimerManager,
+        audioManager: AudioManager,
+        userDefaultWrapper: UserDefaultsWrapper
+    ) {
         self.timerManager = timerManager
         self.audioManager = audioManager
         self.userDefaultWrapper = userDefaultWrapper
-        
-        self.fullTimeSecond = 25*60
-        self.currentTimeSecond = 25*60
-        self.executeState = false
-        
-        self.fullBreakTimeSecond = 5*60
-        self.breakState = false
 
-        self.vibration = true
+        fullTimeSecond = 25 * 60
+        currentTimeSecond = 25 * 60
+        executeState = false
 
-        self.todaysCount = 0
+        fullBreakTimeSecond = 5 * 60
+        breakState = false
+
+        vibration = true
+
+        todaysCount = 0
 
         loadCount()
     }
-    
-    
+
     // MARK: - methods
+
     func onPressedTimerButton() {
         switch executeState {
         case false:
@@ -66,14 +75,13 @@ class TimerViewModel: ObservableObject {
             UIApplication.shared.isIdleTimerDisabled = false
         }
     }
-    
+
     func reset() {
         if breakState {
             currentTimeSecond = fullBreakTimeSecond
         } else {
             currentTimeSecond = fullTimeSecond
         }
-
     }
 
     func openScreen() {
@@ -87,10 +95,9 @@ class TimerViewModel: ObservableObject {
             isFirstOpen = false
         }
     }
-    
+
     @objc func updateTime() {
         if currentTimeSecond == 0 {
-
             if vibration {
                 audioManager.vibration()
             }
@@ -100,7 +107,7 @@ class TimerViewModel: ObservableObject {
 
             return
         }
-        
+
         currentTimeSecond -= 1
     }
 
@@ -116,7 +123,7 @@ class TimerViewModel: ObservableObject {
     }
 
     func read(item: String) -> Int {
-        return userDefaultWrapper.loadData(key: item)
+        userDefaultWrapper.loadData(key: item)
     }
 
     func readData() {
@@ -146,4 +153,3 @@ class TimerViewModel: ObservableObject {
         todaysCount = userDefaultWrapper.loadData(key: DateManager.getToday())
     }
 }
-

@@ -17,7 +17,7 @@ class LocalUserDefaultsWrapper: UserDefaultsWrapper {
     }
 
     func loadData(key: String) -> Int {
-        return userDefaults.integer(forKey: key)
+        userDefaults.integer(forKey: key)
 
         // default 0
     }
@@ -28,10 +28,8 @@ class LocalUserDefaultsWrapper: UserDefaultsWrapper {
     }
 
     func loadData(key: String) -> Bool {
-        return userDefaults.bool(forKey: key)
+        userDefaults.bool(forKey: key)
 
-        //default false
+        // default false
     }
-
 }
-

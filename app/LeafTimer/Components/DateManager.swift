@@ -1,7 +1,7 @@
 import Foundation
 
-struct DateManager {
-    static func getToday(format:String = "yyyy/MM/dd") -> String {
+enum DateManager {
+    static func getToday(format: String = "yyyy/MM/dd") -> String {
         let now = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = format
@@ -10,7 +10,7 @@ struct DateManager {
 
     static func convertStringToTime(string: String) -> Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat =  "yyyy/MM/dd"
+        dateFormatter.dateFormat = "yyyy/MM/dd"
         return dateFormatter.date(from: string) ?? Date()
     }
 

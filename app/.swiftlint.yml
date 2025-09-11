@@ -1,0 +1,256 @@
+# SwiftLint Configuration for LeafTimer
+# Modern iOS 17 project with MVVM architecture
+
+# Paths to include/exclude
+included:
+  - LeafTimer
+  - LeafTimerTests
+  - LeafTimerUITests
+
+excluded:
+  - Pods
+  - fastlane
+  - bin
+  - build
+  - DerivedData
+  - .build
+
+# Analyzer rules (requires compilation)
+analyzer_rules:
+  - unused_import
+  - unused_declaration
+
+# Opt-in rules
+opt_in_rules:
+  # Performance
+  - empty_enum_arguments
+  - empty_parameters
+  - empty_parentheses_with_trailing_closure
+  - redundant_nil_coalescing
+  - implicit_optional_initialization
+  - redundant_void_return
+  - unused_closure_parameter
+  - unused_enumerated
+  - unused_optional_binding
+  
+  # Style
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - colon
+  - comma
+  - conditional_returns_on_newline
+  - control_statement
+  - empty_count
+  - empty_string
+  - explicit_init
+  - fatal_error_message
+  - file_header
+  - first_where
+  - for_where
+  - function_parameter_count
+  - implicit_getter
+  - joined_default_parameter
+  - last_where
+  - legacy_random
+  - literal_expression_end_indentation
+  - modifier_order
+  - nimble_operator
+  - number_separator
+  - object_literal
+  - operator_usage_whitespace
+  - overridden_super_call
+  - pattern_matching_keywords
+  - prefer_self_type_over_type_of_self
+  - redundant_discardable_let
+  - redundant_string_enum_value
+  - return_arrow_whitespace
+  - shorthand_operator
+  - sorted_first_last
+  - switch_case_alignment
+  - toggle_bool
+  - trailing_comma
+  - trailing_newline
+  - trailing_semicolon
+  - trailing_whitespace
+  - unneeded_break_in_switch
+  - vertical_parameter_alignment
+  - vertical_whitespace
+  - void_return
+  - yoda_condition
+  
+  # Naming
+  - generic_type_name
+  - identifier_name
+  - type_name
+  
+  # Complexity
+  - cyclomatic_complexity
+  - function_body_length
+  - large_tuple
+  - nesting
+  - type_body_length
+  
+  # Idiomatic
+  - class_delegate_protocol
+  - compiler_protocol_init
+  - discouraged_direct_init
+  - discouraged_optional_boolean
+  - discouraged_optional_collection
+  - empty_xctest_method
+  - fallthrough
+  - implicit_return
+  - is_disjoint
+  - legacy_cggeometry_functions
+  - legacy_constant
+  - legacy_constructor
+  - legacy_nsgeometry_functions
+  - mark
+  - multiple_closures_with_trailing_closure
+  - notification_center_detachment
+  - nsobject_prefer_isequal
+  - reduce_boolean
+  - reduce_into
+  - redundant_set_access_control
+  - redundant_type_annotation
+  - self_in_property_initialization
+  - static_operator
+  - syntactic_sugar
+  - unavailable_function
+  - unowned_variable_capture
+  - vertical_parameter_alignment_on_call
+  - weak_delegate
+  - xctfail_message
+
+# Disabled rules (can be enabled gradually)
+disabled_rules:
+  - line_length  # Will be handled by SwiftFormat
+  - force_cast
+  - force_try
+  - todo
+  - comment_spacing  # Allow Japanese comments
+
+# Rule configurations
+attributes:
+  always_on_same_line:
+    - "@IBAction"
+    - "@IBOutlet"
+    - "@IBInspectable"
+    - "@GKInspectable"
+    - "@NSManaged"
+    - "@objc"
+    - "@UIApplicationMain"
+  always_on_line_above:
+    - "@discardableResult"
+    - "@Published"
+    - "@State"
+    - "@StateObject"
+    - "@ObservedObject"
+    - "@Binding"
+
+colon:
+  flexible_right_spacing: false
+  apply_to_dictionaries: true
+
+comma:
+  severity: warning
+
+cyclomatic_complexity:
+  warning: 15
+  error: 25
+  ignores_case_statements: true
+
+file_length:
+  warning: 500
+  error: 1000
+  ignore_comment_only_lines: true
+
+function_body_length:
+  warning: 60
+  error: 100
+
+function_parameter_count:
+  warning: 6
+  error: 8
+
+generic_type_name:
+  min_length: 1
+  max_length: 50
+
+identifier_name:
+  min_length: 1
+  max_length: 50
+  excluded:
+    - id
+    - x
+    - y
+    - z
+    - i
+    - j
+    - k
+    - db
+    - vc
+    - vm
+    - ui
+
+large_tuple:
+  warning: 3
+  error: 4
+
+
+nesting:
+  type_level:
+    warning: 3
+
+number_separator:
+  minimum_length: 5
+
+trailing_comma:
+  mandatory_comma: true
+
+trailing_whitespace:
+  ignores_empty_lines: false
+  ignores_comments: false
+
+type_body_length:
+  warning: 300
+  error: 500
+
+type_name:
+  min_length: 3
+  max_length: 50
+  excluded:
+    - App
+
+vertical_whitespace:
+  max_empty_lines: 2
+
+# Custom rules for LeafTimer project
+custom_rules:
+  
+  # MARK comments should follow specific format
+  mark_format:
+    name: "MARK Format"
+    regex: "// MARK: - [A-Z]"
+    match_kinds:
+      - comment
+    message: "MARK comments should follow '// MARK: - Title' format"
+    severity: warning
+  
+  # Prefer modern async/await where applicable
+  avoid_completion_handler:
+    name: "Avoid Completion Handler"
+    regex: "@escaping.*->.*Void"
+    message: "Consider using async/await instead of completion handlers for iOS 17+"
+    severity: warning
+  
+  # iOS 17 availability checks
+  ios_version_check:
+    name: "iOS Version Check"
+    regex: "#available\\(iOS (?:1[0-6]|[1-9])\\.\\d+,"
+    message: "Consider updating availability check for iOS 17+ project"
+    severity: warning
+
+# Reporter
+reporter: "xcode"

@@ -8,16 +8,12 @@
 
 import SwiftUI
 
-
 struct GIFView: UIViewRepresentable {
     var gifName: String
 
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<GIFView>) {
-
-    }
-
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<GIFView>) {}
 
     func makeUIView(context: Context) -> UIView {
-        return GIFPlayerView(gifName: gifName)
+        GIFPlayerView(gifName: gifName)
     }
 }

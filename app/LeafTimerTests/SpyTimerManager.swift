@@ -17,5 +17,4 @@ class SpyTimerManager: TimerManager {
     func reset() {
         reset_wasCalled = true
     }
-
 }

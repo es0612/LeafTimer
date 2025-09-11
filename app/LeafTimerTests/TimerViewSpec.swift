@@ -9,7 +9,6 @@ import SwiftUI
 class TimerViewSpec: QuickSpec {
     override class func spec() {
         describe("test for TimerView") {
-
             var timerView: TimerView!
             var spyTimerManager: SpyTimerManager!
 
@@ -18,9 +17,9 @@ class TimerViewSpec: QuickSpec {
                 timerView = TimerView(
                     timerViewModel: TimerViewModel(
                         timerManager: spyTimerManager,
-                        audioManager: SpyAudioManager(), 
+                        audioManager: SpyAudioManager(),
                         userDefaultWrapper: LocalUserDefaultsWrapper()
-                    ), 
+                    ),
                     settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
                 )
             }
@@ -29,7 +28,7 @@ class TimerViewSpec: QuickSpec {
                 let textViewString = try timerView.body
                     .inspect().navigationStack().zStack(0).vStack(1).text(0).string()
 
-                expect(textViewString).to(equal("25:00"))
+                expect(textViewString) == "25:00"
             }
 
             xit("displayed start button.") {
@@ -42,26 +41,25 @@ class TimerViewSpec: QuickSpec {
             it("displayed navigation bar") {
                 let navStack = try timerView.body.inspect().navigationStack()
 
-                expect(navStack).notTo(beNil())
+                expect(navStack) != nil
             }
 
             xit("displayed navigation bar button item") {
                 let toolbarButton = try timerView.body.inspect().navigationStack()
                     .zStack(0).vStack(1).toolbar()
-                
-                expect(toolbarButton).notTo(beNil())
+
+                expect(toolbarButton) != nil
             }
 
             xit("call timerManager methods when button tapped") {
                 let stopButton = try timerView.body
-                .inspect().navigationStack().zStack(0).vStack(1).button(1)
+                    .inspect().navigationStack().zStack(0).vStack(1).button(1)
 
                 try stopButton.tap()
 
-                let _ = try timerView.body.inspect()
+                _ = try timerView.body.inspect()
 
                 expect(spyTimerManager.start_wasCalled).toEventually(beTrue())
-
             }
         }
     }

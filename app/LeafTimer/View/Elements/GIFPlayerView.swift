@@ -4,17 +4,18 @@ class GIFPlayerView: UIView {
     private let imageView = UIImageView()
 
     convenience init(gifName: String) {
-       self.init()
-       let gif = UIImage.gif(asset: gifName)
-       imageView.image = gif
-       imageView.contentMode = .scaleAspectFit
-       self.addSubview(imageView)
+        self.init()
+        let gif = UIImage.gif(asset: gifName)
+        imageView.image = gif
+        imageView.contentMode = .scaleAspectFit
+        addSubview(imageView)
     }
 
     override init(frame: CGRect) {
-       super.init(frame: frame)
+        super.init(frame: frame)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -25,10 +26,8 @@ class GIFPlayerView: UIView {
     }
 }
 
-
-extension UIImageView {
-
-    public func loadGif(name: String) {
+public extension UIImageView {
+    func loadGif(name: String) {
         DispatchQueue.global().async {
             let image = UIImage.gif(name: name)
             DispatchQueue.main.async {
@@ -38,7 +37,7 @@ extension UIImageView {
     }
 
     @available(iOS 9.0, *)
-    public func loadGif(asset: String) {
+    func loadGif(asset: String) {
         DispatchQueue.global().async {
             let image = UIImage.gif(asset: asset)
             DispatchQueue.main.async {
@@ -46,11 +45,9 @@ extension UIImageView {
             }
         }
     }
-
 }
 
 extension UIImage {
-
     public class func gif(data: Data) -> UIImage? {
         // Create source from data
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
@@ -80,7 +77,8 @@ extension UIImage {
     public class func gif(name: String) -> UIImage? {
         // Check for existance of gif
         guard let bundleURL = Bundle.main
-          .url(forResource: name, withExtension: "gif") else {
+            .url(forResource: name, withExtension: "gif")
+        else {
             print("SwiftGif: This image named \"\(name)\" does not exist")
             return nil
         }
@@ -105,7 +103,7 @@ extension UIImage {
         return gif(data: dataAsset.data)
     }
 
-    internal class func delayForImageAtIndex(_ index: Int, source: CGImageSource!) -> Double {
+    class func delayForImageAtIndex(_ index: Int, source: CGImageSource!) -> Double {
         var delay = 0.1
 
         // Get dictionaries
@@ -123,12 +121,17 @@ extension UIImage {
 
         // Get delay time
         var delayObject: AnyObject = unsafeBitCast(
-            CFDictionaryGetValue(gifProperties,
-                Unmanaged.passUnretained(kCGImagePropertyGIFUnclampedDelayTime).toOpaque()),
-            to: AnyObject.self)
+            CFDictionaryGetValue(
+                gifProperties,
+                Unmanaged.passUnretained(kCGImagePropertyGIFUnclampedDelayTime).toOpaque()
+            ),
+            to: AnyObject.self
+        )
         if delayObject.doubleValue == 0 {
-            delayObject = unsafeBitCast(CFDictionaryGetValue(gifProperties,
-                Unmanaged.passUnretained(kCGImagePropertyGIFDelayTime).toOpaque()), to: AnyObject.self)
+            delayObject = unsafeBitCast(CFDictionaryGetValue(
+                gifProperties,
+                Unmanaged.passUnretained(kCGImagePropertyGIFDelayTime).toOpaque()
+            ), to: AnyObject.self)
         }
 
         if let delayObject = delayObject as? Double, delayObject > 0 {
@@ -140,7 +143,7 @@ extension UIImage {
         return delay
     }
 
-    internal class func gcdForPair(_ lhs: Int?, _ rhs: Int?) -> Int {
+    class func gcdForPair(_ lhs: Int?, _ rhs: Int?) -> Int {
         var lhs = lhs
         var rhs = rhs
         // Check if one of them is nil
@@ -175,7 +178,7 @@ extension UIImage {
         }
     }
 
-    internal class func gcdForArray(_ array: [Int]) -> Int {
+    class func gcdForArray(_ array: [Int]) -> Int {
         if array.isEmpty {
             return 1
         }
@@ -189,22 +192,24 @@ extension UIImage {
         return gcd
     }
 
-    internal class func animatedImageWithSource(_ source: CGImageSource) -> UIImage? {
+    class func animatedImageWithSource(_ source: CGImageSource) -> UIImage? {
         let count = CGImageSourceGetCount(source)
         var images = [CGImage]()
         var delays = [Int]()
 
         // Fill arrays
-        for index in 0..<count {
+        for index in 0 ..< count {
             // Add image
             if let image = CGImageSourceCreateImageAtIndex(source, index, nil) {
                 images.append(image)
             }
 
             // At it's delay in cs
-            let delaySeconds = UIImage.delayForImageAtIndex(Int(index),
-                source: source)
-            delays.append(Int(delaySeconds * 10000.0)) // Seconds to ms
+            let delaySeconds = UIImage.delayForImageAtIndex(
+                Int(index),
+                source: source
+            )
+            delays.append(Int(delaySeconds * 10_000.0)) // Seconds to ms
         }
 
         // Calculate full duration
@@ -216,7 +221,7 @@ extension UIImage {
             }
 
             return sum
-            }()
+        }()
 
         // Get frames
         let gcd = gcdForArray(delays)
@@ -224,20 +229,21 @@ extension UIImage {
 
         var frame: UIImage
         var frameCount: Int
-        for index in 0..<count {
+        for index in 0 ..< count {
             frame = UIImage(cgImage: images[Int(index)])
             frameCount = Int(delays[Int(index)] / gcd)
 
-            for _ in 0..<frameCount {
+            for _ in 0 ..< frameCount {
                 frames.append(frame)
             }
         }
 
         // Heyhey
-        let animation = UIImage.animatedImage(with: frames,
-            duration: Double(duration) / 1000.0)
+        let animation = UIImage.animatedImage(
+            with: frames,
+            duration: Double(duration) / 1000.0
+        )
 
         return animation
     }
-
 }

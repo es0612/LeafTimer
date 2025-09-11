@@ -1,0 +1,55 @@
+# SwiftFormat Configuration for LeafTimer
+# Simplified configuration for compatibility
+
+# Version requirement
+--swiftversion 5.9
+
+# Indentation (maintain existing 4-space style)
+--indent 4
+--tabwidth 4
+--indentcase false
+--ifdef indent
+--xcodeindentation enabled
+
+# Line length and wrapping
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+
+# Spacing and alignment
+--trimwhitespace always
+--commas always
+--semicolons never
+--ranges spaced
+
+# Braces and parentheses
+--allman false
+--elseposition same-line
+
+# Imports
+--importgrouping testable-bottom
+
+# Control flow
+--stripunusedargs closure-only
+--self remove
+--yodaswap always
+
+# Basic rules that are widely supported
+--enable isEmpty
+--enable sortedImports
+--enable duplicateImports
+--enable unusedArguments
+--enable redundantSelf
+--enable trailingCommas
+--enable wrap
+--enable wrapArguments
+
+# File options
+--exclude Pods
+--exclude fastlane
+--exclude bin
+--exclude build
+--exclude DerivedData
+--exclude .build
+--exclude **/*.generated.swift

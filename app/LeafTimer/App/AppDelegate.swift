@@ -1,22 +1,22 @@
-import UIKit
-import SwiftUI
 import AVFoundation
 import Firebase
 import GoogleMobileAds
+import SwiftUI
+import UIKit
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
     var window: UIWindow?
 
-    var backgroundTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
+    var backgroundTaskID = UIBackgroundTaskIdentifier(rawValue: 0)
 
-    var oldBackgroundTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
+    var oldBackgroundTaskID = UIBackgroundTaskIdentifier(rawValue: 0)
     var timer: Timer?
 
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
         FirebaseApp.configure()
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
@@ -40,7 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         do {
             try AVAudioSession.sharedInstance().setCategory(
-                .playback, mode: .default)
+                .playback, mode: .default
+            )
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print(error)
@@ -49,21 +50,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    //バックグラウンド遷移移行直前に呼ばれる
+    // バックグラウンド遷移移行直前に呼ばれる
     func applicationWillResignActive(_ application: UIApplication) {
         // 新しいタスクを登録
         backgroundTaskID = application.beginBackgroundTask {
             [weak self] in
-            
             application.endBackgroundTask((self?.backgroundTaskID)!)
             self?.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
     }
-    
-    //アプリがアクティブになる度に呼ばれる
+
+    // アプリがアクティブになる度に呼ばれる
     func applicationDidBecomeActive(_ application: UIApplication) {
-        //タスクの解除
+        // タスクの解除
         timer?.invalidate()
-        application.endBackgroundTask(self.backgroundTaskID)
+        application.endBackgroundTask(backgroundTaskID)
     }
 }

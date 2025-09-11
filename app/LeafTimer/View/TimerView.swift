@@ -2,19 +2,21 @@ import SwiftUI
 
 struct TimerView: View {
     // MARK: - State
-    @ObservedObject var timerViewModel: TimerViewModel
-    @ObservedObject var settingViewModel: SettingViewModel
+
+    @ObservedObject
+    var timerViewModel: TimerViewModel
+    @ObservedObject
+    var settingViewModel: SettingViewModel
 
     // MARK: - View
-    var body: some View {
 
+    var body: some View {
         NavigationStack {
             ZStack {
                 timerViewModel.getBackgroundColor()
                     .ignoresSafeArea(.all)
 
-                VStack{
-
+                VStack {
                     if timerViewModel.breakState {
                         GIFView(gifName: "leaf3")
                             .frame(width: 350, height: 350, alignment: .center)
@@ -46,8 +48,9 @@ struct TimerView: View {
                 VStack {
                     Text(timerViewModel.getDisplayedTime())
                         .font(.system(
-                            size: 78, weight: .bold, design: .monospaced)
-                    )
+                            size: 78, weight: .bold, design: .monospaced
+                        )
+                        )
                         .foregroundColor(Color(red: 0.65, green: 0.65, blue: 0.65, opacity: 0.9))
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .padding(.bottom, 50)
@@ -55,8 +58,8 @@ struct TimerView: View {
                     CircleButton(viewModel: timerViewModel)
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .onTapGesture {
-                            self.didTapTimerButton()
-                    }
+                            didTapTimerButton()
+                        }
 
                     Text("今日のポモドーロ数：" + String(timerViewModel.todaysCount))
                         .foregroundColor(Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.9))
@@ -77,15 +80,16 @@ struct TimerView: View {
                         }
                     }
                 }
-                    .onAppear() {
-                        self.timerViewModel.readData()
-                        self.timerViewModel.openScreen()
+                .onAppear {
+                    timerViewModel.readData()
+                    timerViewModel.openScreen()
                 }
             }
         }
     }
 
     // MARK: - Private methods
+
     private func didTapTimerButton() {
         timerViewModel.onPressedTimerButton()
     }
@@ -97,7 +101,7 @@ struct TimerView: View {
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach (["iPhone 16"], id: \.self) { deviceName in
+        ForEach(["iPhone 16"], id: \.self) { deviceName in
             TimerView(
                 timerViewModel: TimerViewModel(
                     timerManager: DefaultTimerManager(),
@@ -106,10 +110,8 @@ struct TimerView_Previews: PreviewProvider {
                 ),
                 settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
             )
-                .previewDevice(PreviewDevice(rawValue: deviceName))
-                .previewDisplayName(deviceName)
+            .previewDevice(PreviewDevice(rawValue: deviceName))
+            .previewDisplayName(deviceName)
         }
     }
 }
-
-
