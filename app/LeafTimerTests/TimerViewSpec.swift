@@ -7,7 +7,7 @@ import SwiftUI
 @testable import LeafTimer
 
 class TimerViewSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("test for TimerView") {
 
             var timerView: TimerView!
@@ -27,7 +27,7 @@ class TimerViewSpec: QuickSpec {
 
             xit("displayed remaining time.") {
                 let textViewString = try timerView.body
-                    .inspect().navigationView().vStack(0).text(0).string()
+                    .inspect().navigationStack().zStack(0).vStack(1).text(0).string()
 
                 expect(textViewString).to(equal("25:00"))
             }
@@ -40,20 +40,21 @@ class TimerViewSpec: QuickSpec {
             }
 
             it("displayed navigation bar") {
-                let navBar = try timerView.body.inspect().navigationView()
+                let navStack = try timerView.body.inspect().navigationStack()
 
-                expect(navBar).notTo(beNil())
+                expect(navStack).notTo(beNil())
             }
 
             xit("displayed navigation bar button item") {
-                let buttonItem = try timerView.body.inspect().navigationView().vStack(0).navigationBarItems(0).button()
-
-                expect(buttonItem).notTo(beNil())
+                let toolbarButton = try timerView.body.inspect().navigationStack()
+                    .zStack(0).vStack(1).toolbar()
+                
+                expect(toolbarButton).notTo(beNil())
             }
 
             xit("call timerManager methods when button tapped") {
                 let stopButton = try timerView.body
-                .inspect().navigationView().vStack(0).button(1)
+                .inspect().navigationStack().zStack(0).vStack(1).button(1)
 
                 try stopButton.tap()
 

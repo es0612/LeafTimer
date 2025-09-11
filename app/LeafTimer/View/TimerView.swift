@@ -8,10 +8,10 @@ struct TimerView: View {
     // MARK: - View
     var body: some View {
 
-        NavigationView {
+        NavigationStack {
             ZStack {
                 timerViewModel.getBackgroundColor()
-                    .edgesIgnoringSafeArea(.all)
+                    .ignoresSafeArea(.all)
 
                 VStack{
 
@@ -63,15 +63,20 @@ struct TimerView: View {
                         .padding()
                         .padding(.top, 20)
                 }
-                .navigationBarTitle("ポモドーロ", displayMode: .inline)
-                .navigationBarItems(
-                    leading: Button(action: didTapResetButton) {
-                        Image("reloadIcon").foregroundColor(.primary)
-                    },
-                    trailing: NavigationLink(destination: SettingView(settingViewModel: settingViewModel)) {
-                        Image("settingIcon").foregroundColor(.primary)
+                .navigationTitle("ポモドーロ")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: didTapResetButton) {
+                            Image("reloadIcon").foregroundColor(.primary)
+                        }
                     }
-                )
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink(destination: SettingView(settingViewModel: settingViewModel)) {
+                            Image("settingIcon").foregroundColor(.primary)
+                        }
+                    }
+                }
                     .onAppear() {
                         self.timerViewModel.readData()
                         self.timerViewModel.openScreen()
@@ -92,7 +97,7 @@ struct TimerView: View {
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach (["iPhone 12"], id: \.self) { deviceName in
+        ForEach (["iPhone 16"], id: \.self) { deviceName in
             TimerView(
                 timerViewModel: TimerViewModel(
                     timerManager: DefaultTimerManager(),

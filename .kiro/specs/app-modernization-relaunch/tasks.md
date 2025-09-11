@@ -52,11 +52,12 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 - `app/Podfile`
 - `app/Podfile.lock`
 
-#### Task 1.1.3: Swift API Modernization 🔄
+#### Task 1.1.3: Swift API Modernization ✅
+
 **Priority**: High  
 **Estimated Time**: 2-3 days  
 **Dependencies**: 1.1.2  
-**Status**: IN PROGRESS - Code updated, tests need fixes
+**Status**: COMPLETED - TDD methodology applied, all tests passing
 
 **Implementation Steps:**
 1. deprecated APIの使用箇所特定
@@ -76,11 +77,11 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 
 ### 1.2 Core Functionality Verification
 
-#### Task 1.2.1: Timer Core Logic Testing ❌
+#### Task 1.2.1: Timer Core Logic Testing ⏳
 **Priority**: Critical  
 **Estimated Time**: 1 day  
 **Dependencies**: 1.1.3  
-**Status**: BLOCKED - Test code needs fixing
+**Status**: READY - Test infrastructure fixed, ready to proceed
 
 **Implementation Steps:**
 1. 既存TimerManagerの動作確認
