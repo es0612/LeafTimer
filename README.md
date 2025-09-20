@@ -17,9 +17,9 @@ chack cocoaPod file
 
 ## Licence
 
-Copyright 2020 by Author
+Copyright 2025 by Author
 
 
 ## Author
 
-hyai
+AsaPapaLab.
