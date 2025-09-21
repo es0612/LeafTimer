@@ -38,11 +38,11 @@
 		38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C95EF725D7326A00D80736 /* KeyManager.swift */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
-			93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
-			D51DAD042E51CA00006B8B3D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D51DAD032E51CA00006B8B3D /* Localizable.strings */; };
+		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
 		D51DACE92E51C175006B8B3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACE82E51C175006B8B3D /* GoogleService-Info.plist */; };
-			D51DACEB2E51C437006B8B3D /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACEA2E51C437006B8B3D /* Keys.plist */; };
-			D51DAD052E51CB1A006B8B3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D51DAD132E51CB1A006B8B3D /* InfoPlist.strings */; };
+		D51DACEB2E51C437006B8B3D /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACEA2E51C437006B8B3D /* Keys.plist */; };
+		D51DAD042E51CA00006B8B3D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D51DAD032E51CA00006B8B3D /* Localizable.strings */; };
+		D51DAD052E51CB1A006B8B3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D51DAD132E51CB1A006B8B3D /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,9 +112,9 @@
 		D51DACE82E51C175006B8B3D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D51DACEA2E51C437006B8B3D /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		D51DAD002E51CA00006B8B3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-			D51DAD012E51CA00006B8B3D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-			D51DAD102E51CB1A006B8B3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-			D51DAD112E51CB1A006B8B3D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D51DAD012E51CA00006B8B3D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D51DAD102E51CB1A006B8B3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D51DAD112E51CB1A006B8B3D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -463,13 +463,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -550,13 +546,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -571,13 +563,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -592,13 +580,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer/Pods-LeafTimer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -613,13 +597,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -696,24 +676,24 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-			D51DAD032E51CA00006B8B3D /* Localizable.strings */ = {
-				isa = PBXVariantGroup;
-				children = (
-					D51DAD002E51CA00006B8B3D /* en */,
-					D51DAD012E51CA00006B8B3D /* ja */,
-				);
-				name = Localizable.strings;
-				sourceTree = "<group>";
-			};
-			D51DAD132E51CB1A006B8B3D /* InfoPlist.strings */ = {
-				isa = PBXVariantGroup;
-				children = (
-					D51DAD102E51CB1A006B8B3D /* en */,
-					D51DAD112E51CB1A006B8B3D /* ja */,
-				);
-				name = InfoPlist.strings;
-				sourceTree = "<group>";
-			};
+		D51DAD032E51CA00006B8B3D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D51DAD002E51CA00006B8B3D /* en */,
+				D51DAD012E51CA00006B8B3D /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		D51DAD132E51CB1A006B8B3D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D51DAD102E51CB1A006B8B3D /* en */,
+				D51DAD112E51CB1A006B8B3D /* ja */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
