@@ -1,5 +1,21 @@
 import SwiftUI
 
+// Import new component types for extension
+struct TimerControlState {
+    enum State {
+        case idle
+        case running
+        case paused
+    }
+}
+
+struct TimerMode {
+    enum Mode {
+        case work
+        case `break`
+    }
+}
+
 extension TimerViewModel {
     func getDisplayedTime() -> String {
         let minString
@@ -95,4 +111,27 @@ enum LeafPattern {
     case small
     case mid
     case big
+}
+
+// MARK: - Modern Timer Extensions
+extension TimerViewModel {
+    var weeklyAverage: Double {
+        // Calculate weekly average from stored data
+        // For now, return a mock value - will be replaced with actual calculation
+        return Double(todaysCount) * 0.8
+    }
+
+    var timerState: TimerControlState.State {
+        if executeState {
+            return .running
+        } else if currentTimeSecond < fullTimeSecond {
+            return .paused
+        } else {
+            return .idle
+        }
+    }
+
+    var currentTimerMode: TimerMode.Mode {
+        return breakState ? .break : .work
+    }
 }
