@@ -43,6 +43,10 @@
 		D51DACEB2E51C437006B8B3D /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACEA2E51C437006B8B3D /* Keys.plist */; };
 		D51DAD042E51CA00006B8B3D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D51DAD032E51CA00006B8B3D /* Localizable.strings */; };
 		D51DAD052E51CB1A006B8B3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D51DAD132E51CB1A006B8B3D /* InfoPlist.strings */; };
+		C62791E3329348905B6A5F87 /* EnhancedSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */; };
+		582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */; };
+		1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */; };
+		F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +119,10 @@
 		D51DAD012E51CA00006B8B3D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D51DAD102E51CB1A006B8B3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D51DAD112E51CB1A006B8B3D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedSettingView.swift; sourceTree = "<group>"; };
+		9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSettingsSection.swift; sourceTree = "<group>"; };
+		67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSection.swift; sourceTree = "<group>"; };
+		58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetSettingsSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,11 +218,25 @@
 				38C95EF225D7270D00D80736 /* AdsView.swift */,
 				3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */,
 				3865AB4424CD2272001B03E4 /* SettingView.swift */,
+				6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */,
+
 				3864B7CF2494D81D00948ACA /* TimerView.swift */,
-			);
+			
+				91003DEF4FA4F6528C6FD637 /* Settings */,);
 			path = View;
 			sourceTree = "<group>";
 		};
+		91003DEF4FA4F6528C6FD637 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */,
+				67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */,
+				58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+
 		3864B7BF2494D81D00948ACA = {
 			isa = PBXGroup;
 			children = (
@@ -630,7 +652,11 @@
 				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
-			);
+			
+				C62791E3329348905B6A5F87 /* EnhancedSettingView.swift in Sources */,
+				582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */,
+				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
+				F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3864B7DA2494D82300948ACA /* Sources */ = {

@@ -240,26 +240,31 @@ LeafTimerアプリ近代化プロジェクトの実装計画です。設計フ�
 - `app/LeafTimer/ViewModel/TimerViewModel+extensions.swift` ✅ (拡張)
 - `app/LeafTimerTests/ModernTimerViewSpec.swift` ✅ (新規作成)
 
-#### Task 2.2.2: SettingView Enhancement
-**Priority**: High  
-**Estimated Time**: 2-3 days  
+#### Task 2.2.2: SettingView Enhancement ✅
+**Priority**: High
+**Estimated Time**: 2-3 days
 **Dependencies**: 2.2.1
+**Status**: COMPLETED - TDD methodology successfully applied
 
 **Implementation Steps:**
-1. モダンな設定画面レイアウト
-2. 設定項目のグループ化改善
-3. インライン設定変更対応
-4. 設定変更時のリアルタイムプレビュー
-5. 設定リセット機能追加
+1. モダンな設定画面レイアウト ✅
+2. 設定項目のグループ化改善 ✅
+3. インライン設定変更対応 ✅
+4. 設定変更時のリアルタイムプレビュー ✅
+5. 設定リセット機能追加 ✅
 
 **Acceptance Criteria:**
-- 直感的な設定画面
-- リアルタイム設定反映
-- 設定リセット機能動作
+- 直感的な設定画面 ✅
+- リアルタイム設定反映 ✅
+- 設定リセット機能動作 ✅
 
-**Files to Modify:**
-- `app/LeafTimer/View/SettingView.swift`
-- `app/LeafTimer/ViewModel/SettingViewModel.swift`
+**Files Created/Modified:**
+- `app/LeafTimer/View/EnhancedSettingView.swift` ✅ (新規作成)
+- `app/LeafTimer/View/Settings/TimerSettingsSection.swift` ✅ (新規作成)
+- `app/LeafTimer/View/Settings/SoundSettingsSection.swift` ✅ (新規作成)
+- `app/LeafTimer/View/Settings/ResetSettingsSection.swift` ✅ (新規作成)
+- `app/LeafTimer/View/TimerView.swift` ✅ (更新)
+- `app/LeafTimerTests/ModernSettingViewSpec.swift` ✅ (新規作成)
 
 #### Task 2.2.3: Accessibility Implementation
 **Priority**: High  

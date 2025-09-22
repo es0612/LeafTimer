@@ -75,7 +75,7 @@ struct TimerView: View {
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink(destination: SettingView(settingViewModel: settingViewModel)) {
+                        NavigationLink(destination: EnhancedSettingView(settingViewModel: settingViewModel)) {
                             Image("settingIcon").foregroundColor(.primary)
                         }
                     }
