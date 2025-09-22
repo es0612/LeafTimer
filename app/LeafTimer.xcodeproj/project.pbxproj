@@ -47,6 +47,8 @@
 		582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */; };
 		1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */; };
 		F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */; };
+		E5EE5B694F71609B83B26C7E /* ModernTimerViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */; };
+		C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +125,8 @@
 		9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSettingsSection.swift; sourceTree = "<group>"; };
 		67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSection.swift; sourceTree = "<group>"; };
 		58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetSettingsSection.swift; sourceTree = "<group>"; };
+		158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTimerViewSpec.swift; sourceTree = "<group>"; };
+		C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernSettingViewSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,9 +207,9 @@
 			children = (
 				3864B7CB2494D81D00948ACA /* AppDelegate.swift */,
 				3857B9B424A7725000B21CCD /* Assets.xcassets */,
+				D51DAD132E51CB1A006B8B3D /* InfoPlist.strings */,
 				3864B7D62494D82300948ACA /* LaunchScreen.storyboard */,
 				D51DAD032E51CA00006B8B3D /* Localizable.strings */,
-				D51DAD132E51CB1A006B8B3D /* InfoPlist.strings */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -215,23 +219,22 @@
 			children = (
 				3818BC6724E390DC0070C612 /* Elements */,
 				3864B7D32494D82300948ACA /* Preview Content */,
+				91003DEF4FA4F6528C6FD637 /* Settings */,
 				38C95EF225D7270D00D80736 /* AdsView.swift */,
 				3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */,
-				3865AB4424CD2272001B03E4 /* SettingView.swift */,
 				6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */,
-
+				3865AB4424CD2272001B03E4 /* SettingView.swift */,
 				3864B7CF2494D81D00948ACA /* TimerView.swift */,
-			
-				91003DEF4FA4F6528C6FD637 /* Settings */,);
+			);
 			path = View;
 			sourceTree = "<group>";
 		};
 		91003DEF4FA4F6528C6FD637 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */,
-				67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */,
 				58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */,
+				67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */,
+				9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -286,6 +289,8 @@
 			isa = PBXGroup;
 			children = (
 				3864B7E42494D82300948ACA /* Info.plist */,
+				C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */,
+				158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */,
 				3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */,
 				3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
@@ -446,12 +451,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D51DAD042E51CA00006B8B3D /* Localizable.strings in Resources */,
-				D51DAD052E51CB1A006B8B3D /* InfoPlist.strings in Resources */,
 				3857B9B524A7725000B21CCD /* Assets.xcassets in Resources */,
 				D51DACE92E51C175006B8B3D /* GoogleService-Info.plist in Resources */,
+				D51DAD052E51CB1A006B8B3D /* InfoPlist.strings in Resources */,
 				D51DACEB2E51C437006B8B3D /* Keys.plist in Resources */,
 				3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */,
+				D51DAD042E51CA00006B8B3D /* Localizable.strings in Resources */,
 				3818BC7124EB4E9A0070C612 /* noSound.mp3 in Resources */,
 				3864B7D52494D82300948ACA /* Preview Assets.xcassets in Resources */,
 				3856FB8A24AC3D5F007F40E5 /* rain1.mp3 in Resources */,
@@ -642,27 +647,29 @@
 				93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */,
 				3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */,
 				3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */,
+				C62791E3329348905B6A5F87 /* EnhancedSettingView.swift in Sources */,
 				38B7261A24DD85370098F3D4 /* GIFPlayerView.swift in Sources */,
 				38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */,
 				38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */,
 				3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */,
+				F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */,
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
+				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
+				582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
-			
-				C62791E3329348905B6A5F87 /* EnhancedSettingView.swift in Sources */,
-				582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */,
-				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
-				F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */,);
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3864B7DA2494D82300948ACA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */,
+				E5EE5B694F71609B83B26C7E /* ModernTimerViewSpec.swift in Sources */,
 				3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */,
 				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
