@@ -46,6 +46,7 @@ struct EnhancedSettingView: View {
 
                 // Reset & System Section
                 ResetSettingsSection(viewModel: settingViewModel)
+                
             }
             .navigationTitle(NSLocalizedString("settings.title", comment: "Settings navigation title"))
             .navigationBarTitleDisplayMode(.large)
@@ -60,6 +61,7 @@ struct EnhancedSettingView: View {
             .onAppear {
                 settingViewModel.readData()
             }
+            AdsView().frame(width: nil, height: 50, alignment: /*@START_MENU_TOKEN@*/ .center/*@END_MENU_TOKEN@*/)
         }
         .tint(.blue)
     }
