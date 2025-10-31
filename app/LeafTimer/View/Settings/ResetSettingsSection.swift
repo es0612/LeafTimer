@@ -74,7 +74,7 @@ struct ResetSettingsSection: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("LeafTimer - Focus & Productivity")
                     .font(.system(size: 11, weight: .medium))
-                Text("© 2024 LeafTimer. All rights reserved.")
+                Text("© 2025 LeafTimer. All rights reserved.")
                     .font(.system(size: 10))
             }
             .foregroundColor(.secondary)
