@@ -36,29 +36,59 @@ extension TimerViewModel {
         }
     }
 
-    func getBackgroundColor() -> LinearGradient {
+    func getBackgroundColor(colorScheme: ColorScheme) -> LinearGradient {
         if breakState {
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [
-                        Color(.displayP3, red: 0.94, green: 0.96, blue: 0.98),
-                        Color(.displayP3, red: 0.77, green: 0.80, blue: 0.88),
-                    ]
-                ),
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            if colorScheme == .dark {
+                // Dark mode: Dark blue gradient for break time
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [
+                            Color(.displayP3, red: 0.18, green: 0.20, blue: 0.24),
+                            Color(.displayP3, red: 0.25, green: 0.30, blue: 0.36),
+                        ]
+                    ),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            } else {
+                // Light mode: Light blue gradient for break time
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [
+                            Color(.displayP3, red: 0.94, green: 0.96, blue: 0.98),
+                            Color(.displayP3, red: 0.77, green: 0.80, blue: 0.88),
+                        ]
+                    ),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
         } else {
-            LinearGradient(
-                gradient: Gradient(
-                    colors: [
-                        Color(.displayP3, red: 0.95, green: 0.98, blue: 0.95),
-                        Color(.displayP3, red: 0.87, green: 0.91, blue: 0.85),
-                    ]
-                ),
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            if colorScheme == .dark {
+                // Dark mode: Dark green gradient for work time
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [
+                            Color(.displayP3, red: 0.18, green: 0.22, blue: 0.18),
+                            Color(.displayP3, red: 0.25, green: 0.30, blue: 0.23),
+                        ]
+                    ),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            } else {
+                // Light mode: Light green gradient for work time
+                LinearGradient(
+                    gradient: Gradient(
+                        colors: [
+                            Color(.displayP3, red: 0.95, green: 0.98, blue: 0.95),
+                            Color(.displayP3, red: 0.87, green: 0.91, blue: 0.85),
+                        ]
+                    ),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
         }
     }
 

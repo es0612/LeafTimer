@@ -7,13 +7,14 @@ struct TimerView: View {
     var timerViewModel: TimerViewModel
     @ObservedObject
     var settingViewModel: SettingViewModel
+    @Environment(\.colorScheme) var colorScheme
 
     // MARK: - View
 
     var body: some View {
         NavigationStack {
             ZStack {
-                timerViewModel.getBackgroundColor()
+                timerViewModel.getBackgroundColor(colorScheme: colorScheme)
                     .ignoresSafeArea(.all)
 
                 VStack {
