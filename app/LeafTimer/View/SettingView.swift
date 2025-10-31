@@ -18,7 +18,7 @@ struct SettingView: View {
                                 .write(selected: selected, item: UserDefaultItem.workingTime.rawValue)
 
                         }) {
-                            ForEach(0 ..< ItemValue.workingTimeListString.count) {
+                            ForEach(ItemValue.workingTimeListString.indices, id: \.self) {
                                 Text(ItemValue.workingTimeListString[$0]).tag($0)
                             }
                         }
@@ -33,7 +33,7 @@ struct SettingView: View {
                                     .write(selected: selected, item: UserDefaultItem.breakTime.rawValue)
                             }
                         ) {
-                            ForEach(0 ..< ItemValue.breakTimeListString.count) {
+                            ForEach(ItemValue.breakTimeListString.indices, id: \.self) {
                                 Text(ItemValue.breakTimeListString[$0]).tag($0)
                             }
                         }
@@ -50,7 +50,7 @@ struct SettingView: View {
                                     .write(selected: selected, item: UserDefaultItem.workingSound.rawValue)
                             }
                         ) {
-                            ForEach(0 ..< ItemValue.soundList.count) {
+                            ForEach(ItemValue.soundList.indices, id: \.self) {
                                 Text(ItemValue.soundList[$0]).tag($0)
                             }
                         }
