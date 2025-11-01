@@ -114,6 +114,7 @@ class TimerViewModel: ObservableObject {
     func switchBreakState() {
         if breakState {
             breakState = false
+            audioManager.finishBreak()
             audioManager.start()
         } else {
             breakState = true

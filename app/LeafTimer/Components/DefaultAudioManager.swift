@@ -6,6 +6,7 @@ protocol AudioManager {
     func start()
     func stop()
     func finish()
+    func finishBreak()
     func vibration()
     func setUp(workingSound: String)
 }
@@ -51,6 +52,14 @@ class DefaultAudioManager: AudioManager {
         workingAudioPlayer?.stop()
 
         // iOS 17: Ensure audio session is active for notification sound
+        activateAudioSessionIfNeeded()
+        stopAudioPlayer?.play()
+    }
+
+    func finishBreak() {
+        workingAudioPlayer?.stop()
+        
+        // iOS 17: Ensure audio session is active for break completion notification
         activateAudioSessionIfNeeded()
         stopAudioPlayer?.play()
     }

@@ -7,6 +7,7 @@ class SpyAudioManager: AudioManager {
     private(set) var startCallCount = 0
     private(set) var stopCallCount = 0
     private(set) var finishCallCount = 0
+    private(set) var finishBreakCallCount = 0
     private(set) var vibrationCallCount = 0
 
     private(set) var lastWorkingSound: String?
@@ -30,6 +31,10 @@ class SpyAudioManager: AudioManager {
         finishCallCount += 1
     }
 
+    func finishBreak() {
+        finishBreakCallCount += 1
+    }
+
     func vibration() {
         vibrationCallCount += 1
     }
@@ -41,6 +46,7 @@ class SpyAudioManager: AudioManager {
         startCallCount = 0
         stopCallCount = 0
         finishCallCount = 0
+        finishBreakCallCount = 0
         vibrationCallCount = 0
         lastWorkingSound = nil
     }

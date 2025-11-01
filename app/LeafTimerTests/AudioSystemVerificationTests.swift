@@ -214,4 +214,38 @@ class AudioSystemVerificationTests: XCTestCase {
         XCTAssertNoThrow(audioManager.start())
         XCTAssertNoThrow(audioManager.stop())
     }
+
+    // MARK: - 休憩終了アラームテスト
+    
+    func testBreakCompletionAlarm() {
+        // Given: Audio manager with working sound setup
+        audioManager.setUp(workingSound: "rain1")
+        
+        // When: Break ends and work session starts
+        audioManager.finishBreak() // Play break completion alarm
+        Thread.sleep(forTimeInterval: 0.1) // Allow alarm to play
+        audioManager.start() // Start work session
+        
+        // Then: Break completion workflow should execute without errors
+        XCTAssertNoThrow(audioManager.finishBreak())
+        XCTAssertNoThrow(audioManager.start())
+    }
+    
+    func testBreakAndWorkCompletionSymmetry() {
+        // Given: Audio manager setup
+        audioManager.setUp(workingSound: "river1")
+        
+        // When: Testing symmetry between work and break completion
+        audioManager.start() // Start work
+        Thread.sleep(forTimeInterval: 0.1)
+        audioManager.finish() // Work completion alarm
+        
+        Thread.sleep(forTimeInterval: 0.1)
+        audioManager.finishBreak() // Break completion alarm
+        audioManager.start() // Resume work
+        
+        // Then: Both completion alarms should behave consistently
+        XCTAssertNoThrow(audioManager.finish())
+        XCTAssertNoThrow(audioManager.finishBreak())
+    }
 }
