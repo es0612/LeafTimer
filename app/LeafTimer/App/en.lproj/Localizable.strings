@@ -40,6 +40,9 @@
 "sound.none" = "None";
 "sound.rain" = "Rain";
 "sound.river" = "River";
+"sound.bgm1" = "BGM 1";
+"sound.bgm2" = "BGM 2";
+"sound.bgm3" = "BGM 3";
 
 // MARK: - Button Labels
 "button.start" = "START";

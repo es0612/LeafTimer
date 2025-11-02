@@ -41,6 +41,9 @@
 "sound.none" = "なし";
 "sound.rain" = "雨音";
 "sound.river" = "川のせせらぎ";
+"sound.bgm1" = "BGM 1";
+"sound.bgm2" = "BGM 2";
+"sound.bgm3" = "BGM 3";
 
 // MARK: - Button Labels
 "button.start" = "START";

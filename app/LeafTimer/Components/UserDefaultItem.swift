@@ -38,6 +38,9 @@ enum ItemValue {
         NSLocalizedString("sound.none", comment: "No sound"),
         NSLocalizedString("sound.rain", comment: "Rain sound"),
         NSLocalizedString("sound.river", comment: "River sound"),
+        NSLocalizedString("sound.bgm1", comment: "BGM 1"),
+        NSLocalizedString("sound.bgm2", comment: "BGM 2"),
+        NSLocalizedString("sound.bgm3", comment: "BGM 3"),
     ]
-    static let soundListFileName = ["noSound", "rain1", "river1"]
+    static let soundListFileName = ["noSound", "rain1", "river1", "bgm1", "bgm2", "bgm3"]
 }
