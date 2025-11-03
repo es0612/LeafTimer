@@ -10,7 +10,7 @@ enum UserDefaultItem: String {
 }
 
 enum ItemValue {
-    static let workingTimeList = [5 * 60, 10 * 60, 15 * 60, 20 * 60, 25 * 60, 30 * 60]
+    static let workingTimeList = [5 * 60, 10 * 60, 15 * 60, 20 * 60, 25 * 60, 30 * 60, 35 * 60, 40 * 60, 45 * 60, 50 * 60, 55 * 60, 60 * 60]
     static let workingTimeListString = [
         NSLocalizedString("time.5_minutes", comment: "5 minutes"),
         NSLocalizedString("time.10_minutes", comment: "10 minutes"),
@@ -18,6 +18,12 @@ enum ItemValue {
         NSLocalizedString("time.20_minutes", comment: "20 minutes"),
         NSLocalizedString("time.25_minutes", comment: "25 minutes"),
         NSLocalizedString("time.30_minutes", comment: "30 minutes"),
+        NSLocalizedString("time.35_minutes", comment: "35 minutes"),
+        NSLocalizedString("time.40_minutes", comment: "40 minutes"),
+        NSLocalizedString("time.45_minutes", comment: "45 minutes"),
+        NSLocalizedString("time.50_minutes", comment: "50 minutes"),
+        NSLocalizedString("time.55_minutes", comment: "55 minutes"),
+        NSLocalizedString("time.60_minutes", comment: "60 minutes"),
     ]
 
     static let breakTimeList = [1 * 60, 2 * 60, 3 * 60, 4 * 60, 5 * 60, 6 * 60, 7 * 60, 8 * 60, 9 * 60, 10 * 60]

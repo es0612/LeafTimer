@@ -36,7 +36,7 @@ struct TimerSettingsSection: View {
                             .tag(index)
                     }
                 }
-                .pickerStyle(.segmented)
+                .pickerStyle(.menu)
                 .labelsHidden()
             }
             .padding(.vertical, 4)

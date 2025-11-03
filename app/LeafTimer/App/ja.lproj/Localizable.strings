@@ -27,6 +27,12 @@
 "time.20_minutes" = "20分";
 "time.25_minutes" = "25分";
 "time.30_minutes" = "30分";
+"time.35_minutes" = "35分";
+"time.40_minutes" = "40分";
+"time.45_minutes" = "45分";
+"time.50_minutes" = "50分";
+"time.55_minutes" = "55分";
+"time.60_minutes" = "60分";
 
 "time.1_minute" = "1分";
 "time.2_minutes" = "2分";

@@ -25,6 +25,12 @@
 "time.20_minutes" = "20 min";
 "time.25_minutes" = "25 min";
 "time.30_minutes" = "30 min";
+"time.35_minutes" = "35 min";
+"time.40_minutes" = "40 min";
+"time.45_minutes" = "45 min";
+"time.50_minutes" = "50 min";
+"time.55_minutes" = "55 min";
+"time.60_minutes" = "60 min";
 
 "time.1_minute" = "1 min";
 "time.2_minutes" = "2 min";
