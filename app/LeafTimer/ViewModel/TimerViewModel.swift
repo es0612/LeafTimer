@@ -52,6 +52,13 @@ class TimerViewModel: ObservableObject {
         todaysCount = 0
 
         loadCount()
+
+        // Set default sound settings on first launch only
+        if userDefaultWrapper.loadData(key: "hasLaunchedBefore") == 0 {
+            userDefaultWrapper.saveData(key: UserDefaultItem.workingSound.rawValue, value: 0)
+            userDefaultWrapper.saveData(key: UserDefaultItem.breakSound.rawValue, value: 0)
+            userDefaultWrapper.saveData(key: "hasLaunchedBefore", value: 1)
+        }
     }
 
     // MARK: - methods
