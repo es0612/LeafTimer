@@ -7,7 +7,7 @@ platform :ios do
 
   lane :unittests do
   scan(
-    device: "iPhone 16",
+    device: "iPhone 17",
     clean: true,
     scheme: "LeafTimer"
   )
