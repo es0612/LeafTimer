@@ -7,7 +7,7 @@ unit-tests:
 	@/usr/bin/time xcodebuild \
 	-workspace 'LeafTimer.xcworkspace' \
 	-scheme "LeafTimer" \
-	-destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
+	-destination "platform=iOS Simulator,name=iPhone 17,OS=latest" \
 	build test
 
 sort:
