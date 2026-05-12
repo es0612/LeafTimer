@@ -1,3 +1,5 @@
+# Pods/ is intentionally not committed and may be absent locally.
+# Run `make install` to fetch dependencies before the first build.
 install:
 	pod install
 update:

@@ -1,1 +1,4 @@
 .DS_Store
+
+# Serena tooling cache (memories are kept tracked)
+.serena/cache/
