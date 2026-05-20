@@ -37,10 +37,12 @@
 		38B7261C24DD85900098F3D4 /* GIFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B7261B24DD85900098F3D4 /* GIFView.swift */; };
 		38C95EF325D7270D00D80736 /* AdsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C95EF225D7270D00D80736 /* AdsView.swift */; };
 		38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C95EF725D7326A00D80736 /* KeyManager.swift */; };
+		515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */; };
 		582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
+		B41DECA1FAE3E49A1549CAC7 /* ReviewRequestPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */; };
 		C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */; };
 		C62791E3329348905B6A5F87 /* EnhancedSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */; };
 		D51DACE92E51C175006B8B3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACE82E51C175006B8B3D /* GoogleService-Info.plist */; };
@@ -76,6 +78,7 @@
 		051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTimerViewSpec.swift; sourceTree = "<group>"; };
 		1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicy.swift; path = LeafTimer/Components/ReviewRequestPolicy.swift; sourceTree = SOURCE_ROOT; };
 		33EC14C8994F314F6C2F6C06 /* Pods-LeafTimer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.release.xcconfig"; sourceTree = "<group>"; };
 		3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUserDefaultWrapper.swift; sourceTree = "<group>"; };
 		3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimerViewModel+extensions.swift"; sourceTree = "<group>"; };
@@ -133,6 +136,7 @@
 		D5D32D462EB811A900DECF70 /* bgm1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm1.mp3; sourceTree = "<group>"; };
 		D5D32D472EB811A900DECF70 /* bgm2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm2.mp3; sourceTree = "<group>"; };
 		D5D32D482EB811A900DECF70 /* bgm3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm3.mp3; sourceTree = "<group>"; };
+		EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicySpec.swift; path = LeafTimerTests/ReviewRequestPolicySpec.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +186,7 @@
 				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
 				38C95EF725D7326A00D80736 /* KeyManager.swift */,
 				3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */,
+				33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */,
 				3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */,
 			);
 			path = Components;
@@ -289,6 +294,7 @@
 				3864B7E42494D82300948ACA /* Info.plist */,
 				C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */,
 				158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */,
+				EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */,
 				3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */,
 				3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
@@ -664,6 +670,7 @@
 				38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */,
 				3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */,
 				F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */,
+				B41DECA1FAE3E49A1549CAC7 /* ReviewRequestPolicy.swift in Sources */,
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
 				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
@@ -681,6 +688,7 @@
 			files = (
 				C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */,
 				E5EE5B694F71609B83B26C7E /* ModernTimerViewSpec.swift in Sources */,
+				515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */,
 				3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */,
 				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
