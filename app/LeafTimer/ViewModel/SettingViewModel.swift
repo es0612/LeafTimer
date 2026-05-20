@@ -5,6 +5,7 @@ class SettingViewModel: ObservableObject {
     // MARK: - Dependency Injection
 
     var userDefaultWrapper: UserDefaultsWrapper
+    var reviewRequester: ReviewRequesting
 
     // MARK: - Observed Parameter
 
@@ -26,8 +27,16 @@ class SettingViewModel: ObservableObject {
 
     // MARK: - Initialization
 
-    init(userDefaultWrapper: UserDefaultsWrapper) {
+    init(
+        userDefaultWrapper: UserDefaultsWrapper,
+        reviewRequester: ReviewRequesting = StoreKitReviewRequester()
+    ) {
         self.userDefaultWrapper = userDefaultWrapper
+        self.reviewRequester = reviewRequester
+    }
+
+    func openAppStoreReviewPage() {
+        reviewRequester.openAppStoreReviewPage()
     }
 
     func write(selected: Int, item: String) {

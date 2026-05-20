@@ -44,6 +44,9 @@ struct EnhancedSettingView: View {
                         .foregroundColor(.secondary)
                 }
 
+                // About Section
+                AboutSettingsSection(viewModel: settingViewModel)
+
                 // Reset & System Section
                 ResetSettingsSection(viewModel: settingViewModel)
                 
