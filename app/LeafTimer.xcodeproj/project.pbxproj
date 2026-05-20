@@ -41,6 +41,7 @@
 		582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */; };
+		8BA106ABCE3F785BD2F48DF9 /* MockReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
 		B41DECA1FAE3E49A1549CAC7 /* ReviewRequestPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */; };
@@ -115,6 +116,7 @@
 		38C95EF225D7270D00D80736 /* AdsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsView.swift; sourceTree = "<group>"; };
 		38C95EF725D7326A00D80736 /* KeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManager.swift; sourceTree = "<group>"; };
 		39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.debug.xcconfig"; sourceTree = "<group>"; };
+		3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MockReviewRequester.swift; path = LeafTimerTests/MockReviewRequester.swift; sourceTree = SOURCE_ROOT; };
 		3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		54317E73F2F3BC94B2411A11 /* Pods-LeafTimerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				3864B7E42494D82300948ACA /* Info.plist */,
+				3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */,
 				C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */,
 				158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */,
 				EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */,
@@ -690,6 +693,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BA106ABCE3F785BD2F48DF9 /* MockReviewRequester.swift in Sources */,
 				C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */,
 				E5EE5B694F71609B83B26C7E /* ModernTimerViewSpec.swift in Sources */,
 				515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */,
