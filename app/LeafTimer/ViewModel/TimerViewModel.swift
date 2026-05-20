@@ -7,6 +7,8 @@ class TimerViewModel: ObservableObject {
     var timerManager: TimerManager
     var audioManager: AudioManager
     var userDefaultWrapper: UserDefaultsWrapper
+    var reviewPolicy: ReviewRequestPolicy
+    var reviewRequester: ReviewRequesting
 
     // MARK: - Observed Parameter
 
@@ -34,11 +36,15 @@ class TimerViewModel: ObservableObject {
     init(
         timerManager: TimerManager,
         audioManager: AudioManager,
-        userDefaultWrapper: UserDefaultsWrapper
+        userDefaultWrapper: UserDefaultsWrapper,
+        reviewPolicy: ReviewRequestPolicy = ThresholdReviewRequestPolicy(),
+        reviewRequester: ReviewRequesting = StoreKitReviewRequester()
     ) {
         self.timerManager = timerManager
         self.audioManager = audioManager
         self.userDefaultWrapper = userDefaultWrapper
+        self.reviewPolicy = reviewPolicy
+        self.reviewRequester = reviewRequester
 
         fullTimeSecond = 25 * 60
         currentTimeSecond = 25 * 60
@@ -155,6 +161,31 @@ class TimerViewModel: ObservableObject {
     func countWork() {
         todaysCount += 1
         userDefaultWrapper.saveData(key: DateManager.getToday(), value: todaysCount)
+
+        let totalCount = userDefaultWrapper.loadData(
+            key: UserDefaultItem.totalPomodoroCount.rawValue
+        ) + 1
+        userDefaultWrapper.saveData(
+            key: UserDefaultItem.totalPomodoroCount.rawValue,
+            value: totalCount
+        )
+
+        requestReviewIfNeeded(totalCount: totalCount)
+    }
+
+    private func requestReviewIfNeeded(totalCount: Int) {
+        let lastRequested: Int = userDefaultWrapper.loadData(
+            key: UserDefaultItem.lastReviewRequestedCount.rawValue
+        )
+        guard reviewPolicy.shouldRequest(
+            totalCount: totalCount, lastRequestedCount: lastRequested
+        ) else { return }
+
+        reviewRequester.requestReview()
+        userDefaultWrapper.saveData(
+            key: UserDefaultItem.lastReviewRequestedCount.rawValue,
+            value: totalCount
+        )
     }
 
     func loadCount() {
