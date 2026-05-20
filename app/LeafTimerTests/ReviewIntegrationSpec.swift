@@ -4,6 +4,7 @@ import Nimble
 @testable import LeafTimer
 
 class ReviewIntegrationSpec: QuickSpec {
+    // swiftlint:disable:next function_body_length
     override class func spec() {
         describe("TimerViewModel review request integration") {
             it("does not request review when totalPomodoroCount stays under the first threshold") {
