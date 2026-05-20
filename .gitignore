@@ -6,3 +6,6 @@
 # Claude Code plan-mode artifacts (auto-generated per session)
 # Anchor with leading slash so docs/superpowers/plans/ is not affected.
 /plans/
+
+# session-reflection.sh が次セッションへ渡す CLAUDE.md 追加候補 (個人/作業中)
+.claude/pending-reflection.md

@@ -70,3 +70,13 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 - **Conditional**: Loaded for specific file patterns (e.g., "*.test.js")
 - **Manual**: Reference with `@filename.md` syntax
 
+## 振り返りからの学び
+
+### 失敗からの教訓
+
+- Edit/Write が失敗した時や、想定外のファイル変更を検出した時は、まず並行ターミナルの別 Claude Code セッション（または別プロセス）による書き換えを疑い、ファイルの timestamp と内容を確認してから操作を続ける。気づかず上書きすると他セッションの in-progress work を破壊するため、「Edit 失敗 = 何かが書き換えた」と即座に状況確認する習慣にする。
+
+### 効率化ルール
+
+- 新規 hook スクリプト（SessionEnd/SessionStart など）を settings.json に配線する前に、sample JSON を stdin に pipe-test して bail 条件・self-detach・sentinel ガードを単体検証する。配線後の silent failure（特に `claude -p --bare` の OAuth 切れのような沈黙失敗）を未然に検出できる。
+
