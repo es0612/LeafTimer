@@ -7,6 +7,9 @@ enum UserDefaultItem: String {
 
     case workingSound
     case breakSound
+
+    case totalPomodoroCount
+    case lastReviewRequestedCount
 }
 
 enum ItemValue {
