@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */; };
+		20AE081601A9F079317B73CF /* AboutSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */; };
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
 		3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */; };
 		3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */; };
@@ -145,6 +146,7 @@
 		D5D32D482EB811A900DECF70 /* bgm3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm3.mp3; sourceTree = "<group>"; };
 		EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicySpec.swift; path = LeafTimerTests/ReviewRequestPolicySpec.swift; sourceTree = SOURCE_ROOT; };
 		FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreKitReviewRequester.swift; path = LeafTimer/Components/StoreKitReviewRequester.swift; sourceTree = SOURCE_ROOT; };
+		FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AboutSettingsSection.swift; path = LeafTimer/View/Settings/AboutSettingsSection.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,6 +328,7 @@
 		91003DEF4FA4F6528C6FD637 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */,
 				58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */,
 				67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */,
 				9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */,
@@ -669,6 +672,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20AE081601A9F079317B73CF /* AboutSettingsSection.swift in Sources */,
 				38C95EF325D7270D00D80736 /* AdsView.swift in Sources */,
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,

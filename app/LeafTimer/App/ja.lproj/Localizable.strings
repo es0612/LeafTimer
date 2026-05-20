@@ -54,3 +54,8 @@
 // MARK: - Button Labels
 "button.start" = "START";
 "button.stop" = "STOP";
+
+// MARK: - About / Review
+"settings.about_section" = "アプリについて";
+"settings.review_app" = "このアプリを評価する";
+"settings.review_app_footer" = "LeafTimer が役に立ったら、App Store でレビューをお寄せください。";

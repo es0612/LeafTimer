@@ -54,3 +54,8 @@
 "button.start" = "START";
 "button.stop" = "STOP";
 
+// MARK: - About / Review
+"settings.about_section" = "About";
+"settings.review_app" = "Review this app";
+"settings.review_app_footer" = "If you enjoy LeafTimer, please leave a review on the App Store.";
+
