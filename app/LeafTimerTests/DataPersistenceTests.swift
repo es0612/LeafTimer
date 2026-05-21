@@ -20,6 +20,8 @@ class DataPersistenceTests: XCTestCase {
 
         // Clean up test data
         testUserDefaults?.removePersistentDomain(forName: "DataPersistenceTests")
+        // FIXME: LocalUserDefaultsWrapper uses UserDefaults.standard; full isolation
+        // would require making the wrapper accept an injected UserDefaults instance.
     }
 
     override func tearDownWithError() throws {
@@ -32,7 +34,7 @@ class DataPersistenceTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    // MARK: - UserDefaults保存・読み込みテスト
+    // MARK: - userDefaults保存・読み込みテスト
 
     func testSaveAndLoadIntegerValues() {
         // RED Phase: This test should initially fail
@@ -236,6 +238,7 @@ class DataPersistenceTests: XCTestCase {
         let newWrapper = LocalUserDefaultsWrapper()
 
         // Then: Data should be available in new wrapper
+        // Overload disambiguation: no binding variable, so cast inline.
         XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.workingTime.rawValue) as Int, 4)
         XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.breakTime.rawValue) as Int, 2)
         XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.vibration.rawValue) as Bool, true)
@@ -311,7 +314,6 @@ class DataPersistenceTests: XCTestCase {
         for key in missingKeys {
             userDefaults.removeObject(forKey: key)
         }
-        userDefaults.synchronize()
 
         // When: Loading data for keys that don't exist
         // Then: Should return appropriate default values
@@ -346,7 +348,7 @@ class DataPersistenceTests: XCTestCase {
         XCTAssertEqual(finalActualValue, finalExpectedValue, "Final value should be correct")
     }
 
-    // MARK: - Edge Cases and Error Handling
+    // MARK: - edge cases and error handling
 
     func testEmptyStringKeys() {
         // Given: Empty string key
@@ -411,7 +413,7 @@ class DataPersistenceTests: XCTestCase {
         XCTAssertNoThrow(userDefaultsWrapper.loadData(key: testKey) as Int)
     }
 
-    // MARK: - Mock Wrapper Testing
+    // MARK: - mock wrapper testing
 
     func testMockWrapperFunctionality() {
         // Given: Mock wrapper for testing
@@ -437,6 +439,7 @@ class DataPersistenceTests: XCTestCase {
         mockWrapper.reset()
 
         // Then: All data and counters should be cleared
+        // Overload disambiguation: no binding variable, so cast inline.
         XCTAssertEqual(mockWrapper.loadData(key: "testKey") as Int, 0)
         XCTAssertEqual(mockWrapper.loadData(key: "testBoolKey") as Bool, false)
         XCTAssertEqual(mockWrapper.saveDataIntCallCount, 0)
