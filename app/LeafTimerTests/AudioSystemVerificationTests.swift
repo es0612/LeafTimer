@@ -67,7 +67,6 @@ class AudioSystemVerificationTests: XCTestCase {
         XCTAssertNoThrow(audioManager.vibration(), "Vibration should trigger without errors")
     }
 
-    // swiftlint:disable:next mark_format
     // MARK: - Audio Sessionの適切な設定確認
 
     func testAudioSessionConfiguration() {

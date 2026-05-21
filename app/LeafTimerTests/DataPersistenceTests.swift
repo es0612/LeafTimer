@@ -34,8 +34,6 @@ class DataPersistenceTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    // .swiftlint.yml の mark_format 正規表現がバグっており Title Case MARK を誤検知するため抑制。
-    // swiftlint:disable:next mark_format
     // MARK: - UserDefaults保存・読み込みテスト
 
     func testSaveAndLoadIntegerValues() {
@@ -350,8 +348,6 @@ class DataPersistenceTests: XCTestCase {
         XCTAssertEqual(finalActualValue, finalExpectedValue, "Final value should be correct")
     }
 
-    // .swiftlint.yml の mark_format 正規表現がバグっており Title Case MARK を誤検知するため抑制。
-    // swiftlint:disable:next mark_format
     // MARK: - Edge Cases and Error Handling
 
     func testEmptyStringKeys() {
@@ -417,8 +413,6 @@ class DataPersistenceTests: XCTestCase {
         XCTAssertNoThrow(userDefaultsWrapper.loadData(key: testKey) as Int)
     }
 
-    // .swiftlint.yml の mark_format 正規表現がバグっており Title Case MARK を誤検知するため抑制。
-    // swiftlint:disable:next mark_format
     // MARK: - Mock Wrapper Testing
 
     func testMockWrapperFunctionality() {
