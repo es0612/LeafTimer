@@ -173,6 +173,7 @@ class AudioSystemVerificationTests: XCTestCase {
         XCTAssertNoThrow(audioManager.finish(), "Should handle rapid operations")
     }
 
+    // swiftlint:disable:next mark_format
     // MARK: - iOS 17 最適化機能テスト
 
     func testBatteryOptimizedAudioSession() {
