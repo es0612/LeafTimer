@@ -45,7 +45,7 @@ class DataPersistenceTests: XCTestCase {
         userDefaultsWrapper.saveData(key: testKey, value: testValue)
 
         // Then: Should be able to load the same value
-        let loadedValue = userDefaultsWrapper.loadData(key: testKey)
+        let loadedValue: Int = userDefaultsWrapper.loadData(key: testKey)
         XCTAssertEqual(loadedValue, testValue, "Saved and loaded integer values should match")
     }
 
@@ -60,7 +60,7 @@ class DataPersistenceTests: XCTestCase {
         userDefaultsWrapper.saveData(key: testKey, value: testValue)
 
         // Then: Should be able to load the same value
-        let loadedValue = userDefaultsWrapper.loadData(key: testKey)
+        let loadedValue: Bool = userDefaultsWrapper.loadData(key: testKey)
         XCTAssertEqual(loadedValue, testValue, "Saved and loaded boolean values should match")
     }
 
@@ -88,7 +88,7 @@ class DataPersistenceTests: XCTestCase {
         userDefaultsWrapper.saveData(key: workingTimeKey, value: selectedIndex)
 
         // Then: Should persist the setting
-        let loadedIndex = userDefaultsWrapper.loadData(key: workingTimeKey)
+        let loadedIndex: Int = userDefaultsWrapper.loadData(key: workingTimeKey)
         XCTAssertEqual(loadedIndex, selectedIndex, "Working time setting should persist")
 
         // And: Should correspond to correct time value
@@ -106,7 +106,7 @@ class DataPersistenceTests: XCTestCase {
         userDefaultsWrapper.saveData(key: breakTimeKey, value: selectedIndex)
 
         // Then: Should persist the setting
-        let loadedIndex = userDefaultsWrapper.loadData(key: breakTimeKey)
+        let loadedIndex: Int = userDefaultsWrapper.loadData(key: breakTimeKey)
         XCTAssertEqual(loadedIndex, selectedIndex, "Break time setting should persist")
 
         // And: Should correspond to correct time value
@@ -124,7 +124,7 @@ class DataPersistenceTests: XCTestCase {
         userDefaultsWrapper.saveData(key: vibrationKey, value: enableVibration)
 
         // Then: Should persist the setting
-        let loadedValue = userDefaultsWrapper.loadData(key: vibrationKey)
+        let loadedValue: Bool = userDefaultsWrapper.loadData(key: vibrationKey)
         XCTAssertEqual(loadedValue, enableVibration, "Vibration setting should persist")
     }
 
@@ -140,8 +140,8 @@ class DataPersistenceTests: XCTestCase {
         userDefaultsWrapper.saveData(key: breakSoundKey, value: breakSoundIndex)
 
         // Then: Should persist both settings
-        let loadedWorkingSound = userDefaultsWrapper.loadData(key: workingSoundKey)
-        let loadedBreakSound = userDefaultsWrapper.loadData(key: breakSoundKey)
+        let loadedWorkingSound: Int = userDefaultsWrapper.loadData(key: workingSoundKey)
+        let loadedBreakSound: Int = userDefaultsWrapper.loadData(key: breakSoundKey)
 
         XCTAssertEqual(loadedWorkingSound, workingSoundIndex, "Working sound setting should persist")
         XCTAssertEqual(loadedBreakSound, breakSoundIndex, "Break sound setting should persist")
@@ -167,7 +167,7 @@ class DataPersistenceTests: XCTestCase {
         userDefaultsWrapper.saveData(key: todayKey, value: sessionCount)
 
         // Then: Should persist the count
-        let loadedCount = userDefaultsWrapper.loadData(key: todayKey)
+        let loadedCount: Int = userDefaultsWrapper.loadData(key: todayKey)
         XCTAssertEqual(loadedCount, sessionCount, "Daily count should persist")
     }
 
@@ -190,7 +190,7 @@ class DataPersistenceTests: XCTestCase {
 
         // Then: All data should persist correctly
         for (date, expectedCount) in zip(testDates, testCounts) {
-            let loadedCount = userDefaultsWrapper.loadData(key: date)
+            let loadedCount: Int = userDefaultsWrapper.loadData(key: date)
             XCTAssertEqual(loadedCount, expectedCount, "Count for \(date) should persist")
         }
     }
@@ -236,10 +236,10 @@ class DataPersistenceTests: XCTestCase {
         let newWrapper = LocalUserDefaultsWrapper()
 
         // Then: Data should be available in new wrapper
-        XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.workingTime.rawValue), 4)
-        XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.breakTime.rawValue), 2)
-        XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.vibration.rawValue), true)
-        XCTAssertEqual(newWrapper.loadData(key: "2025/09/11"), 7)
+        XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.workingTime.rawValue) as Int, 4)
+        XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.breakTime.rawValue) as Int, 2)
+        XCTAssertEqual(newWrapper.loadData(key: UserDefaultItem.vibration.rawValue) as Bool, true)
+        XCTAssertEqual(newWrapper.loadData(key: "2025/09/11") as Int, 7)
     }
 
     func testSettingsConsistencyAfterRestart() {
@@ -268,11 +268,11 @@ class DataPersistenceTests: XCTestCase {
 
         // Then: All settings should be consistent
         for (key, expectedValue) in settings {
-            let actualValue = restoredWrapper.loadData(key: key)
+            let actualValue: Int = restoredWrapper.loadData(key: key)
             XCTAssertEqual(actualValue, expectedValue, "Setting \(key) should persist across restart")
         }
         for (key, expectedValue) in boolSettings {
-            let actualValue = restoredWrapper.loadData(key: key)
+            let actualValue: Bool = restoredWrapper.loadData(key: key)
             XCTAssertEqual(actualValue, expectedValue, "Boolean setting \(key) should persist across restart")
         }
     }
@@ -286,7 +286,7 @@ class DataPersistenceTests: XCTestCase {
 
         // When: Setting invalid data
         userDefaultsWrapper.saveData(key: workingTimeKey, value: invalidIndex)
-        let loadedValue = userDefaultsWrapper.loadData(key: workingTimeKey)
+        let loadedValue: Int = userDefaultsWrapper.loadData(key: workingTimeKey)
 
         // Then: Should handle gracefully (return the stored value, let app handle validation)
         XCTAssertEqual(loadedValue, invalidIndex, "Should return stored value even if invalid")
@@ -305,6 +305,13 @@ class DataPersistenceTests: XCTestCase {
             UserDefaultItem.workingSound.rawValue,
             UserDefaultItem.breakSound.rawValue,
         ]
+
+        // Clean up any previous data from these keys
+        let userDefaults = UserDefaults.standard
+        for key in missingKeys {
+            userDefaults.removeObject(forKey: key)
+        }
+        userDefaults.synchronize()
 
         // When: Loading data for keys that don't exist
         // Then: Should return appropriate default values
@@ -329,13 +336,13 @@ class DataPersistenceTests: XCTestCase {
             let value = i % ItemValue.workingTimeList.count // Keep within valid range
             userDefaultsWrapper.saveData(key: testKey, value: value)
 
-            let loadedValue = userDefaultsWrapper.loadData(key: testKey)
+            let loadedValue: Int = userDefaultsWrapper.loadData(key: testKey)
             XCTAssertEqual(loadedValue, value, "Data integrity should be maintained during rapid operations")
         }
 
         // Then: Final value should be correct
         let finalExpectedValue = (iterations - 1) % ItemValue.workingTimeList.count
-        let finalActualValue = userDefaultsWrapper.loadData(key: testKey)
+        let finalActualValue: Int = userDefaultsWrapper.loadData(key: testKey)
         XCTAssertEqual(finalActualValue, finalExpectedValue, "Final value should be correct")
     }
 
@@ -349,7 +356,7 @@ class DataPersistenceTests: XCTestCase {
         // When: Saving with empty key
         // Then: Should handle gracefully (UserDefaults will store it)
         XCTAssertNoThrow(userDefaultsWrapper.saveData(key: emptyKey, value: testValue))
-        XCTAssertNoThrow(userDefaultsWrapper.loadData(key: emptyKey))
+        XCTAssertNoThrow(_ = userDefaultsWrapper.loadData(key: emptyKey) as Int)
     }
 
     func testVeryLongKeys() {
@@ -360,7 +367,7 @@ class DataPersistenceTests: XCTestCase {
         // When: Saving with long key
         // Then: Should handle gracefully
         XCTAssertNoThrow(userDefaultsWrapper.saveData(key: longKey, value: testValue))
-        let loadedValue = userDefaultsWrapper.loadData(key: longKey)
+        let loadedValue: Int = userDefaultsWrapper.loadData(key: longKey)
         XCTAssertEqual(loadedValue, testValue, "Long keys should work correctly")
     }
 
@@ -373,7 +380,7 @@ class DataPersistenceTests: XCTestCase {
         // Then: Should handle all special characters
         for key in specialKeys {
             XCTAssertNoThrow(userDefaultsWrapper.saveData(key: key, value: testValue))
-            let loadedValue = userDefaultsWrapper.loadData(key: key)
+            let loadedValue: Int = userDefaultsWrapper.loadData(key: key)
             XCTAssertEqual(loadedValue, testValue, "Key '\(key)' should work correctly")
         }
     }
@@ -394,14 +401,14 @@ class DataPersistenceTests: XCTestCase {
 
         DispatchQueue.global().async {
             for _ in 0..<50 {
-                _ = self.userDefaultsWrapper.loadData(key: testKey)
+                _ = self.userDefaultsWrapper.loadData(key: testKey) as Int
             }
             expectation.fulfill()
         }
 
         // Then: Should complete without crashes
         wait(for: [expectation], timeout: 5.0)
-        XCTAssertNoThrow(userDefaultsWrapper.loadData(key: testKey))
+        XCTAssertNoThrow(userDefaultsWrapper.loadData(key: testKey) as Int)
     }
 
     // MARK: - Mock Wrapper Testing
@@ -413,7 +420,7 @@ class DataPersistenceTests: XCTestCase {
 
         // When: Using mock wrapper
         mockWrapper.saveData(key: testKey, value: testValue)
-        let loadedValue = mockWrapper.loadData(key: testKey)
+        let loadedValue: Int = mockWrapper.loadData(key: testKey)
 
         // Then: Mock should behave correctly
         XCTAssertEqual(loadedValue, testValue, "Mock wrapper should work correctly")
@@ -430,8 +437,8 @@ class DataPersistenceTests: XCTestCase {
         mockWrapper.reset()
 
         // Then: All data and counters should be cleared
-        XCTAssertEqual(mockWrapper.loadData(key: "testKey"), 0)
-        XCTAssertEqual(mockWrapper.loadData(key: "testBoolKey"), false)
+        XCTAssertEqual(mockWrapper.loadData(key: "testKey") as Int, 0)
+        XCTAssertEqual(mockWrapper.loadData(key: "testBoolKey") as Bool, false)
         XCTAssertEqual(mockWrapper.saveDataIntCallCount, 0)
         XCTAssertEqual(mockWrapper.saveDataBoolCallCount, 0)
     }
