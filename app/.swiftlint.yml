@@ -56,7 +56,6 @@ opt_in_rules:
   - legacy_random
   - literal_expression_end_indentation
   - modifier_order
-  - nimble_operator
   - number_separator
   - object_literal
   - operator_usage_whitespace
@@ -130,6 +129,7 @@ disabled_rules:
   - force_try
   - todo
   - comment_spacing  # Allow Japanese comments
+  - nimble_operator  # Prefer BDD-style matchers (beNil/equal/beGreaterThan) over operators
 
 # Rule configurations
 attributes:
@@ -229,13 +229,15 @@ vertical_whitespace:
 # Custom rules for LeafTimer project
 custom_rules:
   
-  # MARK comments should follow specific format
+  # MARK comments should follow Title Case (// MARK: - TitleCase ...)
+  # Fires only when a lowercase Latin letter follows "// MARK: - ".
+  # Japanese MARKs (e.g. "// MARK: - 永続化") are allowed (no match).
   mark_format:
     name: "MARK Format"
-    regex: "// MARK: - [A-Z]"
+    regex: "// MARK: - [a-z]"
     match_kinds:
       - comment
-    message: "MARK comments should follow '// MARK: - Title' format"
+    message: "MARK comments should follow '// MARK: - Title' format (Title Case required)"
     severity: warning
   
   # Prefer modern async/await where applicable

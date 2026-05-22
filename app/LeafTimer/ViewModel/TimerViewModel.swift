@@ -67,7 +67,7 @@ class TimerViewModel: ObservableObject {
         }
     }
 
-    // MARK: - methods
+    // MARK: - Methods
 
     func onPressedTimerButton() {
         switch executeState {

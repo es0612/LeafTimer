@@ -67,7 +67,6 @@ class AudioSystemVerificationTests: XCTestCase {
         XCTAssertNoThrow(audioManager.vibration(), "Vibration should trigger without errors")
     }
 
-    // swiftlint:disable:next mark_format
     // MARK: - Audio Sessionの適切な設定確認
 
     func testAudioSessionConfiguration() {
@@ -173,6 +172,7 @@ class AudioSystemVerificationTests: XCTestCase {
         XCTAssertNoThrow(audioManager.finish(), "Should handle rapid operations")
     }
 
+    // swiftlint:disable:next mark_format
     // MARK: - iOS 17 最適化機能テスト
 
     func testBatteryOptimizedAudioSession() {

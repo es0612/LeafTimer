@@ -9,8 +9,8 @@ import SwiftUI
 // PR #14 (Issue #3) 時点で pbxproj 未登録のまま放置されていたものを、
 // Issue #15 で現 API (fullTimeSecond / switchBreakState / finishCallCount)
 // に書き直して復活させた。
-// swiftlint:disable function_body_length
 class TimerCoreLogicSpec: QuickSpec {
+    // swiftlint:disable:next function_body_length
     override class func spec() {
         describe("Timer Core Logic") {
 

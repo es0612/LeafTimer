@@ -6,7 +6,7 @@ import SwiftUI
 @testable import LeafTimer
 
 class ModernSettingViewSpec: QuickSpec {
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     override class func spec() {
         describe("Enhanced SettingView") {
             var settingView: SettingView!
