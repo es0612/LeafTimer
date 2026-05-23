@@ -18,6 +18,9 @@ echo "${KEYS_PLIST_BASE64}" | base64 -d > "${APP_DIR}/Keys.plist"
 echo "==> Restoring GoogleService-Info.plist"
 echo "${GOOGLE_SERVICE_INFO_PLIST_BASE64}" | base64 -d > "${APP_DIR}/GoogleService-Info.plist"
 
+echo "==> Installing CocoaPods (Xcode Cloud agents do not preinstall it)"
+brew install cocoapods
+
 echo "==> Running pod install"
 cd "${APP_DIR}"
 pod install
