@@ -76,6 +76,7 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 
 - Edit/Write が失敗した時や、想定外のファイル変更を検出した時は、まず並行ターミナルの別 Claude Code セッション（または別プロセス）による書き換えを疑い、ファイルの timestamp と内容を確認してから操作を続ける。気づかず上書きすると他セッションの in-progress work を破壊するため、「Edit 失敗 = 何かが書き換えた」と即座に状況確認する習慣にする。
 - SwiftLint の `custom_rules` の regex は「違反パターン」を書くのが正方向。新規 custom rule を入れる前に、**意図する正例と反例の両方をテキストで列挙して regex を当て**、ヒット方向が反転していないかを必ず確認する。Issue #15 では反転バグに気付かず `disable:next` workaround を 4 ヶ所撒く事故が起きた。
+- Bash でビルド/テスト系コマンド (`make` / `xcodebuild` / `npm test` / `pytest` 等) を `| tail` / `| head` / `| grep` でフィルタする時は、必ず `set -o pipefail` をコマンド前に置くか、`${PIPESTATUS[0]}` で元コマンドの exit code を取得する (または `tee` で全出力をファイルに残してから `grep` する)。Issue #9 で `make tests 2>&1 | tail -80` の exit code が tail の 0 に隠れて、`make: *** [unit-tests] Error 70` という失敗を「成功」と誤判定する事故が発生した。
 
 ### 効率化ルール
 
