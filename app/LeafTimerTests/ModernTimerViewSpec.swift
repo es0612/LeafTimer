@@ -105,7 +105,7 @@ class ModernTimerViewSpec: QuickSpec {
                     expect(toolbar) != nil
                 }
 
-                // xit: 同上、vStack(1) に toolbar modifier が存在しないためパス不一致 (Issue #16)
+                // xit: TimerView の実装変更で vStack(1) に toolbar modifier が存在しないためパス不一致 (Issue #16)
                 xit("has settings navigation link in toolbar") {
                     let navStack = try timerView.body.inspect().navigationStack()
                     let toolbar = try navStack.zStack(0).vStack(1).toolbar()
@@ -126,7 +126,7 @@ class ModernTimerViewSpec: QuickSpec {
                     expect(countText).to(contain(String(timerViewModel.todaysCount)))
                 }
 
-                // xit: 同上、vStack(1).text(2) のパスが不一致 (view absent) (Issue #16)
+                // xit: TimerView の実装変更で vStack(1).text(2) のパスが不一致 (view absent) (Issue #16)
                 xit("updates session count when timer completes") {
                     timerViewModel.todaysCount = 5
                     let countText = try timerView.body.inspect()
