@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */; };
 		20AE081601A9F079317B73CF /* AboutSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */; };
+		27AC7EA43074765A7875051B /* KeyManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */; };
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
 		3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */; };
 		3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */; };
@@ -151,6 +152,7 @@
 		D5D32D472EB811A900DECF70 /* bgm2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm2.mp3; sourceTree = "<group>"; };
 		D5D32D482EB811A900DECF70 /* bgm3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm3.mp3; sourceTree = "<group>"; };
 		EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicySpec.swift; path = LeafTimerTests/ReviewRequestPolicySpec.swift; sourceTree = SOURCE_ROOT; };
+		F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeyManagerSpec.swift; path = LeafTimerTests/KeyManagerSpec.swift; sourceTree = SOURCE_ROOT; };
 		FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreKitReviewRequester.swift; path = LeafTimer/Components/StoreKitReviewRequester.swift; sourceTree = SOURCE_ROOT; };
 		FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AboutSettingsSection.swift; path = LeafTimer/View/Settings/AboutSettingsSection.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -311,6 +313,7 @@
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
 				3864B7E42494D82300948ACA /* Info.plist */,
+				F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */,
 				3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */,
 				B135F8247048DD2B815AA60A /* MockUserDefaultWrapper.swift */,
 				C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */,
@@ -714,6 +717,7 @@
 			files = (
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
+				27AC7EA43074765A7875051B /* KeyManagerSpec.swift in Sources */,
 				8BA106ABCE3F785BD2F48DF9 /* MockReviewRequester.swift in Sources */,
 				B70E83FDCE085D30BF9E8703 /* MockUserDefaultWrapper.swift in Sources */,
 				C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */,
