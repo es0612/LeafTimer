@@ -5,10 +5,7 @@ struct AdsView: UIViewRepresentable {
     func makeUIView(context: Context) -> GADBannerView {
         let banner = GADBannerView(adSize: GADAdSizeBanner)
 
-        //                test id
-        //                banner.adUnitID = "ca-app-pub-3940256099942544/2934735716"
-
-        banner.adUnitID = KeyManager().getValue(key: "adUnitID") as? String
+        banner.adUnitID = KeyManager().getAdUnitID()
         print(banner.adUnitID)
         // iOS 17対応: windowSceneから適切なrootViewControllerを取得
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
