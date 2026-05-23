@@ -13,6 +13,9 @@ platform :ios do
   )
   end
 
+  # DEPRECATED: TestFlight 配信は Xcode Cloud Workflow に移行済み (Issue #13)。
+  # この lane は緊急時 rollback 用に残してある。通常は git push で
+  # Xcode Cloud が自動配信する。詳細: docs/ver1_2/xcode-cloud-setup.md
   lane :beta do
     unittests
 
