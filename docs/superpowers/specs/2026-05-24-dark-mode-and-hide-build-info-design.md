@@ -12,7 +12,7 @@
 Explore 結果から根本原因が 3 レイヤーに分かれることが判明:
 
 1. **カスタム PDF アイコンの dark 対応欠落**: `reloadIcon` / `settingIcon` / `splashIcon` の Contents.json に `template-rendering-intent` 指定が無く、PDF の色がそのまま使われている。SwiftUI 側で `.foregroundColor(.primary)` を当てても効いていない (TimerView.swift:75, 80)。
-2. **ハードコードされた gray / white**: TimerView / SessionStatsView / TimerControlsView の計 ~10 箇所で `Color(red: ..., ..., ...)` や `Color.white` を直接指定しており、ダークモードに追従しない。
+2. **ハードコードされた gray / white**: TimerView の 2 箇所 (line 55, 66) で `Color(red: ..., ..., ...)` を直接指定しており、ダークモードに追従しない。(Explore 時点では SessionStatsView / TimerControlsView にも ~8 箇所見つかったが、それらは dead code と判明したため scope 外)
 3. **Color asset は完備済だが未活用**: `Assets.xcassets/Colors/` に `TextPrimary` / `BackgroundSecondary` 等 14 色が dark variant 込みで定義済だが、view 側で参照されていない。
 
 ### Issue #27: ビルド番号などユーザに見せる必要のない情報は不要
@@ -23,10 +23,12 @@ Explore 結果から根本原因が 3 レイヤーに分かれることが判明
 
 ## スコープ
 
-ブレストの結果 **B 案 (アイコン + 主要画面の明らかな記述バグ)** に決定:
+ブレストの結果 **B 案 (アイコン + 主要画面の明らかな記述バグ)** に決定。
+さらに plan 作成段階で実コード確認した結果、`SessionStatsView` と `TimerControlsView` が **どこからも参照されていない dead code** であることが判明 (`6096505 Implement TimerView Modernization with TDD` で書かれたが wire-up されていない)。これらを修正してもユーザー画面に変化が無いため、scope 外に移動した。
 
 - ✅ アイコン: `reloadIcon` / `settingIcon` の template-rendering 化
-- ✅ TimerView / SessionStatsView / TimerControlsView の hardcoded gray/white を semantic color へ置換
+- ✅ TimerView (live) の hardcoded gray を `.primary`/`.secondary` へ置換 (line 55, 66)
+- ❌ SessionStatsView / TimerControlsView の修正 — **dead code のため除外** (削除や wire-up は別 issue で扱う)
 - ❌ ViewModel の circle button color (`getColor1`〜`4`) — 別 issue で扱う (C 案領域)
 - ❌ splashIcon の dark variant — launch screen 専用で runtime ダークモード問題に無関係
 - ❌ 全 hardcoded 色の design token 移行 — C 案領域、今回は実施しない
@@ -55,27 +57,16 @@ Explore 結果から根本原因が 3 レイヤーに分かれることが判明
 
 ### B. Hardcoded color 置換 (Issue #26 色部分)
 
-ハイブリッド方針 — テキスト系は SwiftUI built-in (`.primary`/`.secondary`)、背景系は project の semantic asset を使う。
+ハイブリッド方針 — テキスト系は SwiftUI built-in (`.primary`/`.secondary`)。今回は live コードに該当する箇所のみ修正。
 
-| ファイル                 | 行    | Before                                         | After                              |
-|-------------------------|------|------------------------------------------------|------------------------------------|
-| TimerView.swift         | 55   | `Color(red: 0.65, green: 0.65, blue: 0.65, opacity: 0.9)` (timer 文字) | `.primary.opacity(0.9)`            |
-| TimerView.swift         | 66   | `Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.9)` (本日カウント)  | `.secondary.opacity(0.9)`          |
-| SessionStatsView.swift  | 22   | `Color(red: 0.3, green: 0.3, blue: 0.3)` (stat 数字)                 | `.primary`                         |
-| SessionStatsView.swift  | 35   | `Color.white.opacity(0.9)` (カード背景)                                | `Color("BackgroundSecondary")`     |
-| SessionStatsView.swift  | 49   | `Color(red: 0.3, green: 0.3, blue: 0.3)` (週平均数字)                | `.primary`                         |
-| SessionStatsView.swift  | 62   | `Color.white.opacity(0.9)` (カード背景)                                | `Color("BackgroundSecondary")`     |
-| TimerControlsView.swift | 52-53| `Color.white.opacity(0.3)` / `Color.white.opacity(0.1)` (stroke)       | `.primary.opacity(0.3)` / `.primary.opacity(0.1)` |
-| TimerControlsView.swift | 78   | `Color.gray.opacity(0.2)` (reset 背景)                                 | `.secondary.opacity(0.2)`          |
-| TimerControlsView.swift | 83   | `Color.gray.opacity(0.8)` (reset icon)                                 | `.secondary.opacity(0.8)`          |
+| ファイル                 | 行  | Before                                                                | After                              |
+|-------------------------|-----|----------------------------------------------------------------------|------------------------------------|
+| TimerView.swift         | 55  | `Color(red: 0.65, green: 0.65, blue: 0.65, opacity: 0.9)` (timer 文字) | `.primary.opacity(0.9)`            |
+| TimerView.swift         | 66  | `Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.9)` (本日カウント)  | `.secondary.opacity(0.9)`          |
 
 #### 設計判断: なぜハイブリッドか
 - `.primary` / `.secondary` は OS が light/dark で適切にコントラストを保証する標準色。テキスト用途では project asset を新設するより信頼性が高い。
-- カード背景は project 固有の brand color が必要なため `BackgroundSecondary` asset を使う。これは既に dark variant 付きで定義済。
-- stroke の `Color.white.opacity(...)` は dark 背景でも見える可能性があるが light モードで全く見えないバグになっている。`.primary.opacity(...)` にすると両モードで適切なコントラスト。
-
-#### Opacity の扱い
-SessionStatsView の背景 `Color.white.opacity(0.9)` → `Color("BackgroundSecondary")` で **opacity は外す**。理由: `BackgroundSecondary` asset は light/dark の双方で意図された色がチューニング済のため、追加の opacity は不要 (むしろ下地が透けて意図しない見た目になる)。screenshot で違和感があれば 0.95 等を後追いで足す。
+- カード背景や stroke の置換は live コードに該当箇所が無いため今回は対象外。発見した dead code の SessionStatsView / TimerControlsView は別 issue で扱う。
 
 ### C. ビルド/バージョン表示削除 (Issue #27)
 
@@ -111,7 +102,8 @@ SessionStatsView の背景 `Color.white.opacity(0.9)` → `Color("BackgroundSeco
 
 ## リスク・残課題
 
-- **ViewModel の circle button color 未対応**: ダークモードで円ボタンの色が浮く可能性が残る。別 issue (例: "Issue #26 後続: ViewModel の circle button を dark mode 対応") を triage 段階で作成済かを後で確認。無ければ別途立てる。
+- **ViewModel の circle button color 未対応**: ダークモードで円ボタンの色が浮く可能性が残る。別 issue として triage 段階で作成済かを後で確認。無ければ別途立てる。
+- **dead code (SessionStatsView / TimerControlsView) の扱い保留**: 削除 or wire-up 判断は別 issue で行う。本 PR では触らない。
 - **splashIcon は対象外**: 起動画面は一瞬しか出ないため優先度低。気になるようなら後続 issue。
 - **template-rendering 化で PDF の元色が失われる**: reloadIcon / settingIcon は元々シンプルな線画 (推定) なのでこの方針で問題ないはずだが、screenshot で確認する。万一複雑な配色 PDF だった場合は方針 C (dark variant PDF 追加) に切り替える必要あり。
 
