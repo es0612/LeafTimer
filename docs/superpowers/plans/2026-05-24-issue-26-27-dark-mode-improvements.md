@@ -414,22 +414,9 @@ xcrun simctl io booted screenshot /tmp/leaftimer-issue-26-27-dark-timer.png
 
 ### Task 8: branch push + PR 作成
 
-- [ ] **Step 1: plan ファイルを commit (実装最初の commit ではなく追補だが、PR 履歴に残す)**
+(Plan ファイルは既に commit 0cd5088 として branch に含まれる)
 
-```bash
-cd /Users/shinya/workspace/claude/LeafTimer && git add docs/superpowers/plans/2026-05-24-issue-26-27-dark-mode-improvements.md
-git commit -m "$(cat <<'EOF'
-Issue #26 #27: 実装計画ドキュメント追加
-
-writing-plans skill で作成した plan を docs/superpowers/plans に追加。
-spec (2d0a285) の合意済みスコープに沿った 8 タスク構成。
-
-Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
-EOF
-)"
-```
-
-- [ ] **Step 2: 既存 PR の有無を確認 (CLAUDE.md 振り返り)**
+- [ ] **Step 1: 既存 PR の有無を確認 (CLAUDE.md 振り返り)**
 
 ```bash
 cd /Users/shinya/workspace/claude/LeafTimer && git fetch origin && gh pr list --state all --head feature/issue-26-27-dark-mode-improvements
@@ -437,13 +424,13 @@ cd /Users/shinya/workspace/claude/LeafTimer && git fetch origin && gh pr list --
 
 Expected: 出力なし (まだ PR 無し)
 
-- [ ] **Step 3: branch push**
+- [ ] **Step 2: branch push**
 
 ```bash
 cd /Users/shinya/workspace/claude/LeafTimer && git push -u origin feature/issue-26-27-dark-mode-improvements 2>&1 | tail -5
 ```
 
-- [ ] **Step 4: PR 作成**
+- [ ] **Step 3: PR 作成**
 
 ```bash
 cd /Users/shinya/workspace/claude/LeafTimer && gh pr create \
@@ -480,13 +467,13 @@ EOF
 )"
 ```
 
-- [ ] **Step 5: PR URL を user に返却**
+- [ ] **Step 4: PR URL を user に返却**
 
 ```bash
 cd /Users/shinya/workspace/claude/LeafTimer && gh pr view --web 2>&1 | tail -3 || gh pr view --json url --jq .url
 ```
 
-- [ ] **Step 6: PR に screenshot 4 枚を添付 (manual)**
+- [ ] **Step 5: PR に screenshot 4 枚を添付 (manual)**
 
 `gh` CLI には画像 inline attach 機能が無いため、以下の手順で GitHub web UI から添付する:
 
