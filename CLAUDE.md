@@ -77,6 +77,8 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 - Edit/Write が失敗した時や、想定外のファイル変更を検出した時は、まず並行ターミナルの別 Claude Code セッション（または別プロセス）による書き換えを疑い、ファイルの timestamp と内容を確認してから操作を続ける。気づかず上書きすると他セッションの in-progress work を破壊するため、「Edit 失敗 = 何かが書き換えた」と即座に状況確認する習慣にする。
 - SwiftLint の `custom_rules` の regex は「違反パターン」を書くのが正方向。新規 custom rule を入れる前に、**意図する正例と反例の両方をテキストで列挙して regex を当て**、ヒット方向が反転していないかを必ず確認する。Issue #15 では反転バグに気付かず `disable:next` workaround を 4 ヶ所撒く事故が起きた。
 - Bash でビルド/テスト系コマンド (`make` / `xcodebuild` / `npm test` / `pytest` 等) を `| tail` / `| head` / `| grep` でフィルタする時は、必ず `set -o pipefail` をコマンド前に置くか、`${PIPESTATUS[0]}` で元コマンドの exit code を取得する (または `tee` で全出力をファイルに残してから `grep` する)。Issue #9 で `make tests 2>&1 | tail -80` の exit code が tail の 0 に隠れて、`make: *** [unit-tests] Error 70` という失敗を「成功」と誤判定する事故が発生した。
+- Plan / spec / design doc を書く時、他 Issue コメントや過去 commit で言及されている tool / script / path をそのまま引用するのは禁止。書く前に Glob か Read で実在を 1 回確認する。Why: 二次情報を primary source 扱いすると、実行時に subagent が BLOCKED で戻り「巻き戻し → controller 補正 → 再開」のループが発生する (Issue #13 Part A で `bin/add-to-target.rb` が実は `app/bin/` 配下にあった事例)。How to apply: plan を commit する前のセルフレビューで、参照している全ての tool/script path を 1 度 Glob する。
+- macOS `base64 -i <file>` のデフォルト出力は 76 文字で line-wrap される。clipboard 経由で App Store Connect / CI Secret UI のような単一行入力欄に貼り付けると、改行が silently 落ちて Secret が壊れる。`base64 -i ... | tr -d '\n' | pbcopy` で 1 行化してからコピーする。Why: 復元時に base64 -d が静かに失敗 or 部分的なデータが流れて、CI build が後段で意味不明な失敗を起こす。How to apply: 任意の CI Secret 投入手順 (Xcode Cloud / GitHub Actions / Bitrise / fastlane match) を docs に書く時、base64 → clipboard の間に `tr -d '\n'` を必ず挟む。
 
 ### 効率化ルール
 
@@ -85,4 +87,5 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 - ブランチ push や `gh pr create` の前に、必ず `git fetch && gh pr list --state all --head <branch>` で既存 PR / merge 状況を確認する。ローカル master が古いまま push して「既に MERGED」で空振りするのを防ぐ。
 - `superpowers:subagent-driven-development` を採用する時、Plan の Task が「観察+編集+検証+commit」のような小粒で密接結合なら、Task ごとに subagent を dispatch せず**複数 Task を 1 subagent に full text で束ねて渡す**。レビューはまとめて 2 段階 (spec compliance → code quality) で実施する。Why: 個別 dispatch のオーバーヘッド (context 渡し / Tool 再 load / agent boot) > 実行コストになることがある。Issue #16 で Plan の Task 2-6 を 1 subagent に束ね、起動コストを抑えつつ品質ゲートは両 reviewer で確保できた。
 - Agent tool 経由で subagent に `cd app && make unit-tests` を実行させる時、Bash の `timeout` を明示的に `600000` (10 分) に設定するよう subagent 指示書に書く。Why: xcodebuild + simulator boot + test 実行で 2〜5 分かかるため、Bash のデフォルト 2 分でタイムアウトすると、せっかくのテスト実行が無駄になる。
+- マネージド CI runner (Xcode Cloud / GitHub-hosted runner 等) は Apple 同梱以外の言語ツールチェイン (CocoaPods / Bundler 等) の preinstall を保証しない。`ci_post_clone.sh` のような CI hook の冒頭で必要なツールを明示的に `brew install` / `gem install` してから本処理に入る。Why: ローカルでは `pod install` が動くため見落としやすく、初回本番ビルド時に silent break する。How to apply: 新規 CI hook を書く時、ローカル前提のツール (cocoapods / bundler / yarn / poetry 等) があるかチェックし、ある場合は `set -euo pipefail` 配下で install ステップを先頭に追加する。
 
