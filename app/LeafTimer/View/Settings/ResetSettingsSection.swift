@@ -38,30 +38,6 @@ struct ResetSettingsSection: View {
                 Text("All settings have been reset to defaults.")
             }
 
-            // App Information
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Text("Version")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.primary)
-                }
-
-                HStack {
-                    Text("Build")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.primary)
-                }
-            }
-            .padding(.vertical, 4)
-
         } header: {
             HStack {
                 Image(systemName: "gearshape.fill")
