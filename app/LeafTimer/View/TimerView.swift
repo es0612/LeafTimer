@@ -52,7 +52,7 @@ struct TimerView: View {
                             size: 78, weight: .bold, design: .monospaced
                         )
                         )
-                        .foregroundColor(Color(red: 0.65, green: 0.65, blue: 0.65, opacity: 0.9))
+                        .foregroundColor(.primary.opacity(0.9))
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .padding(.bottom, 50)
 
@@ -63,7 +63,7 @@ struct TimerView: View {
                         }
 
                     Text(NSLocalizedString("timer.todays_count", comment: "Today's pomodoro count label") + String(timerViewModel.todaysCount))
-                        .foregroundColor(Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.9))
+                        .foregroundColor(.secondary.opacity(0.9))
                         .padding()
                         .padding(.top, 20)
                 }
