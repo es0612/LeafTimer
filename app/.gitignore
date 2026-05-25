@@ -51,6 +51,16 @@ playground.xcworkspace
 # CocoaPods
 Pods/
 *.xcworkspace
+# Issue #31: SwiftPM Package.resolved は LeafTimer.xcworkspace 配下に存在するため
+# whitelist で除外する。Xcode Cloud は automatic dependency resolution が
+# disabled で Package.resolved が必須。
+!LeafTimer.xcworkspace
+LeafTimer.xcworkspace/*
+!LeafTimer.xcworkspace/xcshareddata
+LeafTimer.xcworkspace/xcshareddata/*
+!LeafTimer.xcworkspace/xcshareddata/swiftpm
+LeafTimer.xcworkspace/xcshareddata/swiftpm/*
+!LeafTimer.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
 # Carthage
 #
