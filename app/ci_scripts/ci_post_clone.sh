@@ -10,7 +10,10 @@ set -euo pipefail
 
 echo "==> ci_post_clone.sh: start"
 
-APP_DIR="${CI_WORKSPACE}/app"
+# Xcode Cloud は CI_WORKSPACE を提供しない (実環境で unbound variable で失敗)。
+# スクリプト自身の位置から app/ を解決し env var 依存を排除する。
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 echo "==> Restoring Keys.plist"
 echo "${KEYS_PLIST_BASE64}" | base64 -d > "${APP_DIR}/Keys.plist"
