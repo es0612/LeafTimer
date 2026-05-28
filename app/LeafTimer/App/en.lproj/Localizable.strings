@@ -59,3 +59,11 @@
 "settings.review_app" = "Review this app";
 "settings.review_app_footer" = "If you enjoy LeafTimer, please leave a review on the App Store.";
 
+// MARK: - History (Issue #8)
+"timer.todays_count_with_streak" = "Today %d · 🔥 Streak %d";
+"history.title" = "History";
+"history.current_streak" = "Current Streak: %d";
+"history.longest_streak" = "Longest: %d";
+"history.total_sessions" = "Total: %d";
+"history.last_7_days" = "Last 7 days";
+
