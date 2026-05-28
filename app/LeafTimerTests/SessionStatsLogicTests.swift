@@ -71,4 +71,44 @@ final class SessionStatsLogicTests: XCTestCase {
         let stats = repo.load()
         XCTAssertEqual(stats, .empty)
     }
+
+    func testSameDaySecondSession_streakUnchanged() {
+        let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
+        _ = repo.recordSession(today: "2026/05/28")
+        let stats = repo.recordSession(today: "2026/05/28")
+
+        XCTAssertEqual(stats.totalCount, 2)
+        XCTAssertEqual(stats.dailyCount["2026/05/28"], 2)
+        XCTAssertEqual(stats.currentStreak, 1, "同日 2 件目以降は streak 変えない")
+        XCTAssertEqual(stats.longestStreak, 1)
+    }
+
+    func testConsecutiveDay_streakIncrements() {
+        let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
+        _ = repo.recordSession(today: "2026/05/27")
+        let stats = repo.recordSession(today: "2026/05/28")
+
+        XCTAssertEqual(stats.currentStreak, 2)
+        XCTAssertEqual(stats.longestStreak, 2)
+    }
+
+    func testGap_streakResets() {
+        let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
+        _ = repo.recordSession(today: "2026/05/26")
+        let stats = repo.recordSession(today: "2026/05/28")  // 1 日空き
+
+        XCTAssertEqual(stats.currentStreak, 1, "1 日以上空くと reset")
+        XCTAssertEqual(stats.longestStreak, 1)
+    }
+
+    func testLongestStreakKeptWhenCurrentDrops() {
+        let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
+        _ = repo.recordSession(today: "2026/05/26")
+        _ = repo.recordSession(today: "2026/05/27")
+        _ = repo.recordSession(today: "2026/05/28")  // 3 連続
+        let stats = repo.recordSession(today: "2026/05/31")  // 2 日空き、reset
+
+        XCTAssertEqual(stats.currentStreak, 1)
+        XCTAssertEqual(stats.longestStreak, 3, "過去の最長は維持される")
+    }
 }
