@@ -90,12 +90,16 @@ struct HistoryView: View {
     }
 
     private func barColor(for count: Int) -> Color {
-        count == 0
-            ? Color.gray.opacity(0.3)
-            : Color(red: 0.42, green: 0.56, blue: 0.42)
+        if count == 0 {
+            return Color.gray.opacity(colorScheme == .dark ? 0.4 : 0.3)
+        }
+        return colorScheme == .dark
+            ? Color(red: 0.62, green: 0.76, blue: 0.62)  // ダークモード: 明度↑で対比確保
+            : Color(red: 0.42, green: 0.56, blue: 0.42)  // ライトモード: 既存 LeafTimer 緑
     }
 
     private func shortLabel(date: String) -> String {
+        // 想定 input: "yyyy/MM/dd" (SessionStatsRepository が返す形式)
         let parts = date.split(separator: "/")
         guard parts.count == 3 else { return date }
         return "\(parts[1])/\(parts[2])"
