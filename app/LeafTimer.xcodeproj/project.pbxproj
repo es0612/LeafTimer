@@ -42,6 +42,7 @@
 		50CF900C3AEE7EB0580402FA /* ReviewIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E76F08701A5811DDED6A33 /* ReviewIntegrationSpec.swift */; };
 		515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */; };
 		582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */; };
+		5FB2C60994CAB86106615387 /* SpySessionStatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */; };
 		84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */; };
@@ -56,6 +57,7 @@
 		B70E83FDCE085D30BF9E8703 /* MockUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B135F8247048DD2B815AA60A /* MockUserDefaultWrapper.swift */; };
 		C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */; };
 		C62791E3329348905B6A5F87 /* EnhancedSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */; };
+		D1996820E10ABF2E413A629D /* SessionStatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7BB13FEE55FA28FD1D9045 /* SessionStatsRepository.swift */; };
 		D51DACE92E51C175006B8B3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACE82E51C175006B8B3D /* GoogleService-Info.plist */; };
 		D51DACEB2E51C437006B8B3D /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = D51DACEA2E51C437006B8B3D /* Keys.plist */; };
 		D51DAD042E51CA00006B8B3D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D51DAD032E51CA00006B8B3D /* Localizable.strings */; };
@@ -87,6 +89,7 @@
 /* Begin PBXFileReference section */
 		037C5BC22762109945219857 /* Pods-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		0C7BB13FEE55FA28FD1D9045 /* SessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsRepository.swift; path = LeafTimer/Components/SessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
 		158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTimerViewSpec.swift; sourceTree = "<group>"; };
 		1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicy.swift; path = LeafTimer/Components/ReviewRequestPolicy.swift; sourceTree = SOURCE_ROOT; };
@@ -134,6 +137,7 @@
 		58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetSettingsSection.swift; sourceTree = "<group>"; };
 		58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.release.xcconfig"; sourceTree = "<group>"; };
 		5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsLogicTests.swift; path = LeafTimerTests/SessionStatsLogicTests.swift; sourceTree = SOURCE_ROOT; };
+		5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpySessionStatsRepository.swift; path = LeafTimerTests/SpySessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
 		67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSection.swift; sourceTree = "<group>"; };
 		6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedSettingView.swift; sourceTree = "<group>"; };
 		8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer_LeafTimerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +216,7 @@
 				FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */,
 				3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */,
 				DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */,
+				0C7BB13FEE55FA28FD1D9045 /* SessionStatsRepository.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -330,6 +335,7 @@
 				367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
 				5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */,
+				5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */,
 			);
 			path = LeafTimerTests;
 			sourceTree = "<group>";
@@ -715,6 +721,7 @@
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
 				8750244ABE17AE5577DB761E /* SessionStats.swift in Sources */,
+				D1996820E10ABF2E413A629D /* SessionStatsRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,6 +743,7 @@
 				669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
 				B242F79FF5F6E62F00EF36DA /* SessionStatsLogicTests.swift in Sources */,
+				5FB2C60994CAB86106615387 /* SpySessionStatsRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
