@@ -9,3 +9,6 @@
 
 # session-reflection.sh が次セッションへ渡す CLAUDE.md 追加候補 (個人/作業中)
 .claude/pending-reflection.md
+
+# superpowers brainstorming Visual Companion の作業ディレクトリ (HTML / state / events)
+/.superpowers/
