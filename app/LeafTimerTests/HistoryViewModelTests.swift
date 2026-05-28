@@ -43,6 +43,7 @@ final class HistoryViewModelTests: XCTestCase {
         XCTAssertEqual(vm.totalCount, 0)
         XCTAssertEqual(vm.currentStreak, 0)
         XCTAssertEqual(vm.last7Days.count, 7)
+        // swiftlint:disable:next empty_count
         XCTAssertTrue(vm.last7Days.allSatisfy { $0.count == 0 })
     }
 }
