@@ -87,15 +87,51 @@ class LocalSessionStatsRepository: SessionStatsRepository {
 
         let legacyTotal = userDefaults.integer(forKey: "totalPomodoroCount")
         let derivedTotal = dailyCount.values.reduce(0, +)
+        let (longest, current, lastDate) = computeStreaks(from: dailyCount)
         let stats = SessionStats(
             dailyCount: dailyCount,
             totalCount: max(legacyTotal, derivedTotal),
-            currentStreak: 0,
-            longestStreak: 0,
-            lastSessionDate: nil
+            currentStreak: current,
+            longestStreak: longest,
+            lastSessionDate: lastDate
         )
-        // streak の遡及計算は Task 9 で追加
         save(stats)
         userDefaults.set(true, forKey: "statsMigrated")
+    }
+
+    private func computeStreaks(from dailyCount: [String: Int]) -> (longest: Int, current: Int, lastDate: String?) {
+        let sortedDates = dailyCount.keys.sorted()
+        guard !sortedDates.isEmpty else { return (0, 0, nil) }
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+
+        var longest = 1
+        var run = 1
+        for i in 1..<sortedDates.count {
+            guard let prev = formatter.date(from: sortedDates[i - 1]),
+                  let curr = formatter.date(from: sortedDates[i]),
+                  let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: prev) else {
+                run = 1; continue
+            }
+            if Calendar.current.isDate(curr, inSameDayAs: nextDay) {
+                run += 1
+                longest = max(longest, run)
+            } else {
+                run = 1
+            }
+        }
+        var current = 1
+        for i in stride(from: sortedDates.count - 1, to: 0, by: -1) {
+            guard let curr = formatter.date(from: sortedDates[i]),
+                  let prev = formatter.date(from: sortedDates[i - 1]),
+                  let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: curr) else { break }
+            if Calendar.current.isDate(prev, inSameDayAs: yesterday) {
+                current += 1
+            } else {
+                break
+            }
+        }
+        return (longest, current, sortedDates.last)
     }
 }
