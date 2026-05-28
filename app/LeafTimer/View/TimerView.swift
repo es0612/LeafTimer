@@ -62,7 +62,13 @@ struct TimerView: View {
                             didTapTimerButton()
                         }
 
-                    Text(NSLocalizedString("timer.todays_count", comment: "Today's pomodoro count label") + String(timerViewModel.todaysCount))
+                    Text(
+                        String(
+                            format: NSLocalizedString("timer.todays_count_with_streak", comment: "Today count and streak"),
+                            timerViewModel.todaysCount,
+                            timerViewModel.currentStreak
+                        )
+                    )
                         .foregroundColor(.secondary.opacity(0.9))
                         .padding()
                         .padding(.top, 20)
@@ -73,6 +79,16 @@ struct TimerView: View {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action: didTapResetButton) {
                             Image("reloadIcon").foregroundColor(.primary)
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink(
+                            destination: HistoryView(
+                                viewModel: timerViewModel.makeHistoryViewModel()
+                            )
+                        ) {
+                            Image(systemName: "chart.bar.fill")
+                                .foregroundColor(.primary)
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -107,7 +123,8 @@ struct TimerView_Previews: PreviewProvider {
                 timerViewModel: TimerViewModel(
                     timerManager: DefaultTimerManager(),
                     audioManager: DefaultAudioManager(),
-                    userDefaultWrapper: LocalUserDefaultsWrapper()
+                    userDefaultWrapper: LocalUserDefaultsWrapper(),
+                    sessionStatsRepository: LocalSessionStatsRepository()
                 ),
                 settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
             )

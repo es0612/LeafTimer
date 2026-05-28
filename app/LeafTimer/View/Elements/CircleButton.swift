@@ -44,7 +44,8 @@ struct CircleButton_Previews: PreviewProvider {
         CircleButton(viewModel: TimerViewModel(
             timerManager: DefaultTimerManager(),
             audioManager: DefaultAudioManager(),
-            userDefaultWrapper: LocalUserDefaultsWrapper()
+            userDefaultWrapper: LocalUserDefaultsWrapper(),
+            sessionStatsRepository: LocalSessionStatsRepository()
         ))
     }
 }

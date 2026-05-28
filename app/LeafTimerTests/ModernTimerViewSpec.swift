@@ -21,7 +21,8 @@ class ModernTimerViewSpec: QuickSpec {
                 timerViewModel = TimerViewModel(
                     timerManager: spyTimerManager,
                     audioManager: spyAudioManager,
-                    userDefaultWrapper: LocalUserDefaultsWrapper()
+                    userDefaultWrapper: LocalUserDefaultsWrapper(),
+                    sessionStatsRepository: SpySessionStatsRepository()
                 )
                 settingViewModel = SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
                 timerView = TimerView(

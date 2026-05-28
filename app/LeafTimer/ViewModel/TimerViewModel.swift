@@ -7,6 +7,7 @@ class TimerViewModel: ObservableObject {
     var timerManager: TimerManager
     var audioManager: AudioManager
     var userDefaultWrapper: UserDefaultsWrapper
+    private var sessionStatsRepository: SessionStatsRepository
     var reviewPolicy: ReviewRequestPolicy
     var reviewRequester: ReviewRequesting
 
@@ -28,6 +29,10 @@ class TimerViewModel: ObservableObject {
     var vibration: Bool
     @Published
     var todaysCount: Int
+    @Published
+    var currentStreak: Int
+    @Published
+    var longestStreak: Int
 
     private var isFirstOpen = true
 
@@ -37,12 +42,14 @@ class TimerViewModel: ObservableObject {
         timerManager: TimerManager,
         audioManager: AudioManager,
         userDefaultWrapper: UserDefaultsWrapper,
+        sessionStatsRepository: SessionStatsRepository,
         reviewPolicy: ReviewRequestPolicy = ThresholdReviewRequestPolicy(),
         reviewRequester: ReviewRequesting = StoreKitReviewRequester()
     ) {
         self.timerManager = timerManager
         self.audioManager = audioManager
         self.userDefaultWrapper = userDefaultWrapper
+        self.sessionStatsRepository = sessionStatsRepository
         self.reviewPolicy = reviewPolicy
         self.reviewRequester = reviewRequester
 
@@ -56,6 +63,8 @@ class TimerViewModel: ObservableObject {
         vibration = true
 
         todaysCount = 0
+        currentStreak = 0
+        longestStreak = 0
 
         loadCount()
 
@@ -159,9 +168,15 @@ class TimerViewModel: ObservableObject {
     }
 
     func countWork() {
-        todaysCount += 1
-        userDefaultWrapper.saveData(key: DateManager.getToday(), value: todaysCount)
+        let today = DateManager.getToday()
+        let stats = sessionStatsRepository.recordSession(today: today)
 
+        todaysCount = stats.dailyCount[today] ?? 0
+        currentStreak = stats.currentStreak
+        longestStreak = stats.longestStreak
+
+        // Legacy: requestReviewIfNeeded が `totalPomodoroCount` 単独 key に依存しているため
+        // dual write を維持。Migration で初期同期済み、ここでも +1 を反映。
         let totalCount = userDefaultWrapper.loadData(
             key: UserDefaultItem.totalPomodoroCount.rawValue
         ) + 1
@@ -189,6 +204,16 @@ class TimerViewModel: ObservableObject {
     }
 
     func loadCount() {
-        todaysCount = userDefaultWrapper.loadData(key: DateManager.getToday())
+        let stats = sessionStatsRepository.load()
+        let today = DateManager.getToday()
+        todaysCount = stats.dailyCount[today] ?? 0
+        currentStreak = stats.currentStreak
+        longestStreak = stats.longestStreak
+    }
+
+    // MARK: - Navigation Factories
+
+    func makeHistoryViewModel() -> HistoryViewModel {
+        HistoryViewModel(repository: sessionStatsRepository)
     }
 }
