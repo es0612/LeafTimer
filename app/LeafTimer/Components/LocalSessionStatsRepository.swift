@@ -9,6 +9,9 @@ class LocalSessionStatsRepository: SessionStatsRepository {
     }
 
     func load() -> SessionStats {
+        if !userDefaults.bool(forKey: "statsMigrated") {
+            performMigration()
+        }
         guard let data = userDefaults.data(forKey: storageKey),
               let stats = try? JSONDecoder().decode(SessionStats.self, from: data) else {
             return .empty
@@ -69,5 +72,30 @@ class LocalSessionStatsRepository: SessionStatsRepository {
             return false
         }
         return Calendar.current.isDate(candidateDate, inSameDayAs: yesterday)
+    }
+
+    // MARK: - Migration
+
+    private func performMigration() {
+        let datePattern = #"^\d{4}/\d{2}/\d{2}$"#
+        var dailyCount: [String: Int] = [:]
+        for (key, value) in userDefaults.dictionaryRepresentation() {
+            guard key.range(of: datePattern, options: .regularExpression) != nil,
+                  let count = value as? Int else { continue }
+            dailyCount[key] = count
+        }
+
+        let legacyTotal = userDefaults.integer(forKey: "totalPomodoroCount")
+        let derivedTotal = dailyCount.values.reduce(0, +)
+        let stats = SessionStats(
+            dailyCount: dailyCount,
+            totalCount: max(legacyTotal, derivedTotal),
+            currentStreak: 0,
+            longestStreak: 0,
+            lastSessionDate: nil
+        )
+        // streak の遡及計算は Task 9 で追加
+        save(stats)
+        userDefaults.set(true, forKey: "statsMigrated")
     }
 }
