@@ -84,9 +84,7 @@ struct TimerView: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(
                             destination: HistoryView(
-                                viewModel: HistoryViewModel(
-                                    repository: timerViewModel.sessionStatsRepository
-                                )
+                                viewModel: timerViewModel.makeHistoryViewModel()
                             )
                         ) {
                             Image(systemName: "chart.bar.fill")

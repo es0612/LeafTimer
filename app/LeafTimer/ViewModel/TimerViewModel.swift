@@ -7,7 +7,7 @@ class TimerViewModel: ObservableObject {
     var timerManager: TimerManager
     var audioManager: AudioManager
     var userDefaultWrapper: UserDefaultsWrapper
-    var sessionStatsRepository: SessionStatsRepository
+    private var sessionStatsRepository: SessionStatsRepository
     var reviewPolicy: ReviewRequestPolicy
     var reviewRequester: ReviewRequesting
 
@@ -209,5 +209,11 @@ class TimerViewModel: ObservableObject {
         todaysCount = stats.dailyCount[today] ?? 0
         currentStreak = stats.currentStreak
         longestStreak = stats.longestStreak
+    }
+
+    // MARK: - Navigation Factories
+
+    func makeHistoryViewModel() -> HistoryViewModel {
+        HistoryViewModel(repository: sessionStatsRepository)
     }
 }
