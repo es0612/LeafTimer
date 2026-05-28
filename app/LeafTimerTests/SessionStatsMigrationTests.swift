@@ -86,7 +86,7 @@ final class SessionStatsMigrationTests: XCTestCase {
         XCTAssertEqual(stats.currentStreak, 2)
     }
 
-    func testMigrationCurrentStreakZeroWhenLastIsOld() {
+    func testMigrationCurrentStreakIsOneWhenSingleOldEntry() {
         testDefaults.set(1, forKey: "2025/01/01")
 
         let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
