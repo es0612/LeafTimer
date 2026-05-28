@@ -111,4 +111,33 @@ final class SessionStatsLogicTests: XCTestCase {
         XCTAssertEqual(stats.currentStreak, 1)
         XCTAssertEqual(stats.longestStreak, 3, "過去の最長は維持される")
     }
+
+    // MARK: - recentDailyCounts
+
+    func testRecentDailyCountsIncludesToday() {
+        let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
+        _ = repo.recordSession(today: "2026/05/28")
+        _ = repo.recordSession(today: "2026/05/28")  // 同日 2 件目
+
+        let result = repo.recentDailyCounts(days: 7, endingAt: "2026/05/28")
+
+        XCTAssertEqual(result.count, 7, "today を含む 7 日分")
+        XCTAssertEqual(result.last?.date, "2026/05/28", "末尾が today (古い→新しい順)")
+        XCTAssertEqual(result.last?.count, 2)
+        XCTAssertEqual(result.first?.date, "2026/05/22", "先頭は 6 日前")
+        XCTAssertEqual(result.first?.count, 0, "記録のない日は 0")
+    }
+
+    func testRecentDailyCountsFillsMissingDays() {
+        let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
+        _ = repo.recordSession(today: "2026/05/26")
+        _ = repo.recordSession(today: "2026/05/28")
+
+        let result = repo.recentDailyCounts(days: 7, endingAt: "2026/05/28")
+        let dict = Dictionary(uniqueKeysWithValues: result.map { ($0.date, $0.count) })
+
+        XCTAssertEqual(dict["2026/05/26"], 1)
+        XCTAssertEqual(dict["2026/05/27"], 0, "間の日は 0")
+        XCTAssertEqual(dict["2026/05/28"], 1)
+    }
 }

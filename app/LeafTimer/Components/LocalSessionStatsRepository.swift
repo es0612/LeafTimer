@@ -39,8 +39,18 @@ class LocalSessionStatsRepository: SessionStatsRepository {
     }
 
     func recentDailyCounts(days: Int, endingAt: String) -> [(date: String, count: Int)] {
-        // Task 7 で実装
-        return []
+        let stats = load()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        guard let endDate = formatter.date(from: endingAt) else { return [] }
+
+        var result: [(date: String, count: Int)] = []
+        for offset in (0..<days).reversed() {  // (days-1)..0 を旧→新
+            guard let date = Calendar.current.date(byAdding: .day, value: -offset, to: endDate) else { continue }
+            let key = formatter.string(from: date)
+            result.append((date: key, count: stats.dailyCount[key] ?? 0))
+        }
+        return result
     }
 
     // MARK: - Private
