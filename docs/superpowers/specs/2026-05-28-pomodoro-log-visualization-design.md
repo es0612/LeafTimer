@@ -87,7 +87,7 @@ protocol SessionStatsRepository {
 
 - `recordSession` は内部で `load` → mutate → `save` を完結させ、新しい `SessionStats` を return する (ViewModel 側で reload 呼び出し不要)。
 - 「現在日」は `DateManager.getToday()` の戻り値を引数として注入する形で受け取り (pure function 寄り、テスタブル)。
-- `recentDailyCounts` は古い→新しい順、欠損日は count=0 で埋める。
+- `recentDailyCounts(days: 7, endingAt: today)` は **`today` を含む直近 7 日** を古い→新しい順で返す。欠損日 (該当 key なし) は count=0 で埋める。
 
 **`LocalSessionStatsRepository`** (`app/LeafTimer/Components/LocalSessionStatsRepository.swift`)
 
@@ -148,11 +148,11 @@ sessionStatsRepository.recordSession(today: today)
    1) stats = load()
    2) stats.totalCount += 1
    3) stats.dailyCount[today, default: 0] += 1
-   4) streak 更新:
+   4) streak 更新 (dailyCount と totalCount は上記 2, 3 で既に increment 済み):
       last = stats.lastSessionDate
-      if last == today                   → streak は変えない (同日 2 件目以降)
+      if last == today                   → currentStreak / longestStreak は変えない (同日 2 件目以降)
       else if last == yesterday(today)   → currentStreak += 1
-      else                               → currentStreak = 1
+      else                               → currentStreak = 1 (初回 or 1 日以上空き)
       longestStreak = max(longestStreak, currentStreak)
    5) stats.lastSessionDate = today
    6) save(stats)
@@ -188,7 +188,14 @@ LocalSessionStatsRepository.load()
      1) UserDefaults.dictionaryRepresentation から yyyy/MM/dd 形式の key を抽出
      2) その Int 値を新 SessionStats.dailyCount に集約 (Int 以外型は skip)
      3) totalCount = dailyCount.values.sum
-     4) longestStreak / currentStreak / lastSessionDate を遡及計算
+     4) 遡及計算 (sortedDates = dailyCount.keys.sorted()):
+        lastSessionDate = sortedDates.last
+        longestStreak = sortedDates を順に走査し、隣接する 2 つの date が
+                        `Calendar.current` で 1 日差なら streak 継続として +1、
+                        そうでなければ 1 にリセット。走査中の max を採用。
+        currentStreak = sortedDates の末尾から遡って 1 日差で連続している長さ。
+                        ただし lastSessionDate が today / yesterday でない場合は
+                        currentStreak = 0 (streak が既に途切れている扱い)。
      5) save(stats)
      6) UserDefaults.set(true, "statsMigrated")
      ※ 旧 key 自体は削除しない (副作用ゼロのため放置)
