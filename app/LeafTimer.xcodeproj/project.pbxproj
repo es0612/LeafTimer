@@ -45,11 +45,13 @@
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */; };
 		84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */; };
+		8750244ABE17AE5577DB761E /* SessionStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */; };
 		8BA106ABCE3F785BD2F48DF9 /* MockReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
 		963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */; };
 		AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */; };
+		B242F79FF5F6E62F00EF36DA /* SessionStatsLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */; };
 		B41DECA1FAE3E49A1549CAC7 /* ReviewRequestPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */; };
 		B70E83FDCE085D30BF9E8703 /* MockUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B135F8247048DD2B815AA60A /* MockUserDefaultWrapper.swift */; };
 		C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */; };
@@ -131,6 +133,7 @@
 		54317E73F2F3BC94B2411A11 /* Pods-LeafTimerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetSettingsSection.swift; sourceTree = "<group>"; };
 		58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.release.xcconfig"; sourceTree = "<group>"; };
+		5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsLogicTests.swift; path = LeafTimerTests/SessionStatsLogicTests.swift; sourceTree = SOURCE_ROOT; };
 		67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSection.swift; sourceTree = "<group>"; };
 		6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedSettingView.swift; sourceTree = "<group>"; };
 		8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer_LeafTimerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +154,7 @@
 		D5D32D462EB811A900DECF70 /* bgm1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm1.mp3; sourceTree = "<group>"; };
 		D5D32D472EB811A900DECF70 /* bgm2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm2.mp3; sourceTree = "<group>"; };
 		D5D32D482EB811A900DECF70 /* bgm3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm3.mp3; sourceTree = "<group>"; };
+		DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStats.swift; path = LeafTimer/Components/SessionStats.swift; sourceTree = SOURCE_ROOT; };
 		EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicySpec.swift; path = LeafTimerTests/ReviewRequestPolicySpec.swift; sourceTree = SOURCE_ROOT; };
 		F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeyManagerSpec.swift; path = LeafTimerTests/KeyManagerSpec.swift; sourceTree = SOURCE_ROOT; };
 		FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreKitReviewRequester.swift; path = LeafTimer/Components/StoreKitReviewRequester.swift; sourceTree = SOURCE_ROOT; };
@@ -207,6 +211,7 @@
 				33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */,
 				FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */,
 				3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */,
+				DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 				3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */,
 				367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
+				5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */,
 			);
 			path = LeafTimerTests;
 			sourceTree = "<group>";
@@ -708,6 +714,7 @@
 				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
+				8750244ABE17AE5577DB761E /* SessionStats.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,6 +735,7 @@
 				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
 				669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
+				B242F79FF5F6E62F00EF36DA /* SessionStatsLogicTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
