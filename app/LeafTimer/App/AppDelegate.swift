@@ -26,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             timerViewModel: TimerViewModel(
                 timerManager: DefaultTimerManager(),
                 audioManager: DefaultAudioManager(),
-                userDefaultWrapper: LocalUserDefaultsWrapper()
+                userDefaultWrapper: LocalUserDefaultsWrapper(),
+                sessionStatsRepository: LocalSessionStatsRepository()
             ),
             settingViewModel: SettingViewModel(
                 userDefaultWrapper: LocalUserDefaultsWrapper()

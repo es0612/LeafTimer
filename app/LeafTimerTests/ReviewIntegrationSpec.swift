@@ -19,6 +19,7 @@ class ReviewIntegrationSpec: QuickSpec {
                     timerManager: spyTimerManager,
                     audioManager: spyAudioManager,
                     userDefaultWrapper: mockUserDefaultWrapper,
+                    sessionStatsRepository: SpySessionStatsRepository(),
                     reviewPolicy: ThresholdReviewRequestPolicy(),
                     reviewRequester: mockReviewRequester
                 )
@@ -46,6 +47,7 @@ class ReviewIntegrationSpec: QuickSpec {
                     timerManager: spyTimerManager,
                     audioManager: spyAudioManager,
                     userDefaultWrapper: mockUserDefaultWrapper,
+                    sessionStatsRepository: SpySessionStatsRepository(),
                     reviewPolicy: ThresholdReviewRequestPolicy(),
                     reviewRequester: mockReviewRequester
                 )
@@ -73,6 +75,7 @@ class ReviewIntegrationSpec: QuickSpec {
                     timerManager: spyTimerManager,
                     audioManager: spyAudioManager,
                     userDefaultWrapper: mockUserDefaultWrapper,
+                    sessionStatsRepository: SpySessionStatsRepository(),
                     reviewPolicy: ThresholdReviewRequestPolicy(),
                     reviewRequester: mockReviewRequester
                 )
@@ -100,6 +103,7 @@ class ReviewIntegrationSpec: QuickSpec {
                     timerManager: spyTimerManager,
                     audioManager: spyAudioManager,
                     userDefaultWrapper: mockUserDefaultWrapper,
+                    sessionStatsRepository: SpySessionStatsRepository(),
                     reviewPolicy: ThresholdReviewRequestPolicy(),
                     reviewRequester: mockReviewRequester
                 )

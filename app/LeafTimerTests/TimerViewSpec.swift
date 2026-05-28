@@ -18,7 +18,8 @@ class TimerViewSpec: QuickSpec {
                     timerViewModel: TimerViewModel(
                         timerManager: spyTimerManager,
                         audioManager: SpyAudioManager(),
-                        userDefaultWrapper: LocalUserDefaultsWrapper()
+                        userDefaultWrapper: LocalUserDefaultsWrapper(),
+                        sessionStatsRepository: SpySessionStatsRepository()
                     ),
                     settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
                 )

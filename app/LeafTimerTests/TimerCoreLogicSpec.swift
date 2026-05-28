@@ -20,33 +20,36 @@ class TimerCoreLogicSpec: QuickSpec {
             // 「saveData 呼び出し回数」を検査するテストは生成直後に reset する。
             // また reviewRequester は MockReviewRequester を明示的に渡し、
             // テスト中に StoreKit のシステム API が呼ばれないようにする。
-            // 5 deps を一括返しにすることで各 it 内の setup boilerplate を排除している
+            // 6 deps を一括返しにすることで各 it 内の setup boilerplate を排除している
             // swiftlint:disable:next large_tuple
             func makeViewModel() -> (
                 vm: TimerViewModel,
                 spyTimer: SpyTimerManager,
                 spyAudio: SpyAudioManager,
                 mockDefaults: MockUserDefaultWrapper,
-                mockReviewer: MockReviewRequester
+                mockReviewer: MockReviewRequester,
+                spyStats: SpySessionStatsRepository
             ) {
                 let spyTimer = SpyTimerManager()
                 let spyAudio = SpyAudioManager()
                 let mockDefaults = MockUserDefaultWrapper()
                 let mockReviewer = MockReviewRequester()
+                let spyStats = SpySessionStatsRepository()
                 let vm = TimerViewModel(
                     timerManager: spyTimer,
                     audioManager: spyAudio,
                     userDefaultWrapper: mockDefaults,
+                    sessionStatsRepository: spyStats,
                     reviewRequester: mockReviewer
                 )
-                return (vm, spyTimer, spyAudio, mockDefaults, mockReviewer)
+                return (vm, spyTimer, spyAudio, mockDefaults, mockReviewer, spyStats)
             }
 
             // MARK: - TimerManager basic functionality
 
             context("TimerManager basic functionality") {
                 it("stopped 状態から timer button を押すと start が呼ばれる") {
-                    let (vm, spyTimer, _, _, _) = makeViewModel()
+                    let (vm, spyTimer, _, _, _, _) = makeViewModel()
 
                     expect(vm.executeState) == false
                     expect(spyTimer.startWasCalled) == false
@@ -58,7 +61,7 @@ class TimerCoreLogicSpec: QuickSpec {
                 }
 
                 it("running 状態から timer button を押すと stop が呼ばれる") {
-                    let (vm, spyTimer, _, _, _) = makeViewModel()
+                    let (vm, spyTimer, _, _, _, _) = makeViewModel()
                     vm.executeState = true
 
                     vm.onPressedTimerButton()
@@ -68,7 +71,7 @@ class TimerCoreLogicSpec: QuickSpec {
                 }
 
                 it("reset() は work mode で currentTimeSecond を fullTimeSecond に戻す") {
-                    let (vm, _, _, _, _) = makeViewModel()
+                    let (vm, _, _, _, _, _) = makeViewModel()
                     vm.currentTimeSecond = 100
                     vm.fullTimeSecond = 300
                     vm.breakState = false
@@ -79,7 +82,7 @@ class TimerCoreLogicSpec: QuickSpec {
                 }
 
                 it("reset() は break mode で currentTimeSecond を fullBreakTimeSecond に戻す") {
-                    let (vm, _, _, _, _) = makeViewModel()
+                    let (vm, _, _, _, _, _) = makeViewModel()
                     vm.currentTimeSecond = 10
                     vm.fullBreakTimeSecond = 60
                     vm.breakState = true
@@ -94,7 +97,7 @@ class TimerCoreLogicSpec: QuickSpec {
 
             context("Countdown functionality") {
                 it("updateTime() は currentTimeSecond を 1 減らす") {
-                    let (vm, _, _, _, _) = makeViewModel()
+                    let (vm, _, _, _, _, _) = makeViewModel()
                     vm.currentTimeSecond = 300
 
                     vm.updateTime()
@@ -103,7 +106,7 @@ class TimerCoreLogicSpec: QuickSpec {
                 }
 
                 it("currentTimeSecond が 0 のとき updateTime() で switchBreakState + reset が走る") {
-                    let (vm, _, _, _, _) = makeViewModel()
+                    let (vm, _, _, _, _, _) = makeViewModel()
                     vm.fullBreakTimeSecond = 60
                     vm.currentTimeSecond = 0
                     vm.breakState = false
@@ -121,20 +124,22 @@ class TimerCoreLogicSpec: QuickSpec {
 
             context("Work/Break mode switching") {
                 it("work から break への switch で audio.finish() と countWork() が走る") {
-                    let (vm, _, spyAudio, mockDefaults, _) = makeViewModel()
+                    let (vm, _, spyAudio, mockDefaults, _, spyStats) = makeViewModel()
                     vm.breakState = false
-                    let countBefore = vm.todaysCount
                     mockDefaults.reset()
 
                     vm.switchBreakState()
 
                     expect(vm.breakState) == true
                     expect(spyAudio.finishCallCount) == 1
-                    expect(vm.todaysCount) == countBefore + 1
+                    // 新 architecture では todaysCount は SessionStatsRepository が真実源。
+                    // countWork() が呼ばれたことを spy の call count で verify する。
+                    expect(spyStats.recordSessionCallCount) == 1
+                    expect(spyStats.lastRecordedToday) == DateManager.getToday()
                 }
 
                 it("break から work への switch で audio.finishBreak() と audio.start() が走る") {
-                    let (vm, _, spyAudio, _, _) = makeViewModel()
+                    let (vm, _, spyAudio, _, _, _) = makeViewModel()
                     vm.breakState = true
 
                     vm.switchBreakState()
@@ -149,7 +154,7 @@ class TimerCoreLogicSpec: QuickSpec {
 
             context("Data persistence") {
                 it("countWork() で todaysCount が永続化される") {
-                    let (vm, _, _, mockDefaults, _) = makeViewModel()
+                    let (vm, _, _, mockDefaults, _, _) = makeViewModel()
                     // init で発生する saveData をクリアしてから本番アクションを評価
                     mockDefaults.reset()
 
@@ -163,7 +168,7 @@ class TimerCoreLogicSpec: QuickSpec {
 
             context("Audio integration") {
                 it("work → break に切り替わると audioManager.finish() が呼ばれる") {
-                    let (vm, _, spyAudio, _, _) = makeViewModel()
+                    let (vm, _, spyAudio, _, _, _) = makeViewModel()
                     vm.breakState = false
 
                     vm.switchBreakState()
@@ -176,7 +181,7 @@ class TimerCoreLogicSpec: QuickSpec {
 
             context("State management") {
                 it("onPressedTimerButton() の前後で fullTimeSecond は変化しない") {
-                    let (vm, _, _, _, _) = makeViewModel()
+                    let (vm, _, _, _, _, _) = makeViewModel()
                     let initialFullTimeSecond = vm.fullTimeSecond
                     vm.executeState = false
 
@@ -202,6 +207,7 @@ class TimerCoreLogicSpec: QuickSpec {
                             timerManager: spyTimer,
                             audioManager: spyAudio,
                             userDefaultWrapper: mockDefaults,
+                            sessionStatsRepository: SpySessionStatsRepository(),
                             reviewRequester: mockReviewer
                         )
                         weakVM = localVM
