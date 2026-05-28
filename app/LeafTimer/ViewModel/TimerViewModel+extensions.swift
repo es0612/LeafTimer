@@ -145,12 +145,6 @@ enum LeafPattern {
 
 // MARK: - Modern Timer Extensions
 extension TimerViewModel {
-    var weeklyAverage: Double {
-        // Calculate weekly average from stored data
-        // For now, return a mock value - will be replaced with actual calculation
-        return Double(todaysCount) * 0.8
-    }
-
     var timerState: TimerControlState.State {
         if executeState {
             return .running
