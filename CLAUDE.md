@@ -86,6 +86,7 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 
 - Xcode Cloud Workflow の "scheme may only exist locally" 警告は、scheme が shared + git tracked + remote push 済みなら基本 false positive。Why: 実 build log で `Cannot find scheme` が出ていなければ build 自体は通っているので、警告メッセージそのものを起点に scheme 設定を弄ると無駄な往復が増える。How to apply: 次回 Xcode Cloud の scheme 警告対応時は、scheme 設定を疑う前に最新 build log を `Cannot find scheme` 等のエラー文字列で grep し、build error が無ければ警告は無視する。
 - `app/.gitignore` の `*.xcworkspace` ワイルドカードは `xcshareddata/swiftpm/Package.resolved` を巻き込む。Why: Issue #31 で SPM 依存追加時に `Package.resolved` が commit されず Xcode Cloud の dependency 解決が失敗した実害があった。How to apply: SPM 依存を追加・更新する時は `git status` に `Package.resolved` が出るかを必ず確認し、出ていなければ `git add -f` で強制 add するか `.gitignore` の whitelist (`!**/Package.resolved`) を追加する。
+- 新規 Swift ファイルを Xcode project に追加すると `project.pbxproj` の children グループが未ソート状態になる。`make sort` を**最終 commit の前に**実行すること。実行を忘れると PR 作成直後に「1 uncommitted change」warning として表面化し、cosmetic 差分の追い commit が 1 回余計に発生する (Issue #8 で `make sort` 漏れが PR 化後に発覚した)。How to apply: 新規ファイル追加を含むブランチでは push/PR 前のセルフチェックに `make sort && git status` を入れる。
 
 ### 効率化ルール
 
@@ -95,4 +96,5 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 - `superpowers:subagent-driven-development` を採用する時、Plan の Task が「観察+編集+検証+commit」のような小粒で密接結合なら、Task ごとに subagent を dispatch せず**複数 Task を 1 subagent に full text で束ねて渡す**。レビューはまとめて 2 段階 (spec compliance → code quality) で実施する。Why: 個別 dispatch のオーバーヘッド (context 渡し / Tool 再 load / agent boot) > 実行コストになることがある。Issue #16 で Plan の Task 2-6 を 1 subagent に束ね、起動コストを抑えつつ品質ゲートは両 reviewer で確保できた。
 - Agent tool 経由で subagent に `cd app && make unit-tests` を実行させる時、Bash の `timeout` を明示的に `600000` (10 分) に設定するよう subagent 指示書に書く。Why: xcodebuild + simulator boot + test 実行で 2〜5 分かかるため、Bash のデフォルト 2 分でタイムアウトすると、せっかくのテスト実行が無駄になる。
 - マネージド CI runner (Xcode Cloud / GitHub-hosted runner 等) は Apple 同梱以外の言語ツールチェイン (CocoaPods / Bundler 等) の preinstall を保証しない。`ci_post_clone.sh` のような CI hook の冒頭で必要なツールを明示的に `brew install` / `gem install` してから本処理に入る。Why: ローカルでは `pod install` が動くため見落としやすく、初回本番ビルド時に silent break する。How to apply: 新規 CI hook を書く時、ローカル前提のツール (cocoapods / bundler / yarn / poetry 等) があるかチェックし、ある場合は `set -euo pipefail` 配下で install ステップを先頭に追加する。
+- SwiftLint 組み込み `empty_count` rule は tuple の Int field など `.isEmpty` を使えない箇所でも `.count == 0` を検出する。新規コードでは可能な限り `.isEmpty` を使い、Int field 等で不可避な場合のみ `// swiftlint:disable:next empty_count` で 1 行 suppress する。Why: Issue #8 では test 内の `(date, count)` tuple 比較で違反が `make tests` 段階まで検出されず、最後に suppress 対応が発生した。
 
