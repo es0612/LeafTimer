@@ -5,7 +5,6 @@
 
 // MARK: - Timer View
 "timer.title" = "Pomodoro";
-"timer.todays_count" = "Today's Pomodoros: ";
 "timer.stat.today" = "Today %d";
 "timer.stat.streak" = "Streak %d";
 

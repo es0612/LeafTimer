@@ -7,7 +7,6 @@
 
 // MARK: - Timer View
 "timer.title" = "ポモドーロ";
-"timer.todays_count" = "今日のポモドーロ数：";
 "timer.stat.today" = "今日 %d";
 "timer.stat.streak" = "連続 %d";
 
