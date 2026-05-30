@@ -192,6 +192,23 @@ class TimerCoreLogicSpec: QuickSpec {
                 }
             }
 
+            // MARK: - History navigation (Issue #40 regression)
+
+            context("History navigation") {
+                // Issue #40: タイマー稼働中は TimerView.body が毎秒再評価され、eager
+                // NavigationLink の destination が作り直される。HistoryView の VM をその都度
+                // 新規生成すると、load() 済みの内容が空 VM に差し替わり履歴が 0 表示に戻る。
+                // 同一インスタンスを返すことで再描画に耐える。
+                it("HistoryViewModel は同一インスタンスを返す") {
+                    let (vm, _, _, _, _, _) = makeViewModel()
+
+                    let first = vm.historyViewModel
+                    let second = vm.historyViewModel
+
+                    expect(first).to(beIdenticalTo(second))
+                }
+            }
+
             // MARK: - Memory management
 
             context("Memory management") {
