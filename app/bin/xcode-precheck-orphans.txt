@@ -1,0 +1,17 @@
+# xcode-precheck orphan baseline — Swift files on disk attached to no target.
+# These are grandfathered (pre-existing dead/unwired code); only NEW orphans
+# fail `make precheck`. Regenerate with: ruby bin/xcode-precheck.rb --update-baseline
+LeafTimer/View/Components/TimerControlsView.swift
+LeafTimer/View/Components/TimerDisplayView.swift
+LeafTimer/View/DesignSystem/ColorExtensions.swift
+LeafTimer/View/DesignSystem/Components/Buttons.swift
+LeafTimer/View/DesignSystem/Components/Cards.swift
+LeafTimer/View/DesignSystem/Components/ComponentLibrary.swift
+LeafTimer/View/DesignSystem/Components/ProgressViews.swift
+LeafTimer/View/DesignSystem/Components/SettingsComponents.swift
+LeafTimer/View/DesignSystem/Components/Toast.swift
+LeafTimer/View/DesignSystem/FontExtensions.swift
+LeafTimer/View/Modifiers/PulseAnimation.swift
+LeafTimerTests/DesignSystem/ColorExtensionsTests.swift
+LeafTimerTests/DesignSystem/ComponentsTests.swift
+LeafTimerTests/DesignSystem/FontExtensionsTests.swift
