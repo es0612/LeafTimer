@@ -8,6 +8,8 @@
 // MARK: - Timer View
 "timer.title" = "ポモドーロ";
 "timer.todays_count" = "今日のポモドーロ数：";
+"timer.stat.today" = "今日 %d";
+"timer.stat.streak" = "連続 %d";
 
 // MARK: - Settings View
 "settings.title" = "設定";
@@ -61,7 +63,6 @@
 "settings.review_app_footer" = "LeafTimer が役に立ったら、App Store でレビューをお寄せください。";
 
 // MARK: - History (Issue #8)
-"timer.todays_count_with_streak" = "今日 %d 回 ・ 🔥 Streak %d";
 "history.title" = "履歴";
 "history.current_streak" = "現在 %d 日連続";
 "history.longest_streak" = "最長 %d 日";

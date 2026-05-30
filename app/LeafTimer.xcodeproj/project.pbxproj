@@ -47,6 +47,7 @@
 		5FB2C60994CAB86106615387 /* SpySessionStatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */; };
 		62C32389E6A1D1E4CE7D17A9 /* Pods_LeafTimer_LeafTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */; };
 		669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */; };
+		805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */; };
 		84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */; };
 		8750244ABE17AE5577DB761E /* SessionStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */; };
 		8BA106ABCE3F785BD2F48DF9 /* MockReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */; };
@@ -54,6 +55,7 @@
 		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
 		95B7D82B213A9D252C39E0F1 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A244D33CACD5F760C129A96C /* HistoryView.swift */; };
 		963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */; };
+		A9CA2FC2436DDDF5F5C56540 /* StatChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE728E085DB687FAD037351 /* StatChip.swift */; };
 		AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */; };
 		B242F79FF5F6E62F00EF36DA /* SessionStatsLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */; };
 		B41DECA1FAE3E49A1549CAC7 /* ReviewRequestPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */; };
@@ -136,6 +138,7 @@
 		38C95EF725D7326A00D80736 /* KeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManager.swift; sourceTree = "<group>"; };
 		39A8809BE7C4B0C55C3ED30D /* Pods-LeafTimer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer/Pods-LeafTimer.debug.xcconfig"; sourceTree = "<group>"; };
 		3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MockReviewRequester.swift; path = LeafTimerTests/MockReviewRequester.swift; sourceTree = SOURCE_ROOT; };
+		3DE728E085DB687FAD037351 /* StatChip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatChip.swift; path = LeafTimer/View/Elements/StatChip.swift; sourceTree = SOURCE_ROOT; };
 		3FB3C2CFB16693878EE047AB /* Pods-LeafTimer-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4EFC6603AA0440B7F2CBC328 /* Pods-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataPersistenceTests.swift; path = LeafTimerTests/DataPersistenceTests.swift; sourceTree = SOURCE_ROOT; };
@@ -145,6 +148,7 @@
 		5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsLogicTests.swift; path = LeafTimerTests/SessionStatsLogicTests.swift; sourceTree = SOURCE_ROOT; };
 		5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpySessionStatsRepository.swift; path = LeafTimerTests/SpySessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
 		67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSection.swift; sourceTree = "<group>"; };
+		6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatLocalizationTests.swift; path = LeafTimerTests/StatLocalizationTests.swift; sourceTree = SOURCE_ROOT; };
 		6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedSettingView.swift; sourceTree = "<group>"; };
 		70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModelTests.swift; path = LeafTimerTests/HistoryViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		7357CD442DB907774538B896 /* HistoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModel.swift; path = LeafTimer/ViewModel/HistoryViewModel.swift; sourceTree = SOURCE_ROOT; };
@@ -210,6 +214,7 @@
 				3865AB4824CD3888001B03E4 /* CircleButton.swift */,
 				38B7261924DD85370098F3D4 /* GIFPlayerView.swift */,
 				38B7261B24DD85900098F3D4 /* GIFView.swift */,
+				3DE728E085DB687FAD037351 /* StatChip.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */,
 				5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */,
 				3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */,
+				6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */,
 				367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
 			);
@@ -734,6 +740,7 @@
 				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
 				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
+				A9CA2FC2436DDDF5F5C56540 /* StatChip.swift in Sources */,
 				84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */,
 				582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
@@ -762,6 +769,7 @@
 				3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */,
 				5FB2C60994CAB86106615387 /* SpySessionStatsRepository.swift in Sources */,
 				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
+				805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */,
 				669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
 			);

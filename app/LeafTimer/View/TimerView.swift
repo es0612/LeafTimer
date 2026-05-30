@@ -62,16 +62,26 @@ struct TimerView: View {
                             didTapTimerButton()
                         }
 
-                    Text(
-                        String(
-                            format: NSLocalizedString("timer.todays_count_with_streak", comment: "Today count and streak"),
-                            timerViewModel.todaysCount,
-                            timerViewModel.currentStreak
+                    HStack(spacing: 10) {
+                        StatChip(
+                            systemImage: "leaf.fill",
+                            tint: .green,
+                            text: String(
+                                format: NSLocalizedString("timer.stat.today", comment: "Today's pomodoro count"),
+                                timerViewModel.todaysCount
+                            )
                         )
-                    )
-                        .foregroundColor(.secondary.opacity(0.9))
-                        .padding()
-                        .padding(.top, 20)
+                        StatChip(
+                            systemImage: "flame.fill",
+                            tint: .orange,
+                            text: String(
+                                format: NSLocalizedString("timer.stat.streak", comment: "Current streak"),
+                                timerViewModel.currentStreak
+                            )
+                        )
+                    }
+                    .padding()
+                    .padding(.top, 20)
                 }
                 .navigationTitle(NSLocalizedString("timer.title", comment: "Timer navigation title"))
                 .navigationBarTitleDisplayMode(.inline)

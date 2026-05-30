@@ -6,6 +6,8 @@
 // MARK: - Timer View
 "timer.title" = "Pomodoro";
 "timer.todays_count" = "Today's Pomodoros: ";
+"timer.stat.today" = "Today %d";
+"timer.stat.streak" = "Streak %d";
 
 // MARK: - Settings View
 "settings.title" = "Settings";
@@ -60,7 +62,6 @@
 "settings.review_app_footer" = "If you enjoy LeafTimer, please leave a review on the App Store.";
 
 // MARK: - History (Issue #8)
-"timer.todays_count_with_streak" = "Today %d · 🔥 Streak %d";
 "history.title" = "History";
 "history.current_streak" = "Current Streak: %d";
 "history.longest_streak" = "Longest: %d";
