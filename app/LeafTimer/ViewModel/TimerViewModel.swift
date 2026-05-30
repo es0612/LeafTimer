@@ -211,9 +211,13 @@ class TimerViewModel: ObservableObject {
         longestStreak = stats.longestStreak
     }
 
-    // MARK: - Navigation Factories
+    // MARK: - Navigation
 
-    func makeHistoryViewModel() -> HistoryViewModel {
-        HistoryViewModel(repository: sessionStatsRepository)
-    }
+    // HistoryView の ViewModel は単一インスタンスを保持する。
+    // タイマー稼働中は currentTimeSecond の @Published 更新で TimerView.body が毎秒
+    // 再評価され、eager NavigationLink の destination が作り直される。その都度
+    // HistoryViewModel を新規生成すると load() 済みの内容が空 VM に差し替わり、
+    // 履歴が 0 表示に戻る (Issue #40)。lazy var で同一インスタンスを渡し続けることで
+    // 再描画に耐え、再ナビゲーション時は HistoryView.onAppear の load() が最新化する。
+    lazy var historyViewModel = HistoryViewModel(repository: sessionStatsRepository)
 }
