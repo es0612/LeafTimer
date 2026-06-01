@@ -45,7 +45,12 @@ unless File.exist?(FIXTURE_FILE)
   exit 0
 end
 
-expectations = GitignoreDoctor.parse_expectations(File.read(FIXTURE_FILE))
+begin
+  expectations = GitignoreDoctor.parse_expectations(File.read(FIXTURE_FILE))
+rescue GitignoreDoctor::ParseError => e
+  warn "❌ gitignore-doctor: #{e.message}"
+  exit 1
+end
 
 if expectations.empty?
   puts '✅ gitignore-doctor: no expectations declared (nothing to check)'
@@ -54,7 +59,7 @@ end
 
 begin
   root = repo_root
-rescue RuntimeError => e
+rescue RuntimeError, Errno::ENOENT => e
   warn "❌ gitignore-doctor: #{e.message}"
   exit 1
 end

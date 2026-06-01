@@ -9,20 +9,47 @@
 module GitignoreDoctor
   EXPECTATION_LINE = /\A(keep|ignore):\s*(.+)\z/.freeze
 
+  # Raised when the fixture contains a non-blank, non-comment line that is not a
+  # well-formed 'keep:'/'ignore:' expectation. We hard-fail (rather than warn or
+  # silently drop) so a typo like 'keeep:' cannot make the checker quietly skip a
+  # path it was supposed to guard — "thinking you're protected when you're not".
+  class ParseError < StandardError; end
+
   # Parse the expectations fixture text into [{kind: :keep|:ignore, path: String}].
   # Skips blank lines and lines starting with '#'. Normalizes away a leading './';
   # a trailing '/' is preserved on purpose (see normalize_path) — it signals
   # directory intent.
+  #
+  # Any non-blank, non-comment line that is NOT a well-formed expectation raises
+  # ParseError (with line number + content). A path containing whitespace is also
+  # treated as malformed: gitignore paths normally have no spaces, so this catches
+  # an accidental inline comment (e.g. 'keep: foo # because' parsing the path as
+  # 'foo # because') instead of guarding the wrong, longer string.
   def self.parse_expectations(text)
-    text.each_line.filter_map do |line|
+    entries = []
+    malformed = []
+
+    text.each_line.with_index(1) do |line, lineno|
       stripped = line.strip
       next if stripped.empty? || stripped.start_with?('#')
 
       m = stripped.match(EXPECTATION_LINE)
-      next unless m
+      path = m && normalize_path(m[2].strip)
 
-      { kind: m[1].to_sym, path: normalize_path(m[2].strip) }
+      if m.nil? || path.match?(/\s/)
+        malformed << "line #{lineno}: #{stripped}"
+        next
+      end
+
+      entries << { kind: m[1].to_sym, path: path }
     end
+
+    unless malformed.empty?
+      raise ParseError,
+            "malformed expectation line(s):\n  #{malformed.join("\n  ")}"
+    end
+
+    entries
   end
 
   # Normalize a repo-relative path: drop a leading './'. A trailing '/' is KEPT

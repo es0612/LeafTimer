@@ -46,6 +46,30 @@ class GitignoreDoctorTest < Minitest::Test
     assert_equal [], GitignoreDoctor.parse_expectations(text)
   end
 
+  def test_parse_expectations_raises_on_malformed_line
+    # 'keep:'/'ignore:' のタイポ等を黙って捨てると「守っているつもりで守れていない」
+    # 事故になるため、malformed 行は hard fail (raise) する。
+    text = "keep: app/ok\nkeeep: app/typo\n"
+    err = assert_raises(GitignoreDoctor::ParseError) do
+      GitignoreDoctor.parse_expectations(text)
+    end
+    # メッセージに行番号と該当行を含めて気づけるようにする
+    assert_includes err.message, 'line 2'
+    assert_includes err.message, 'keeep: app/typo'
+  end
+
+  def test_parse_expectations_raises_on_path_with_space_inline_comment
+    # path にスペースを含む行は malformed として raise する。
+    # gitignore のパスにスペースは通常無く、inline '# comment' の混入検出になる
+    # (例 'keep: foo # because' は path が 'foo # because' になってしまう)。
+    text = "keep: foo # because\n"
+    err = assert_raises(GitignoreDoctor::ParseError) do
+      GitignoreDoctor.parse_expectations(text)
+    end
+    assert_includes err.message, 'line 1'
+    assert_includes err.message, 'foo # because'
+  end
+
   # --- ignored? -------------------------------------------------------------
 
   def test_ignored_false_for_empty_output
