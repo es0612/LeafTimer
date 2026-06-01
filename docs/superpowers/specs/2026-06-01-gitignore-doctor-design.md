@@ -25,11 +25,18 @@ Issue 素案には、このリポジトリの確立済みの学びと**衝突す
    **repo スクリプト + make ターゲット**にすべき」に従い、repo 内スクリプトとして実装する。
    （`writing-skills` のガイダンス: 機械的チェックは自動化・固有規約はリポジトリに置く）
 
-2. **判定コマンド**: Issue 素案は `git check-ignore -v` を想定。
-   → MEMORY `feedback-gitignore-check-ignore-semantics`（実機検証済み）に従い **使わない**。
-   `git check-ignore -v` は「最後にマッチしたルール」を返すコマンドで、それが `!`（再 include）
-   であっても **exit 0** を返すため、whitelist が効いているかの oracle にならない。
-   代わりに `git status --ignored` の出力セクション（Ignored / Untracked）と `git ls-files` で判定する。
+2. **判定コマンド**: `git check-ignore --no-index -v <path>` の **出力（マッチしたルール行）**で判定する。
+   MEMORY `feedback-gitignore-check-ignore-semantics` の教訓は「`git check-ignore` の **exit code** を
+   信じるな（`!` 再 include でも exit 0 を返す）」であり、**出力のパースまでは否定していない**。
+   本設計は exit code を一切使わず、出力のマッチルールが `!`（negation）で始まるかで判定するため、
+   この教訓と矛盾しない（実機検証で確認済み・後述）。
+
+   `git status --ignored` を**使わない**理由（実機検証で判明したブロッカー）:
+   `git status --ignored` は **untracked パスしか `!!` で出さない**。tracked なファイルは .gitignore
+   ルールに関係なく tracked のまま残り、`!!` に出ない。よって `keep:` を tracked ファイル
+   （例: 既に commit 済みの `Package.resolved`）に設定すると、whitelist を壊しても status は
+   緑のまま（vacuously green）で **#31 型の回帰を検出できない**。`check-ignore --no-index` は
+   tracked/untracked・ディスク存在に依存せず .gitignore ルール自体を評価するためこの盲点がない。
 
 ## アーキテクチャ
 
@@ -53,33 +60,48 @@ Issue 素案には、このリポジトリの確立済みの学びと**衝突す
 ## データフロー
 
 ```
-expectations.txt        git の真実
-  keep:  PATH    ──┐    ┌── `git status --ignored --porcelain` (ignore されているか)
-  ignore: PATH   ──┼──→ ┤
-                   │    └── `git ls-files <path>` (tracked か)
-                   ▼
-        GitignoreDoctor.evaluate(expectations, git_state)
+expectations.txt              per-path に git へ問い合わせ
+  keep:  PATH    ──┐
+  ignore: PATH   ──┼──→ 各 PATH について実行:
+                   │      `git check-ignore --no-index -v -- <PATH>`
+                   │            │
+                   │            ▼ (出力 = 0 or 1 行: "source:line:pattern\t<PATH>")
+                   ▼      GitignoreDoctor.ignored?(check_ignore_output)
+        GitignoreDoctor.evaluate(expectations, per_path_results)
                    ▼
           violations[] → 0件なら exit 0 / 1件以上 exit 1
 ```
 
-実行スクリプト側**だけ**が `git` を叩き、パース結果を純粋関数に渡す。
+実行スクリプト側**だけ**が `git` を **リポジトリルートで** path ごとに叩き、その生出力を
+純粋関数に渡す。`check-ignore` に渡す `<PATH>` は fixture 記載の**リポジトリルート相対**パス。
+
+## オラクル: `git check-ignore --no-index -v`（実機検証済み）
+
+判定は exit code を使わず、**マッチしたルール行**を見る。
+
+- 出力が**空** → どのルールにもマッチしない → **NOT ignored**
+- 出力あり（`source:line:pattern\t<path>`）でマッチ `pattern` が `!` 始まり → **NOT ignored**（有効な negation）
+- 出力ありでマッチ `pattern` が `!` 以外 → **IGNORED**
+
+`--no-index` は tracked/untracked・ディスク存在に依存せず .gitignore ルールを評価する。
+git は「親ディレクトリが除外されていれば配下の `!` 再 include は無効」というルールも
+**評価済みの最終結果**としてマッチ行に反映する（実機確認: 階段状 whitelist を `ws/` 一発に
+簡略化すると、`!…Package.resolved` ではなく効いている `ws/` がマッチ行として返る → 正しく IGNORED 判定）。
+ディレクトリパス（末尾スラッシュ有無どちらでも）も正しくマッチする（実機確認済み）。
 
 ## 判定ロジック（心臓部）
 
 | 宣言 | 期待される状態 | NG（FAIL）条件 | 判定 |
 |---|---|---|---|
-| `keep: PATH` | commit 可能（ignore されていない） | **ignore されている** | `git status --ignored` の Ignored セクション(`!!`)に出たら NG |
-| `ignore: PATH` | ignore される | **ignore されていない** | tracked、または Untracked(`??`)で見えていたら NG |
+| `keep: PATH` | ignore されない（commit 可能） | **ignored** | `ignored?(output)` が true なら violation（#31 型） |
+| `ignore: PATH` | ignore される | **NOT ignored** | `ignored?(output)` が false なら violation（#9 型） |
 
 ### `keep:` で物理ファイルが存在しない場合
 
-- **警告のみ・FAIL しない**（exit code に影響させない）。
-- 理由: ファイルが単に削除/未生成なだけの可能性があり、それを CI failure にすると
-  「ファイルを消したら gitignore-check が落ちる」という無関係な赤を生む。
-- `ignore:` 側は物理ファイル不要（gitignore はパターンなので、存在しないパスでも
-  「ignore 対象であること」自体は検証意味があるが、判定は status 出力に依存するため
-  実務上は「存在しなければ Untracked にも Ignored にも出ない＝NG にしない」扱い）。
+- **判定に影響しない**（物理存在チェックはしない）。
+- 理由: `--no-index` はディスク上のファイル有無と無関係に .gitignore パターンを評価するため、
+  「ファイルが消えている → status に出ない → 緑」という旧 status 方式の盲点が**そもそも無い**。
+  パターンとしての ignore 判定は物理ファイルなしでも成立する。
 
 ## コンポーネント境界（純粋関数 `GitignoreDoctor`）
 
@@ -88,31 +110,39 @@ expectations.txt        git の真実
 - `parse_expectations(text)` → `[{kind: :keep|:ignore, path: String}]`
   - `#` コメント行・空行スキップ（xcode-precheck の baseline パース流用）
   - 行形式: `keep: <path>` / `ignore: <path>`（コロン後の空白は寛容に trim）
-- `parse_git_status(porcelain_text)` → `{ignored: Set<String>, untracked: Set<String>}`
-  - `git status --ignored --porcelain` の `!!` プレフィックス → ignored、`??` → untracked
-  - ディレクトリは末尾 `/` を含む形で出ることがあるため、パス正規化を1箇所に集約
-- `evaluate(expectations, git_state, tracked_paths:)` → `[{path, kind, expected, actual, message}]`
-  - keep が ignored に含まれる → violation（#31 シナリオ）
-  - ignore が tracked または untracked に含まれる → violation（#9 シナリオ）
+- `ignored?(check_ignore_output)` → `Boolean`
+  - 入力は `git check-ignore --no-index -v -- <path>` の生出力（0 or 1 行の String）
+  - 空文字列 → false
+  - 1 行ある場合: **TAB で先割り**して左辺 `source:line:pattern` を取り、先頭の `source:line:`
+    （`^[^:]*:\d+:`）を strip して `pattern` を得る。`pattern` が `!` 始まりなら false、それ以外 true。
+  - ⚠️ `sed 's/.*://'` のような末尾貪欲マッチは `:` を含むパターンで壊れるため使わない。
+    必ず TAB 先割り → 行頭 `source:line:` のみ除去。
+- `evaluate(expectations, results)` → `[{path, kind, expected, actual, message}]`
+  - `results` は `path → check_ignore_output(String)` の Hash（実行スクリプトが収集）
+  - `kind == :keep` かつ `ignored?` が true → violation（#31 シナリオ）
+  - `kind == :ignore` かつ `ignored?` が false → violation（#9 シナリオ）
 
 ## エラーハンドリング & エッジケース
 
 - **fixture が存在しない**: スキップ（⚠️ 表示）して exit 0。導入直後に空でも壊れない。
 - **fixture が空**: 「期待0件」で exit 0（xcode-precheck baseline 空の現状と同じ哲学）。
-- **`keep:` の物理ファイル無し**: 警告のみ、FAIL しない（上述）。
-- **git コマンド失敗**: stderr 表示して exit 1。
-- **パス正規化**: 末尾スラッシュ・先頭 `./` のゆれを `evaluate` 前に吸収。
+- **`keep:` の物理ファイル無し**: 判定に影響しない（上述）。
+- **git コマンド失敗**（リポジトリ外など）: stderr 表示して exit 1。
+- **パス正規化**: fixture は repo ルート相対で書く。`check-ignore` は `--no-index` なので
+  ディスク存在に依存しないが、末尾 `/`・先頭 `./` のゆれは `parse_expectations` で吸収。
 
 ## テスト戦略（TDD）
 
-`test_gitignore_doctor.rb` で純粋関数を minitest 検証。最低限:
+`test_gitignore_doctor.rb` で純粋関数を minitest 検証（git 実行なし・出力テキストを fixture 化）。最低限:
 
-1. `parse_expectations`: `keep:`/`ignore:` 行分類、`#` コメント・空行スキップ
-2. `parse_git_status`: `!!path`（ignored）と `??path`（untracked）の分類
-3. `evaluate` — keep が ignore されてたら violation（#31 シナリオ）
-4. `evaluate` — ignore したいのに untracked で見えてたら violation（#9 シナリオ）
-5. `evaluate` — 全て期待どおりなら violations 空
-6. パス正規化（末尾 `/`・先頭 `./` のゆれ）
+1. `parse_expectations`: `keep:`/`ignore:` 行分類、`#` コメント・空行スキップ、末尾 `/`・先頭 `./` 吸収
+2. `ignored?`: 空出力 → false
+3. `ignored?`: `!` 始まりルール行 → false（有効 negation）
+4. `ignored?`: 通常ルール行 → true
+5. `ignored?`: パターンに `:` を含む行でも TAB 先割りで正しく抽出（脆い末尾マッチ回帰防止）
+6. `evaluate` — keep が ignored なら violation（#31 シナリオ）
+7. `evaluate` — ignore が NOT ignored なら violation（#9 シナリオ）
+8. `evaluate` — 全て期待どおりなら violations 空
 
 実装は **TDD**: テストを先に書き、red → green の順で進める。
 
@@ -148,10 +178,15 @@ keep:   docs/superpowers/plans
 
 # --- things that genuinely must stay ignored ---
 ignore: app/Pods
-ignore: /plans
+ignore: plans
 ```
 
-（初期 fixture の具体的な行は実装時にリポジトリ実態と突き合わせて最終確定する。）
+- fixture のパスは **repo ルート相対**で書く（先頭スラッシュ無し）。`git check-ignore` に
+  渡す引数の `/plans` は「絶対パス」と解釈されうるため、ルート相対の `plans` と書く。
+  これは `.gitignore` 側の `/plans`（アンカー）とは別概念（fixture = 検査対象パス、
+  `.gitignore` = ルール）。
+- （初期 fixture の具体的な行は実装時にリポジトリ実態と突き合わせ、`make gitignore-check` が
+  green になることを確認して最終確定する。）
 
 ## スコープ外（YAGNI）
 
@@ -164,5 +199,6 @@ ignore: /plans
 
 - Issue #9（アンカー漏れの原体験、コミット 9862e96 → da32d01 の手戻り）
 - Issue #31（Package.resolved が `*.xcworkspace` に巻き込まれた事故）
-- MEMORY `feedback-gitignore-check-ignore-semantics`（check-ignore を使わない理由の実機検証）
+- MEMORY `feedback-gitignore-check-ignore-semantics`（**exit code** は信じない／`-v` 出力の
+  last-rule パースは有効、という制約の実機検証。本 issue 着手時に更新する）
 - 既存実装パターン: `app/bin/xcode-precheck.rb` / `xcode_precheck.rb` / `test_xcode_precheck.rb`
