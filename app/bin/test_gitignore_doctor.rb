@@ -74,4 +74,37 @@ class GitignoreDoctorTest < Minitest::Test
     out = ".gitignore:1:plans\tdocs/superpowers/plans\n"
     assert GitignoreDoctor.ignored?(out)
   end
+
+  # --- evaluate -------------------------------------------------------------
+
+  def test_evaluate_flags_keep_that_is_ignored
+    # #31 シナリオ: keep したい Package.resolved が ignore されている
+    expectations = [{ kind: :keep, path: 'ws/swiftpm/Package.resolved' }]
+    results = { 'ws/swiftpm/Package.resolved' => ".gitignore:1:ws/\tws/swiftpm/Package.resolved" }
+    violations = GitignoreDoctor.evaluate(expectations, results)
+    assert_equal 1, violations.size
+    assert_equal :keep, violations.first[:kind]
+    assert_equal 'ws/swiftpm/Package.resolved', violations.first[:path]
+  end
+
+  def test_evaluate_flags_ignore_that_is_not_ignored
+    # #9 シナリオ: ignore したい plans が ignore されていない (アンカー修正後に取りこぼし)
+    expectations = [{ kind: :ignore, path: 'plans' }]
+    results = { 'plans' => '' } # no rule matched
+    violations = GitignoreDoctor.evaluate(expectations, results)
+    assert_equal 1, violations.size
+    assert_equal :ignore, violations.first[:kind]
+  end
+
+  def test_evaluate_no_violations_when_all_expectations_met
+    expectations = [
+      { kind: :keep,   path: 'docs/plans' },
+      { kind: :ignore, path: 'plans' }
+    ]
+    results = {
+      'docs/plans' => '',                                  # keep: not ignored -> OK
+      'plans'      => ".gitignore:1:plans\tplans"          # ignore: ignored  -> OK
+    }
+    assert_empty GitignoreDoctor.evaluate(expectations, results)
+  end
 end

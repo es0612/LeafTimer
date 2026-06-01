@@ -50,4 +50,29 @@ module GitignoreDoctor
     pattern = meta.sub(/\A[^:]*:\d+:/, '')   # strip "source:line:"
     !pattern.start_with?('!')
   end
+
+  # Compare expectations against per-path `git check-ignore` outputs.
+  # `results` maps a path String to the raw check-ignore output String.
+  # Returns a list of violations: [{path:, kind:, message:}].
+  #   keep   + ignored      -> violation (#31: a must-keep path is ignored)
+  #   ignore + not ignored  -> violation (#9: a must-ignore path leaks through)
+  def self.evaluate(expectations, results)
+    expectations.filter_map do |exp|
+      output = results.fetch(exp[:path], '')
+      is_ignored = ignored?(output)
+
+      case exp[:kind]
+      when :keep
+        next unless is_ignored
+
+        { path: exp[:path], kind: :keep,
+          message: "expected to be committable but is IGNORED by .gitignore" }
+      when :ignore
+        next if is_ignored
+
+        { path: exp[:path], kind: :ignore,
+          message: "expected to be ignored but is NOT ignored by .gitignore" }
+      end
+    end
+  end
 end
