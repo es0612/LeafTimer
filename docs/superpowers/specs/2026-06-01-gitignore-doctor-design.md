@@ -87,6 +87,9 @@ expectations.txt              per-path に git へ問い合わせ
 git は「親ディレクトリが除外されていれば配下の `!` 再 include は無効」というルールも
 **評価済みの最終結果**としてマッチ行に反映する（実機確認: 階段状 whitelist を `ws/` 一発に
 簡略化すると、`!…Package.resolved` ではなく効いている `ws/` がマッチ行として返る → 正しく IGNORED 判定）。
+（注: 現行 fixture が行使するのは実リポジトリと同じ階段状 idiom（`!ws`/`ws/*`/… で親を完全除外しない）。
+`dir/` + `!dir/child`（親完全除外 + 無効 `!`）の素朴形は現 fixture では未行使だが、実機検証では
+この形でも効いている除外ルールがマッチ行に返り正しく IGNORED 判定された。）
 
 ### ⚠️ ディレクトリのみパターン × 不在パスの罠（実機検証で判明・要対処）
 
@@ -134,7 +137,7 @@ git は「親ディレクトリが除外されていれば配下の `!` 再 incl
     （`^[^:]*:\d+:`）を strip して `pattern` を得る。`pattern` が `!` 始まりなら false、それ以外 true。
   - ⚠️ `sed 's/.*://'` のような末尾貪欲マッチは `:` を含むパターンで壊れるため使わない。
     必ず TAB 先割り → 行頭 `source:line:` のみ除去。
-- `evaluate(expectations, results)` → `[{path, kind, expected, actual, message}]`
+- `evaluate(expectations, results)` → `[{path, kind, message}]`
   - `results` は `path → check_ignore_output(String)` の Hash（実行スクリプトが収集）
   - `kind == :keep` かつ `ignored?` が true → violation（#31 シナリオ）
   - `kind == :ignore` かつ `ignored?` が false → violation（#9 シナリオ）
@@ -170,8 +173,12 @@ git は「親ディレクトリが除外されていれば配下の `!` 再 incl
 ```makefile
 gitignore-check:
 	@echo "Running gitignore-doctor..."
+	@ruby bin/test_gitignore_doctor.rb
 	@ruby bin/gitignore-doctor.rb
 ```
+
+（本体スクリプト前に unit test を走らせるのは sibling の `precheck` target の house-style に倣ったもの。
+`make gitignore-check` 単体で「ロジックのテスト → 実 .gitignore の検査」が両方走る。）
 
 - **`make tests` には入れない**（最初は手動）。fixture と実態のていれで誤検出 → 無関係な
   tests 赤、を避ける。実績を見てから `precheck` への昇格を検討する。
