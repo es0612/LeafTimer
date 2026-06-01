@@ -1,0 +1,23 @@
+# gitignore-doctor expectations — declares intended keep/ignore paths.
+# Verified by `make gitignore-check` (bin/gitignore-doctor.rb).
+#
+# `keep:`   = must be committable (NOT ignored). Catches #31-type accidents
+#             (a needed file swallowed by a broad wildcard).
+# `ignore:` = must be ignored. Catches #9-type anchor-leak accidents
+#             (an unanchored pattern matching at any depth).
+#
+# Paths are REPO-ROOT-relative (no leading slash). DIRECTORY-intent paths MUST
+# end with a trailing slash (e.g. "app/Pods/") so check-ignore matches a
+# directory-only pattern even when the path is absent on disk (fresh clone /
+# before `make install`). FILE-intent paths have no trailing slash.
+# Lines starting with '#' and blank lines are skipped.
+
+# --- #31: Package.resolved must survive the *.xcworkspace ignore ladder (FILE) ---
+keep:   app/LeafTimer.xcworkspace/xcshareddata/swiftpm/Package.resolved
+
+# --- #9: plan docs must NOT be swallowed by an unanchored 'plans' (DIR) ---
+keep:   docs/superpowers/plans/
+
+# --- paths that genuinely must stay ignored (DIRs → trailing slash) ---
+ignore: app/Pods/
+ignore: plans/

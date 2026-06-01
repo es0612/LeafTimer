@@ -47,3 +47,8 @@ tests: precheck sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta
+
+gitignore-check:
+	@echo "Running gitignore-doctor..."
+	@ruby bin/test_gitignore_doctor.rb
+	@ruby bin/gitignore-doctor.rb
