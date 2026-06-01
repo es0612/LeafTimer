@@ -5,13 +5,14 @@
 #
 # Oracle: `git check-ignore --no-index -v -- <path>` OUTPUT (not exit code).
 # See docs/superpowers/specs/2026-06-01-gitignore-doctor-design.md and MEMORY
-# feedback-gitignore-check-ignore-semantics for why exit code is unusable.
+# feedback_gitignore_check_ignore_semantics.md for why exit code is unusable.
 module GitignoreDoctor
   EXPECTATION_LINE = /\A(keep|ignore):\s*(.+)\z/.freeze
 
   # Parse the expectations fixture text into [{kind: :keep|:ignore, path: String}].
-  # Skips blank lines and lines starting with '#'. Normalizes a leading './' and a
-  # trailing '/' so the same path written either way compares equal.
+  # Skips blank lines and lines starting with '#'. Normalizes away a leading './';
+  # a trailing '/' is preserved on purpose (see normalize_path) — it signals
+  # directory intent.
   def self.parse_expectations(text)
     text.each_line.filter_map do |line|
       stripped = line.strip
