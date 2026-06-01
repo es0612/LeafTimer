@@ -74,13 +74,16 @@ class GitignoreDoctorTest < Minitest::Test
     )
   end
 
-  def test_parse_expectations_normalizes_leading_dot_and_trailing_slash
-    text = "ignore: ./plans/\nkeep: docs/superpowers/plans/\n"
+  def test_parse_expectations_strips_leading_dot_but_keeps_trailing_slash
+    # 先頭 './' は吸収。末尾 '/' は dir 意図として保持し check-ignore にそのまま渡す
+    # (不在ディレクトリを安定 match させるため。設計の「dir パターン × 不在」の罠対策)
+    text = "ignore: ./plans/\nkeep: docs/superpowers/plans/\nkeep: a/File.txt\n"
     result = GitignoreDoctor.parse_expectations(text)
     assert_equal(
       [
-        { kind: :ignore, path: 'plans' },
-        { kind: :keep,   path: 'docs/superpowers/plans' }
+        { kind: :ignore, path: 'plans/' },
+        { kind: :keep,   path: 'docs/superpowers/plans/' },
+        { kind: :keep,   path: 'a/File.txt' }
       ],
       result
     )
@@ -129,11 +132,13 @@ module GitignoreDoctor
     end
   end
 
-  # Normalize a repo-relative path: drop a leading './' and a trailing '/'.
+  # Normalize a repo-relative path: drop a leading './'. A trailing '/' is KEPT
+  # on purpose — it signals directory intent, which git check-ignore needs to
+  # match a directory-only pattern (e.g. "Pods/") when the path is absent on disk
+  # (fresh clone / before `make install`). Stripping it would cause an
+  # environment-dependent false "NOT ignored". See the design doc's trap section.
   def self.normalize_path(path)
-    path = path.sub(%r{\A\./}, '')
-    path = path.sub(%r{/\z}, '')
-    path
+    path.sub(%r{\A\./}, '')
   end
 end
 ```
@@ -461,18 +466,21 @@ git commit -m "feat(gitignore-doctor): #11 実行スクリプト (repo ルート
 # `ignore:` = must be ignored. Catches #9-type anchor-leak accidents
 #             (an unanchored pattern matching at any depth).
 #
-# Paths are REPO-ROOT-relative (no leading slash). Lines starting with '#'
-# and blank lines are skipped.
+# Paths are REPO-ROOT-relative (no leading slash). DIRECTORY-intent paths MUST
+# end with a trailing slash (e.g. "app/Pods/") so check-ignore matches a
+# directory-only pattern even when the path is absent on disk (fresh clone /
+# before `make install`). FILE-intent paths have no trailing slash.
+# Lines starting with '#' and blank lines are skipped.
 
-# --- #31: Package.resolved must survive the *.xcworkspace ignore ladder ---
+# --- #31: Package.resolved must survive the *.xcworkspace ignore ladder (FILE) ---
 keep:   app/LeafTimer.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
-# --- #9: plan docs must NOT be swallowed by an unanchored 'plans' ---
-keep:   docs/superpowers/plans
+# --- #9: plan docs must NOT be swallowed by an unanchored 'plans' (DIR) ---
+keep:   docs/superpowers/plans/
 
-# --- paths that genuinely must stay ignored ---
-ignore: app/Pods
-ignore: plans
+# --- paths that genuinely must stay ignored (DIRs → trailing slash) ---
+ignore: app/Pods/
+ignore: plans/
 ```
 
 - [ ] **Step 2: Run the doctor directly and verify green**
@@ -484,20 +492,34 @@ Expected: `✅ gitignore-doctor: 4 expectation(s) satisfied`, exit 0.
 
 - [ ] **Step 3: Sanity-check the RED path (一時的に fixture を壊す)**
 
-`keep:` の Package.resolved 行が IGNORED なら RED になることを一時確認する。
-fixture を一時編集して、確実に ignore される `app/Pods` を `keep:` にしてみる:
+`keep:` 宣言が IGNORED なら RED になることを一時確認する。
+fixture を一時編集して、確実に ignore される `app/Pods/` を `keep:` にしてみる:
 
 Run:
 ```bash
 cd app
-ruby -e 'puts File.read("bin/gitignore-doctor-expectations.txt").sub("ignore: app/Pods","keep: app/Pods")' > /tmp/expect-broken.txt
 cp bin/gitignore-doctor-expectations.txt /tmp/expect-orig.txt
-cp /tmp/expect-broken.txt bin/gitignore-doctor-expectations.txt
+ruby -e 'puts File.read("bin/gitignore-doctor-expectations.txt").sub("ignore: app/Pods/","keep: app/Pods/")' > bin/gitignore-doctor-expectations.txt
 ruby bin/gitignore-doctor.rb; echo "exit=$?"
 cp /tmp/expect-orig.txt bin/gitignore-doctor-expectations.txt
 ```
-Expected: `❌ gitignore-doctor: 1 violation(s):` と `[keep] app/Pods: ...IGNORED...`、`exit=1`。
+Expected: `❌ gitignore-doctor: 1 violation(s):` と `[keep] app/Pods/: ...IGNORED...`、`exit=1`。
 その後 fixture が元に戻っていること（`git diff --stat app/bin/gitignore-doctor-expectations.txt` が空）を確認。
+
+- [ ] **Step 3b: Sanity-check the directory-absent scenario (環境依存 false-RED 回帰防止)**
+
+設計の核心バグ（dir パターンを不在パスにスラッシュ無しで問うと false "NOT ignored"）が
+末尾スラッシュ方式で解消されていることを scratch repo で確認する:
+
+Run:
+```bash
+TMP=$(mktemp -d); cd "$TMP"; git init -q; printf 'Pods/\n' > .gitignore
+git -C "$TMP" check-ignore --no-index -v -- Pods;  echo "noslash/absent exit=$?"   # 期待: 出力なし・exit 1
+git -C "$TMP" check-ignore --no-index -v -- Pods/; echo "slash/absent exit=$?"     # 期待: ".gitignore:1:Pods/<TAB>Pods/" ・exit 0
+rm -rf "$TMP"
+```
+Expected: スラッシュ無しは出力なし（不在で no-match）、**スラッシュ付きは matched**。
+これが fixture で `ignore: app/Pods/` と書く根拠（不在環境でも安定 ignored 判定）。
 
 - [ ] **Step 4: Commit**
 
@@ -587,6 +609,8 @@ Expected: クリーン（追跡漏れファイルなし）。
   - オラクル（check-ignore --no-index -v 出力パース）→ Task 2 ✅
   - keep/ignore 両方向の判定 → Task 3 ✅
   - fixture 宣言形式 + repo ルート相対 → Task 1（正規化）+ Task 5 ✅
+  - dir パターン × 不在パスの罠（末尾スラッシュ保持で安定 match）→ Task 1（末尾 `/` 保持）
+    + Task 5 Step 3b（不在 dir の RED 確認）✅
   - repo ルートで git 実行 → Task 4（`git -C root` + `rev-parse --show-toplevel`）✅
   - `make gitignore-check` 独立ターゲット・tests に入れない → Task 6 ✅
   - fixture 不在/空で exit 0 → Task 4 実装 ✅

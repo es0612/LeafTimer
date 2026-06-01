@@ -83,11 +83,24 @@ expectations.txt              per-path に git へ問い合わせ
 - 出力あり（`source:line:pattern\t<path>`）でマッチ `pattern` が `!` 始まり → **NOT ignored**（有効な negation）
 - 出力ありでマッチ `pattern` が `!` 以外 → **IGNORED**
 
-`--no-index` は tracked/untracked・ディスク存在に依存せず .gitignore ルールを評価する。
+`--no-index` は tracked/untracked に依存せず .gitignore ルールを評価する。
 git は「親ディレクトリが除外されていれば配下の `!` 再 include は無効」というルールも
 **評価済みの最終結果**としてマッチ行に反映する（実機確認: 階段状 whitelist を `ws/` 一発に
 簡略化すると、`!…Package.resolved` ではなく効いている `ws/` がマッチ行として返る → 正しく IGNORED 判定）。
-ディレクトリパス（末尾スラッシュ有無どちらでも）も正しくマッチする（実機確認済み）。
+
+### ⚠️ ディレクトリのみパターン × 不在パスの罠（実機検証で判明・要対処）
+
+`--no-index` は**ファイルパターンにはディスク非依存**だが、**`Pods/` のような末尾スラッシュ付き
+（ディレクトリのみ）パターンは working tree の stat に依存する**。検査対象パスを
+スラッシュ無し（`app/Pods`）で渡し、かつそのパスが**ディスク上に存在しない**（fresh clone や
+`make install` 前で `Pods/` が無い等）と、ディレクトリと認識されず **マッチせず → "NOT ignored"** を
+返す。これは `ignore:` 宣言で **false violation（環境依存の偽 RED）** を生む。
+
+**対処**: fixture では**ディレクトリ意図のパスに末尾スラッシュを明記**する（`ignore: app/Pods/`）。
+末尾スラッシュ付きで渡すと、対象が**不在でもディレクトリパターンに安定してマッチ**する（実機確認:
+`Pods/` ルールに対し `-- Pods/` は absent/present どちらでも matched、`-- Pods` は absent で no-match）。
+したがって `parse_expectations` は**末尾スラッシュを吸収せず保持**する（dir 意図のシグナル）。
+ファイル意図のパス（`...Package.resolved`）はスラッシュ無しで書く。
 
 ## 判定ロジック（心臓部）
 
@@ -96,12 +109,14 @@ git は「親ディレクトリが除外されていれば配下の `!` 再 incl
 | `keep: PATH` | ignore されない（commit 可能） | **ignored** | `ignored?(output)` が true なら violation（#31 型） |
 | `ignore: PATH` | ignore される | **NOT ignored** | `ignored?(output)` が false なら violation（#9 型） |
 
-### `keep:` で物理ファイルが存在しない場合
+### 物理ファイルの存在について
 
-- **判定に影響しない**（物理存在チェックはしない）。
-- 理由: `--no-index` はディスク上のファイル有無と無関係に .gitignore パターンを評価するため、
-  「ファイルが消えている → status に出ない → 緑」という旧 status 方式の盲点が**そもそも無い**。
-  パターンとしての ignore 判定は物理ファイルなしでも成立する。
+- **ファイル意図のパス（スラッシュ無し）**: `--no-index` はディスク上のファイル有無と無関係に
+  .gitignore のファイルパターンを評価するため、物理存在チェックは不要。
+  旧 status 方式の「ファイルが消えている → status に出ない → 緑」という盲点が**そもそも無い**。
+- **ディレクトリ意図のパス（末尾スラッシュ付き）**: 上記の罠どおり、不在時にスラッシュ無しだと
+  誤判定するため、必ず**末尾スラッシュを付けて**安定マッチさせる。スラッシュ付きなら不在でも
+  ディレクトリパターンに正しくマッチする。
 
 ## コンポーネント境界（純粋関数 `GitignoreDoctor`）
 
@@ -110,6 +125,8 @@ git は「親ディレクトリが除外されていれば配下の `!` 再 incl
 - `parse_expectations(text)` → `[{kind: :keep|:ignore, path: String}]`
   - `#` コメント行・空行スキップ（xcode-precheck の baseline パース流用）
   - 行形式: `keep: <path>` / `ignore: <path>`（コロン後の空白は寛容に trim）
+  - 先頭 `./` は吸収するが、**末尾 `/` は保持**する（ディレクトリ意図のシグナルとして
+    check-ignore にそのまま渡し、不在ディレクトリの誤判定を防ぐ。上記の罠を参照）
 - `ignored?(check_ignore_output)` → `Boolean`
   - 入力は `git check-ignore --no-index -v -- <path>` の生出力（0 or 1 行の String）
   - 空文字列 → false
@@ -170,21 +187,23 @@ gitignore-check:
 # `ignore:` = must be ignored. Catches #9-type anchor-leak accidents.
 # Lines starting with # and blank lines are skipped.
 
-# --- #31: Package.resolved must survive the *.xcworkspace wildcard ---
+# --- #31: Package.resolved must survive the *.xcworkspace ignore ladder (FILE) ---
 keep:   app/LeafTimer.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
-# --- #9: plan dirs must be anchored so docs/.../plans is not swallowed ---
-keep:   docs/superpowers/plans
+# --- #9: plan docs must NOT be swallowed by an unanchored 'plans' (DIR) ---
+keep:   docs/superpowers/plans/
 
-# --- things that genuinely must stay ignored ---
-ignore: app/Pods
-ignore: plans
+# --- paths that genuinely must stay ignored (DIRs → trailing slash) ---
+ignore: app/Pods/
+ignore: plans/
 ```
 
 - fixture のパスは **repo ルート相対**で書く（先頭スラッシュ無し）。`git check-ignore` に
-  渡す引数の `/plans` は「絶対パス」と解釈されうるため、ルート相対の `plans` と書く。
+  渡す引数の `/plans` は「絶対パス」と解釈されうるため、ルート相対の `plans/` と書く。
   これは `.gitignore` 側の `/plans`（アンカー）とは別概念（fixture = 検査対象パス、
   `.gitignore` = ルール）。
+- **ディレクトリ意図のパスは末尾スラッシュを付ける**（`app/Pods/` `plans/` `docs/.../plans/`）。
+  不在ディレクトリでの誤判定を防ぐため（上記の罠）。ファイル意図はスラッシュ無し。
 - （初期 fixture の具体的な行は実装時にリポジトリ実態と突き合わせ、`make gitignore-check` が
   green になることを確認して最終確定する。）
 
