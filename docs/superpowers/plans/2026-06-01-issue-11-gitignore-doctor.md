@@ -499,7 +499,9 @@ Run:
 ```bash
 cd app
 cp bin/gitignore-doctor-expectations.txt /tmp/expect-orig.txt
-ruby -e 'puts File.read("bin/gitignore-doctor-expectations.txt").sub("ignore: app/Pods/","keep: app/Pods/")' > bin/gitignore-doctor-expectations.txt
+# ⚠️ 元ファイルを直接 `> 同じファイル` にリダイレクトすると shell が先に空にしてから
+# Ruby が読むため空になる。必ずバックアップ (/tmp/expect-orig.txt) から読むこと。
+ruby -e 'puts File.read("/tmp/expect-orig.txt").sub("ignore: app/Pods/","keep: app/Pods/")' > bin/gitignore-doctor-expectations.txt
 ruby bin/gitignore-doctor.rb; echo "exit=$?"
 cp /tmp/expect-orig.txt bin/gitignore-doctor-expectations.txt
 ```
