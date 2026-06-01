@@ -45,4 +45,33 @@ class GitignoreDoctorTest < Minitest::Test
     text = "\n# only comments\n   \n"
     assert_equal [], GitignoreDoctor.parse_expectations(text)
   end
+
+  # --- ignored? -------------------------------------------------------------
+
+  def test_ignored_false_for_empty_output
+    refute GitignoreDoctor.ignored?('')
+  end
+
+  def test_ignored_false_when_last_rule_is_negation
+    # whitelist が効いている: マッチ行のパターンが '!' で始まる
+    out = ".gitignore:6:!ws/xcshareddata/swiftpm/Package.resolved\tws/xcshareddata/swiftpm/Package.resolved"
+    refute GitignoreDoctor.ignored?(out)
+  end
+
+  def test_ignored_true_for_normal_rule
+    # 通常ルールがマッチ = ignore されている
+    out = ".gitignore:1:ws/\tws/xcshareddata/swiftpm/Package.resolved"
+    assert GitignoreDoctor.ignored?(out)
+  end
+
+  def test_ignored_handles_pattern_containing_colon
+    # パターン自体に ':' を含んでも TAB 先割りで壊れない (脆い末尾マッチ回帰防止)
+    out = ".gitignore:3:foo:bar\tpath/foo:bar"
+    assert GitignoreDoctor.ignored?(out)
+  end
+
+  def test_ignored_trailing_newline_tolerated
+    out = ".gitignore:1:plans\tdocs/superpowers/plans\n"
+    assert GitignoreDoctor.ignored?(out)
+  end
 end

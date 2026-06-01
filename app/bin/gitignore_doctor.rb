@@ -32,4 +32,22 @@ module GitignoreDoctor
   def self.normalize_path(path)
     path.sub(%r{\A\./}, '')
   end
+
+  # Decide whether a path is ignored, from the OUTPUT of
+  # `git check-ignore --no-index -v -- <path>`. The output is 0 or 1 line:
+  #   "<source>:<line>:<pattern>\t<path>"
+  # We never use the exit code (it returns 0 even for a '!' negation).
+  #   - empty output            -> not ignored (no rule matched)
+  #   - matched pattern is '!…'  -> not ignored (effective whitelist)
+  #   - any other matched rule   -> ignored
+  # Split on TAB first, then strip the leading "source:line:" so a pattern that
+  # itself contains ':' is parsed correctly.
+  def self.ignored?(check_ignore_output)
+    line = check_ignore_output.to_s.strip
+    return false if line.empty?
+
+    meta = line.split("\t", 2).first        # "<source>:<line>:<pattern>"
+    pattern = meta.sub(/\A[^:]*:\d+:/, '')   # strip "source:line:"
+    !pattern.start_with?('!')
+  end
 end
