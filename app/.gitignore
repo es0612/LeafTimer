@@ -87,6 +87,10 @@ fastlane/test_output
 fastlane/.env.default
 fastlane/.env
 
+# ASC review demo credentials などの機微情報は commit しない (dir 構造は .gitkeep のみ)
+fastlane/metadata/review_information/*
+!fastlane/metadata/review_information/.gitkeep
+
 # Code Injection
 #
 # After new code Injection tools there's a generated folder /iOSInjectionProject
