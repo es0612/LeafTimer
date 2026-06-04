@@ -35,7 +35,7 @@ Don't use when:
 
 ## precheck はローカルではなく ASC 側を見る (重要な実測事実)
 
-`fastlane precheck` は `check_app_store_metadata` のエイリアスで、オプションは `api_key` / `username` / `app_identifier` / `team_id` / `use_live` のみ。**ローカルファイルを指す `metadata_path` は無い** = precheck は **ASC 側の編集中(editable)メタデータ**を取得して検証する（`use_live:true` で公開中バージョンに切替）。
+`fastlane precheck` は `check_app_store_metadata` のエイリアスで、オプションは 主に `api_key` / `api_key_path` / `username` / `app_identifier` / `team_id` / `use_live` 等 。**ローカルファイルを指す `metadata_path` は無い** = precheck は **ASC 側の編集中(editable)メタデータ**を取得して検証する（`use_live:true` で公開中バージョンに切替）。
 
 含意:
 
@@ -85,9 +85,10 @@ digraph asc_metadata {
 ```ruby
 lane :upload_metadata do
   # 先に metadata を ASC の editable に stage する (skip_binary_upload で binary は触らない)。
+  # force は付けない: この lane は人間が手実行する前提なので、本番書き込み前に
+  # deliver の HTML プレビューを人間が確認する gate を意図的に残す。
   upload_to_app_store(
     skip_binary_upload: true,   # バイナリは Xcode Cloud 所有
-    force: true,                # CI/非対話で HTML プレビュー確認をスキップ
     submit_for_review: false    # ステージのみ。提出は意図的な別操作
   )
   # precheck はローカルではなく ASC 側 (editable) を検証する (metadata_path オプション無し)。

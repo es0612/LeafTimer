@@ -102,9 +102,10 @@ Expected: 1〜5 行目に `---` / `name: asc-metadata-delivery` / `description:`
   # ~/.claude/skills/asc-metadata-delivery/SKILL.md を参照。
   lane :upload_metadata do
     # 先に metadata を ASC の editable に stage する (skip_binary_upload で binary は触らない)。
+    # force は付けない: この lane は人間が手実行する前提なので、本番書き込み前に
+    # deliver の HTML プレビューを人間が確認する gate を意図的に残す。
     upload_to_app_store(
       skip_binary_upload: true,   # バイナリは Xcode Cloud 所有
-      force: true,                # CI/非対話で HTML プレビュー確認をスキップ
       submit_for_review: false    # ステージのみ。提出は意図的な別操作
     )
     # precheck はローカルではなく ASC 側 (editable) を検証する (metadata_path オプション無し)。

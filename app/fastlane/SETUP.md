@@ -91,7 +91,7 @@ fastlane beta
    ```bash
    cd app && fastlane upload_metadata
    ```
-   lane は `upload_to_app_store`（`skip_binary_upload:true` で stage）→ `precheck`（stage 済み ASC コピーを検証）の順に走る。
+   lane は `upload_to_app_store`（`skip_binary_upload:true` で stage。`force` 無しなので本番書き込み前に HTML プレビューの確認を求められる）→ `precheck`（stage 済み ASC コピーを検証）の順に走る。
 
 ### Xcode Cloud との共存
 
@@ -102,6 +102,8 @@ fastlane beta
 ### `fastlane/metadata/review_information/`
 
 審査用 demo 認証情報など機微情報を含むため **gitignore 済み**（`.gitkeep` のみ commit）。各自ローカルで埋めてから投入する。
+
+> 注: `primary_category` / `copyright` は precheck の placeholder_text tripwire の対象外（tripwire は free-text フィールドのみ）。必ず手順2の `deliver download_metadata` で live 値に上書きしてから upload すること。
 
 ## トラブルシューティング
 
