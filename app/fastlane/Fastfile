@@ -26,4 +26,21 @@ platform :ios do
     build_app(workspace: "LeafTimer.xcworkspace", scheme: "LeafTimer Release")
     upload_to_testflight(skip_waiting_for_build_processing: true)
   end
+
+  desc "Push listing metadata only to App Store Connect (binary stays with Xcode Cloud)"
+  # 認証必須・本番 ASC に metadata を stage する。CI/自動では実行しない (operator 手動)。
+  # 詳細手順は SETUP.md「ASC メタデータ投入」と
+  # ~/.claude/skills/asc-metadata-delivery/SKILL.md を参照。
+  lane :upload_metadata do
+    # 先に metadata を ASC の editable に stage する (skip_binary_upload で binary は触らない)。
+    # force は付けない: この lane は人間が手実行する前提なので、本番書き込み前に
+    # deliver の HTML プレビューを人間が確認する gate を意図的に残す。
+    upload_to_app_store(
+      skip_binary_upload: true,   # バイナリは Xcode Cloud 所有
+      submit_for_review: false    # ステージのみ。提出は意図的な別操作
+    )
+    # precheck はローカルではなく ASC 側 (editable) を検証する (metadata_path オプション無し)。
+    # よって upload の後に呼び、いま stage したコピーを人間 submit 前に検証する。
+    precheck
+  end
 end

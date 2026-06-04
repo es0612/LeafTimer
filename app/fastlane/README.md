@@ -31,6 +31,14 @@ Push a new beta build to TestFlight
 
 
 
+### ios upload_metadata
+
+```sh
+[bundle exec] fastlane ios upload_metadata
+```
+
+Push listing metadata only to App Store Connect (binary stays with Xcode Cloud)
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

@@ -70,6 +70,41 @@ fastlane beta
 
 ユニットテストのみを実行します。
 
+## ASC メタデータ投入 (`upload_metadata`)
+
+バイナリは **Xcode Cloud が所有**したまま、App Store Connect の**メタデータだけ**を投入するレーン。横断の know-how はグローバルスキル `asc-metadata-delivery`（`~/.claude/skills/`）に集約し、このリポジトリ固有の content は `fastlane/metadata/` に置く。
+
+> ⚠️ **重要**: `upload_metadata` は **本番 ASC に metadata を書き込む**（`submit_for_review:false` は「審査に submit しない」だけで「書き込まない」ではない）。**必ず人間が認証情報付きで手実行**し、CI / 自動では走らせない。
+
+### 手順 (download → edit → ローカル検証 → upload → 人間 submit)
+
+1. 認証情報を `.env` に設定（上記「環境変数の設定」と同じ。`FASTLANE_USER` + App-Specific Password、または ASC API Key）。
+2. **live を取得**してから編集（placeholder を上書き投入して live を壊さないため）:
+   ```bash
+   cd app && fastlane deliver download_metadata
+   ```
+3. `fastlane/metadata/<locale>/*.txt` を編集（`ja` / `en-US`）。
+   - `en-US` の `description.txt` / `release_notes.txt` に **絵文字を入れない**（ASC が silent fail）。`ja` は絵文字 OK。詳細は `release-version-bump-check` スキル。
+   - `name` / `subtitle` は 30 文字以内、`keywords` はカンマ区切り 100 文字以内。
+4. **ローカル検証**（upload 前に潰せるもの）: en-emoji・`MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` の bump・Age Rating を `release-version-bump-check` スキルで確認。
+5. **投入**（stage → precheck。審査提出は ASC UI で人間が別途）:
+   ```bash
+   cd app && fastlane upload_metadata
+   ```
+   lane は `upload_to_app_store`（`skip_binary_upload:true` で stage。`force` 無しなので本番書き込み前に HTML プレビューの確認を求められる）→ `precheck`（stage 済み ASC コピーを検証）の順に走る。
+
+### Xcode Cloud との共存
+
+- バイナリの upload/処理は **Xcode Cloud Workflow** が担う（Issue #13 で移行済み・不変）。
+- `upload_metadata` は `skip_binary_upload: true` で **metadata だけ** push する。両者は所有境界が分かれており衝突しない。
+- 特定ビルドにメタデータを紐付けたい場合のみ `upload_to_app_store(..., build_number: "<n>")` を足す。
+
+### `fastlane/metadata/review_information/`
+
+審査用 demo 認証情報など機微情報を含むため **gitignore 済み**（`.gitkeep` のみ commit）。各自ローカルで埋めてから投入する。
+
+> 注: `primary_category` / `copyright` は precheck の placeholder_text tripwire の対象外（tripwire は free-text フィールドのみ）。必ず手順2の `deliver download_metadata` で live 値に上書きしてから upload すること。
+
 ## トラブルシューティング
 
 ### エラー: "Auth context delegate failed to get headers"
