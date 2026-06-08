@@ -10,6 +10,8 @@ enum UserDefaultItem: String {
 
     case totalPomodoroCount
     case lastReviewRequestedCount
+
+    case hasSeenOnboarding
 }
 
 enum ItemValue {

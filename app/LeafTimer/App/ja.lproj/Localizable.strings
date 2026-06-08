@@ -67,3 +67,13 @@
 "history.longest_streak" = "最長 %d 日";
 "history.total_sessions" = "累計 %d セッション";
 "history.last_7_days" = "過去 7 日";
+
+// MARK: - Onboarding (Issue #4)
+"onboarding.welcome.title" = "LeafTimer へようこそ 🍃";
+"onboarding.welcome.body" = "集中した時間を、葉っぱを育てて記録しよう。";
+"onboarding.usage.title" = "使い方はかんたん";
+"onboarding.usage.body" = "ボタンを押すとタイマー開始。集中するほど葉っぱが育ち、今日の回数と連続日数も記録されます。";
+"onboarding.skip" = "スキップ";
+"onboarding.start_button" = "はじめる";
+"settings.help_section" = "ヘルプ";
+"settings.replay_onboarding" = "使い方をもう一度見る";

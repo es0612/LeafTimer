@@ -8,6 +8,7 @@ struct TimerView: View {
     @ObservedObject
     var settingViewModel: SettingViewModel
     @Environment(\.colorScheme) var colorScheme
+    @State private var showOnboarding = false
 
     // MARK: - View
 
@@ -110,6 +111,15 @@ struct TimerView: View {
                 .onAppear {
                     timerViewModel.readData()
                     timerViewModel.openScreen()
+                    if settingViewModel.shouldShowOnboarding() {
+                        showOnboarding = true
+                    }
+                }
+                .fullScreenCover(isPresented: $showOnboarding) {
+                    OnboardingView {
+                        settingViewModel.markOnboardingSeen()
+                        showOnboarding = false
+                    }
                 }
             }
         }
