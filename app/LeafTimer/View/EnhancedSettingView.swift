@@ -3,6 +3,7 @@ import SwiftUI
 struct EnhancedSettingView: View {
     @ObservedObject var settingViewModel: SettingViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showOnboarding = false
 
     var body: some View {
         NavigationStack {
@@ -44,12 +45,38 @@ struct EnhancedSettingView: View {
                         .foregroundColor(.secondary)
                 }
 
+                // Help Section (Issue #4)
+                Section {
+                    Button {
+                        showOnboarding = true
+                    } label: {
+                        Label(
+                            NSLocalizedString("settings.replay_onboarding", comment: "Replay onboarding"),
+                            systemImage: "questionmark.circle"
+                        )
+                        .font(.system(size: 15, weight: .medium))
+                    }
+                } header: {
+                    HStack {
+                        Image(systemName: "questionmark.circle.fill")
+                            .foregroundColor(.orange)
+                        Text(NSLocalizedString("settings.help_section", comment: "Help section header"))
+                    }
+                    .font(.system(size: 13, weight: .semibold))
+                    .textCase(.uppercase)
+                }
+
                 // About Section
                 AboutSettingsSection(viewModel: settingViewModel)
 
                 // Reset & System Section
                 ResetSettingsSection(viewModel: settingViewModel)
                 
+            }
+            .fullScreenCover(isPresented: $showOnboarding) {
+                OnboardingView {
+                    showOnboarding = false
+                }
             }
             .navigationTitle(NSLocalizedString("settings.title", comment: "Settings navigation title"))
             .navigationBarTitleDisplayMode(.large)
