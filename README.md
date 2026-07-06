@@ -15,6 +15,11 @@
 
 chack cocoaPod file
 
+## CI / AI Workflows
+
+- `.github/workflows/claude-code-review.yml`: PR 作成・更新時に自動でコードレビューを実行
+- `.github/workflows/claude.yml`: Issue/PR コメントや Issue 本文で `@claude` にメンションした際に Claude Code アシスタントを起動
+
 ## Licence
 
 Copyright 2025 by Author
