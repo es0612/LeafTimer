@@ -65,4 +65,24 @@ class SettingViewModel: ObservableObject {
     }
 }
 
-extension SettingViewModel {}
+extension SettingViewModel {
+    /// 初回オンボーディングを表示すべきか判定する。
+    /// - 既に見た（フラグ true）→ false
+    /// - 既存ユーザー（totalPomodoroCount > 0）→ フラグを true にシードして false
+    /// - それ以外（真の新規）→ true
+    func shouldShowOnboarding() -> Bool {
+        if readBool(item: UserDefaultItem.hasSeenOnboarding.rawValue) {
+            return false
+        }
+        if readInt(item: UserDefaultItem.totalPomodoroCount.rawValue) > 0 {
+            markOnboardingSeen()
+            return false
+        }
+        return true
+    }
+
+    /// オンボーディングを見たことを記録する（以後は表示しない）。
+    func markOnboardingSeen() {
+        write(isOn: true, item: UserDefaultItem.hasSeenOnboarding.rawValue)
+    }
+}

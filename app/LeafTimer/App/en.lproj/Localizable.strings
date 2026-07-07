@@ -67,3 +67,13 @@
 "history.total_sessions" = "Total: %d";
 "history.last_7_days" = "Last 7 days";
 
+// MARK: - Onboarding (Issue #4)
+"onboarding.welcome.title" = "Welcome to LeafTimer 🍃";
+"onboarding.welcome.body" = "Grow a leaf as you focus and watch your effort take root.";
+"onboarding.usage.title" = "How it works";
+"onboarding.usage.body" = "Tap to start the timer. Your leaf grows as you focus, and your daily count and streak are tracked.";
+"onboarding.skip" = "Skip";
+"onboarding.start_button" = "Get Started";
+"settings.help_section" = "Help";
+"settings.replay_onboarding" = "View the intro again";
+
