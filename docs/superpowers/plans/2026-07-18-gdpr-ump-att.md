@@ -16,15 +16,15 @@
 - 新規ファイル追加後は `cd app && make precheck` で orphan 検証、最終 commit 前に `cd app && make sort && git status` を実行する
 - `print()` 追加禁止 (既存 `AdsView.swift:9` の print は Issue #70 スコープなので触らない)
 - 旧 `SettingView.swift` は dead code (Issue #72 で削除予定)。本 plan では**修正対象にしない** (AdsView の呼び出し側 API を変えないことで無修正のままコンパイルを維持する)
-- **UMP 3.0.0 Swift API 名の注意**: v3.0 で Swift 名から `UMP` prefix が外れている想定で本 plan は新名称 (`ConsentInformation` 等) を使う。ビルドで `cannot find 'ConsentInformation' in scope` が出た場合は以下の対応表で旧名称に置換する (逆方向も同様):
+- **UMP 3.0.0 Swift API 名 (実装時に確定済み)**: 実ビルドで確定した名称は plan 初版の想定 (`ConsentRequestParameters` 等) とも UMP prefix 版とも異なる第 3 の形だった。コンパイラの rename 診断 (`'UMPRequestParameters' has been renamed to 'RequestParameters'`) で判明:
 
-| 新名称 (v3.0 Swift) | 旧名称 (UMP prefix) |
+| 実際の Swift 名 (v3.0.0) | 備考 |
 | --- | --- |
-| `ConsentInformation.shared` | `UMPConsentInformation.sharedInstance` |
-| `ConsentForm.loadAndPresentIfRequired(from:completionHandler:)` | `UMPConsentForm.loadAndPresentIfRequired(from:completionHandler:)` |
-| `ConsentRequestParameters` | `UMPRequestParameters` |
-| `ConsentDebugSettings` | `UMPDebugSettings` |
-| `DebugGeography.EEA` | `UMPDebugGeography.EEA` |
+| `ConsentInformation.shared` | plan 想定どおり |
+| `ConsentForm.loadAndPresentIfRequired(from:completionHandler:)` | plan 想定どおり |
+| `RequestParameters` | 初版想定 `ConsentRequestParameters` ではない |
+| `DebugSettings` | 初版想定 `ConsentDebugSettings` ではない |
+| `DebugGeography.EEA` | plan 想定どおり |
 
 ---
 
