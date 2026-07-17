@@ -317,6 +317,70 @@ class TimerCoreLogicSpec: QuickSpec {
                     expect(vm.breakState) == true
                     expect(vm.currentTimeSecond) == 60
                 }
+
+                it("pause 中は時間が経過しても減らず、resume 後は残りから再開する") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.currentTimeSecond = 300
+                    vm.onPressedTimerButton() // start
+
+                    clock.advance(by: 2)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 298
+
+                    vm.onPressedTimerButton() // pause
+                    clock.advance(by: 60)     // pause 中に 60 秒経過
+
+                    vm.onPressedTimerButton() // resume: endDate = now + 298
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 297
+                }
+
+                it("phase 切替後は新しい endDate 基準でカウントダウンする") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.fullBreakTimeSecond = 60
+                    vm.breakState = false
+                    vm.currentTimeSecond = 2
+                    vm.onPressedTimerButton() // start: endDate = now + 2 (これが stale になる)
+
+                    clock.advance(by: 1)
+                    vm.updateTime() // → 1
+                    clock.advance(by: 1)
+                    vm.updateTime() // → 0 (クランプ)
+                    clock.advance(by: 1)
+                    vm.updateTime() // 完了処理: switchBreakState + reset
+
+                    expect(vm.breakState) == true
+                    expect(vm.currentTimeSecond) == 60
+
+                    // reset() が endDate を張り直していなければ、次の tick は
+                    // 開始時の古い endDate (now + 2) との差分で 0 に潰れる
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 59
+                }
+
+                it("稼働中の手動リセットは full 値に戻して endDate を張り直す") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.fullTimeSecond = 300
+                    vm.breakState = false
+                    vm.currentTimeSecond = 300
+                    vm.onPressedTimerButton() // start
+
+                    clock.advance(by: 10)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 290
+
+                    vm.reset() // TimerView の reset ボタン相当
+
+                    expect(vm.currentTimeSecond) == 300
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 299
+                }
             }
         }
     }

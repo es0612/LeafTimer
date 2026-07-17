@@ -113,6 +113,12 @@ class TimerViewModel: ObservableObject {
         } else {
             currentTimeSecond = fullTimeSecond
         }
+
+        // 稼働中のリセット (phase 切替 / 手動リセット) では
+        // 新しい残り時間で endDate を張り直す (Issue #56)
+        if executeState {
+            endDate = now().addingTimeInterval(TimeInterval(currentTimeSecond))
+        }
     }
 
     func openScreen() {
