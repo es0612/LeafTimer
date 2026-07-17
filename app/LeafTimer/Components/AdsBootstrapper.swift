@@ -27,10 +27,12 @@ final class AdsBootstrapper: ObservableObject {
     private let adsStarter: AdsStarter
     private var isBootstrapping = false
 
+    static let shared = AdsBootstrapper()
+
     init(
-        consentService: ConsentService,
-        trackingAuthorizer: TrackingAuthorizer,
-        adsStarter: AdsStarter
+        consentService: ConsentService = UMPConsentService(),
+        trackingAuthorizer: TrackingAuthorizer = ATTAuthorizer(),
+        adsStarter: AdsStarter = GADAdsStarter()
     ) {
         self.consentService = consentService
         self.trackingAuthorizer = trackingAuthorizer
