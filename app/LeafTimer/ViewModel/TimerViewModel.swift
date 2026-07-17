@@ -36,6 +36,11 @@ class TimerViewModel: ObservableObject {
 
     private var isFirstOpen = true
 
+    // Issue #56: 壁時計基準の残り時間補正。
+    // tick 発火回数に頼らず、終了予定時刻との差分で残り時間を再計算する。
+    private let now: () -> Date
+    private var endDate: Date?
+
     // MARK: - Initialization
 
     init(
@@ -44,7 +49,8 @@ class TimerViewModel: ObservableObject {
         userDefaultWrapper: UserDefaultsWrapper,
         sessionStatsRepository: SessionStatsRepository,
         reviewPolicy: ReviewRequestPolicy = ThresholdReviewRequestPolicy(),
-        reviewRequester: ReviewRequesting = StoreKitReviewRequester()
+        reviewRequester: ReviewRequesting = StoreKitReviewRequester(),
+        now: @escaping () -> Date = { Date() }
     ) {
         self.timerManager = timerManager
         self.audioManager = audioManager
@@ -52,6 +58,7 @@ class TimerViewModel: ObservableObject {
         self.sessionStatsRepository = sessionStatsRepository
         self.reviewPolicy = reviewPolicy
         self.reviewRequester = reviewRequester
+        self.now = now
 
         fullTimeSecond = 25 * 60
         currentTimeSecond = 25 * 60
@@ -82,6 +89,7 @@ class TimerViewModel: ObservableObject {
         switch executeState {
         case false:
             executeState = true
+            endDate = now().addingTimeInterval(TimeInterval(currentTimeSecond))
             timerManager.start(target: self)
             UIApplication.shared.isIdleTimerDisabled = true
 
@@ -91,6 +99,7 @@ class TimerViewModel: ObservableObject {
 
         case true:
             executeState = false
+            endDate = nil
             timerManager.stop()
             audioManager.stop()
 
@@ -103,6 +112,12 @@ class TimerViewModel: ObservableObject {
             currentTimeSecond = fullBreakTimeSecond
         } else {
             currentTimeSecond = fullTimeSecond
+        }
+
+        // 稼働中のリセット (phase 切替 / 手動リセット) では
+        // 新しい残り時間で endDate を張り直す (Issue #56)
+        if executeState {
+            endDate = now().addingTimeInterval(TimeInterval(currentTimeSecond))
         }
     }
 
@@ -130,7 +145,13 @@ class TimerViewModel: ObservableObject {
             return
         }
 
-        currentTimeSecond -= 1
+        if let endDate {
+            // 発火抜けがあっても endDate との差分で自己補正する (Issue #56)
+            currentTimeSecond = max(0, Int(endDate.timeIntervalSince(now()).rounded()))
+        } else {
+            // endDate 未設定 (タイマー非稼働で直接呼ばれた場合) は従来挙動
+            currentTimeSecond -= 1
+        }
     }
 
     func switchBreakState() {

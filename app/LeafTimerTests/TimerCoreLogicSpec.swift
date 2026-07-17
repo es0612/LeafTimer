@@ -5,6 +5,22 @@ import SwiftUI
 
 @testable import LeafTimer
 
+// Issue #56: 壁時計補正テスト用の可変クロック。
+// テストから now() を注入し、advance() で実時間経過をシミュレートする。
+final class FakeClock {
+    private(set) var current: Date
+
+    init(start: Date = Date(timeIntervalSince1970: 1_000_000)) {
+        current = start
+    }
+
+    func now() -> Date { current }
+
+    func advance(by seconds: TimeInterval) {
+        current = current.addingTimeInterval(seconds)
+    }
+}
+
 // TimerViewModel の中核ロジックを Spy/Mock を使って検証する spec。
 // PR #14 (Issue #3) 時点で pbxproj 未登録のまま放置されていたものを、
 // Issue #15 で現 API (fullTimeSecond / switchBreakState / finishCallCount)
@@ -232,6 +248,138 @@ class TimerCoreLogicSpec: QuickSpec {
                     }
 
                     expect(weakVM).to(beNil())
+                }
+            }
+
+            // MARK: - Wall-clock correction (Issue #56)
+
+            context("Wall-clock correction") {
+                // clock 注入付きの VM を作る。既存 makeViewModel() は
+                // tuple 形状を変えたくないので別 helper にする。
+                func makeClockedViewModel(clock: FakeClock) -> TimerViewModel {
+                    TimerViewModel(
+                        timerManager: SpyTimerManager(),
+                        audioManager: SpyAudioManager(),
+                        userDefaultWrapper: MockUserDefaultWrapper(),
+                        sessionStatsRepository: SpySessionStatsRepository(),
+                        reviewRequester: MockReviewRequester(),
+                        now: clock.now
+                    )
+                }
+
+                it("通常の 1 秒 tick では 1 ずつ減る") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.currentTimeSecond = 300
+                    vm.onPressedTimerButton() // start: endDate = now + 300
+
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 299
+
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 298
+                }
+
+                it("tick 抜けで実時間が 5 秒進んでいたら 5 秒分補正される") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.currentTimeSecond = 300
+                    vm.onPressedTimerButton()
+
+                    // 5 秒経過したのに tick は 1 回しか来なかった (発火抜け)
+                    clock.advance(by: 5)
+                    vm.updateTime()
+
+                    expect(vm.currentTimeSecond) == 295
+                }
+
+                it("残り時間を超えて経過したら 0 にクランプされ、次の tick で phase が切り替わる") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.fullBreakTimeSecond = 60
+                    vm.breakState = false
+                    vm.currentTimeSecond = 300
+                    vm.onPressedTimerButton()
+
+                    // 残り 300 秒を大幅に超えて 400 秒経過 (長時間ブロック)
+                    clock.advance(by: 400)
+                    vm.updateTime()
+
+                    // まず 0 にクランプ (この tick では phase は切り替わらない)
+                    expect(vm.currentTimeSecond) == 0
+                    expect(vm.breakState) == false
+
+                    // 次の tick で従来どおり完了処理が走る
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.breakState) == true
+                    expect(vm.currentTimeSecond) == 60
+                }
+
+                it("pause 中は時間が経過しても減らず、resume 後は残りから再開する") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.currentTimeSecond = 300
+                    vm.onPressedTimerButton() // start
+
+                    clock.advance(by: 2)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 298
+
+                    vm.onPressedTimerButton() // pause
+                    clock.advance(by: 60)     // pause 中に 60 秒経過
+
+                    vm.onPressedTimerButton() // resume: endDate = now + 298
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 297
+                }
+
+                it("phase 切替後は新しい endDate 基準でカウントダウンする") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.fullBreakTimeSecond = 60
+                    vm.breakState = false
+                    vm.currentTimeSecond = 2
+                    vm.onPressedTimerButton() // start: endDate = now + 2 (これが stale になる)
+
+                    clock.advance(by: 1)
+                    vm.updateTime() // → 1
+                    clock.advance(by: 1)
+                    vm.updateTime() // → 0 (クランプ)
+                    clock.advance(by: 1)
+                    vm.updateTime() // 完了処理: switchBreakState + reset
+
+                    expect(vm.breakState) == true
+                    expect(vm.currentTimeSecond) == 60
+
+                    // reset() が endDate を張り直していなければ、次の tick は
+                    // 開始時の古い endDate (now + 2) との差分で 0 に潰れる
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 59
+                }
+
+                it("稼働中の手動リセットは full 値に戻して endDate を張り直す") {
+                    let clock = FakeClock()
+                    let vm = makeClockedViewModel(clock: clock)
+                    vm.fullTimeSecond = 300
+                    vm.breakState = false
+                    vm.currentTimeSecond = 300
+                    vm.onPressedTimerButton() // start
+
+                    clock.advance(by: 10)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 290
+
+                    vm.reset() // TimerView の reset ボタン相当
+
+                    expect(vm.currentTimeSecond) == 300
+                    clock.advance(by: 1)
+                    vm.updateTime()
+                    expect(vm.currentTimeSecond) == 299
                 }
             }
         }
