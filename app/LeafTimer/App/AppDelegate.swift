@@ -1,5 +1,4 @@
 import Firebase
-import GoogleMobileAds
 import SwiftUI
 import UIKit
 
