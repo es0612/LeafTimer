@@ -1,4 +1,3 @@
-import AVFoundation
 import Firebase
 import GoogleMobileAds
 import SwiftUI
@@ -39,15 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
 
-        do {
-            try AVAudioSession.sharedInstance().setCategory(
-                .playback, mode: .default
-            )
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print(error)
-        }
-
+        // AVAudioSession の設定は DefaultAudioManager に一元化している (#55)。
+        // ここで options 無しの setCategory を呼ぶと .mixWithOthers が上書きされ、
+        // 他アプリの音楽がタイマー起動時に停止する。
         return true
     }
 
