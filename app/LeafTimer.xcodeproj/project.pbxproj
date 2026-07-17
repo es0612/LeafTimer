@@ -236,6 +236,8 @@
 		3856FB7B24A8C3AB007F40E5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */,
+				778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */,
 				93FFE81324FF1BE500AA1BD1 /* DateManager.swift */,
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
 				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
@@ -247,8 +249,6 @@
 				0C7BB13FEE55FA28FD1D9045 /* SessionStatsRepository.swift */,
 				FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */,
 				3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */,
-				99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */,
-				778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -355,6 +355,7 @@
 		3864B7E12494D82300948ACA /* LeafTimerTests */ = {
 			isa = PBXGroup;
 			children = (
+				12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */,
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
 				70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */,
@@ -377,7 +378,6 @@
 				6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */,
 				367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
-				12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */,
 			);
 			path = LeafTimerTests;
 			sourceTree = "<group>";
@@ -739,6 +739,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				20AE081601A9F079317B73CF /* AboutSettingsSection.swift in Sources */,
+				FC0EFE04C6A0827F8110890E /* AdsBootstrapper.swift in Sources */,
+				363E8C15E0B07F563138BE48 /* AdsConsentServices.swift in Sources */,
 				38C95EF325D7270D00D80736 /* AdsView.swift in Sources */,
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
@@ -769,8 +771,6 @@
 				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
-				FC0EFE04C6A0827F8110890E /* AdsBootstrapper.swift in Sources */,
-				363E8C15E0B07F563138BE48 /* AdsConsentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,6 +778,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */,
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
 				CF50496645D51CA09C4F1D85 /* HistoryViewModelTests.swift in Sources */,
@@ -799,7 +800,6 @@
 				805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */,
 				669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
-				08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
