@@ -1,5 +1,4 @@
 import Firebase
-import GoogleMobileAds
 import SwiftUI
 import UIKit
 
@@ -17,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         FirebaseApp.configure()
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        // GADMobileAds の start は UMP 同意 + ATT 完了後に AdsBootstrapper が行う (#57)
 
         window = UIWindow()
 
@@ -37,6 +36,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
+
+        // 同意フォーム/ATT ダイアログの提示は app active 後である必要があるため
+        // 起動処理完了後の main queue で開始する
+        DispatchQueue.main.async { [weak self] in
+            AdsBootstrapper.shared.bootstrap(
+                from: self?.window?.rootViewController,
+                completion: nil
+            )
+        }
 
         // AVAudioSession の設定は DefaultAudioManager に一元化している (#55)。
         // ここで options 無しの setCategory を呼ぶと .mixWithOthers が上書きされ、

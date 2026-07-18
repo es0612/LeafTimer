@@ -1,3 +1,4 @@
 /* InfoPlist.strings (Japanese) */
 "CFBundleDisplayName" = "LeafTimer"; /* 好みで「リーフタイマー」に変更可 */
+"NSUserTrackingUsageDescription" = "広告配信を最適化するために識別子を使用します。";
 

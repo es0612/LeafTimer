@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */; };
 		1203FF4572F21438D8A79802 /* LocalSessionStatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E5BFB598B6047A011C144E /* LocalSessionStatsRepository.swift */; };
 		1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */; };
 		20AE081601A9F079317B73CF /* AboutSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */; };
 		27AC7EA43074765A7875051B /* KeyManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */; };
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
 		2FB91AC254201D5F19E31B12 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7357CD442DB907774538B896 /* HistoryViewModel.swift */; };
+		363E8C15E0B07F563138BE48 /* AdsConsentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */; };
 		3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */; };
 		3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */; };
 		3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6824E392B60070C612 /* SettingViewModel.swift */; };
@@ -78,6 +80,7 @@
 		D5D32D4B2EB811A900DECF70 /* bgm3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D5D32D482EB811A900DECF70 /* bgm3.mp3 */; };
 		E5EE5B694F71609B83B26C7E /* ModernTimerViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */; };
 		F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */; };
+		FC0EFE04C6A0827F8110890E /* AdsBootstrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +104,7 @@
 		037C5BC22762109945219857 /* Pods-LeafTimerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerUITests.debug.xcconfig"; path = "Target Support Files/Pods-LeafTimerUITests/Pods-LeafTimerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		051B521F216134FC418A5DB3 /* Pods-LeafTimer-LeafTimerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimer-LeafTimerUITests/Pods-LeafTimer-LeafTimerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		0C7BB13FEE55FA28FD1D9045 /* SessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsRepository.swift; path = LeafTimer/Components/SessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
+		12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdsBootstrapperTests.swift; path = LeafTimerTests/AdsBootstrapperTests.swift; sourceTree = SOURCE_ROOT; };
 		158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTimerViewSpec.swift; sourceTree = "<group>"; };
 		1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23BBF65B0E0977372AEB15F2 /* SessionStatsMigrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsMigrationTests.swift; path = LeafTimerTests/SessionStatsMigrationTests.swift; sourceTree = SOURCE_ROOT; };
@@ -158,12 +162,14 @@
 		6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedSettingView.swift; sourceTree = "<group>"; };
 		70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModelTests.swift; path = LeafTimerTests/HistoryViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		7357CD442DB907774538B896 /* HistoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModel.swift; path = LeafTimer/ViewModel/HistoryViewModel.swift; sourceTree = SOURCE_ROOT; };
+		778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdsConsentServices.swift; path = LeafTimer/Components/AdsConsentServices.swift; sourceTree = SOURCE_ROOT; };
 		7DAD93010F495D56669DB0F5 /* OnboardingLocalizationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingLocalizationTests.swift; path = LeafTimerTests/OnboardingLocalizationTests.swift; sourceTree = SOURCE_ROOT; };
 		7FBD5086205B41F0F0930480 /* OnboardingGateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingGateTests.swift; path = LeafTimerTests/OnboardingGateTests.swift; sourceTree = SOURCE_ROOT; };
 		8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer_LeafTimerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93FFE81224FE3E8E00AA1BD1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		93FFE81324FF1BE500AA1BD1 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSettingsSection.swift; sourceTree = "<group>"; };
+		99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdsBootstrapper.swift; path = LeafTimer/Components/AdsBootstrapper.swift; sourceTree = SOURCE_ROOT; };
 		A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A244D33CACD5F760C129A96C /* HistoryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryView.swift; path = LeafTimer/View/HistoryView.swift; sourceTree = SOURCE_ROOT; };
 		A5E76F08701A5811DDED6A33 /* ReviewIntegrationSpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewIntegrationSpec.swift; path = LeafTimerTests/ReviewIntegrationSpec.swift; sourceTree = SOURCE_ROOT; };
@@ -230,6 +236,8 @@
 		3856FB7B24A8C3AB007F40E5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */,
+				778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */,
 				93FFE81324FF1BE500AA1BD1 /* DateManager.swift */,
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
 				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
@@ -347,6 +355,7 @@
 		3864B7E12494D82300948ACA /* LeafTimerTests */ = {
 			isa = PBXGroup;
 			children = (
+				12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */,
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
 				70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */,
@@ -730,6 +739,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				20AE081601A9F079317B73CF /* AboutSettingsSection.swift in Sources */,
+				FC0EFE04C6A0827F8110890E /* AdsBootstrapper.swift in Sources */,
+				363E8C15E0B07F563138BE48 /* AdsConsentServices.swift in Sources */,
 				38C95EF325D7270D00D80736 /* AdsView.swift in Sources */,
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
@@ -767,6 +778,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */,
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
 				CF50496645D51CA09C4F1D85 /* HistoryViewModelTests.swift in Sources */,
