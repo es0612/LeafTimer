@@ -26,11 +26,15 @@ final class UMPConsentService: ConsentService {
 
         ConsentInformation.shared.requestConsentInfoUpdate(with: parameters) { updateError in
             if let updateError {
-                completion(updateError)
+                DispatchQueue.main.async {
+                    completion(updateError)
+                }
                 return
             }
             DispatchQueue.main.async {
-                ConsentForm.loadAndPresentIfRequired(from: viewController) { formError in
+                // onboarding の fullScreenCover 等が root を占有していても提示できるよう
+                // 最前面の presented VC から同意フォームを提示する
+                ConsentForm.loadAndPresentIfRequired(from: viewController?.topPresentedViewController) { formError in
                     completion(formError)
                 }
             }
@@ -53,5 +57,16 @@ final class ATTAuthorizer: TrackingAuthorizer {
 final class GADAdsStarter: AdsStarter {
     func startAds() {
         GADMobileAds.sharedInstance().start(completionHandler: nil)
+    }
+}
+
+private extension UIViewController {
+    /// presentedViewController チェーンの最前面 (何も提示していなければ self)
+    var topPresentedViewController: UIViewController {
+        var top: UIViewController = self
+        while let presented = top.presentedViewController {
+            top = presented
+        }
+        return top
     }
 }
