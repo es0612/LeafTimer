@@ -98,7 +98,7 @@ Managed by `/kiro:steering` command. Updates here reflect command changes.
 
 ### 効率化ルール
 
-- 並列 teammate agent を dispatch する時は、指示書に「完了したら idle になる前に最終報告の全文を SendMessage で main へ送信する」を必ず明記する。Why: idle 通知だけでは報告本文が main に届かず、5体中4体へ「報告を送って」という回収往復 (SendMessage) が余分に発生した実績がある。How to apply: 並列 agent の指示書テンプレの末尾に「最終報告を SendMessage で送ってから終了」を定型文として入れる。
+- **全ての** agent dispatch (並列 teammate に限らず、implementer / reviewer / fixer など単発 subagent も含む) の指示書に「最終報告の全文を SendMessage で main へ送信してから idle になる」を必ず明記する。Why: idle 通知だけでは報告本文が main に届かず回収往復が発生する。並列 5体中4体で発生した初回実績に加え、Issue #57 では SDD の task reviewer dispatch でこの定型文を入れ忘れて再発した (implementer 向けと思い込み、reviewer には不要と暗黙に判断したのが敗因)。How to apply: skill のテンプレ (subagent-driven-development の implementer/reviewer/fixer prompt 等) を使う時も、テンプレに定型文が無ければ dispatch 前に必ず末尾へ追記する。役割を問わず「dispatch = 定型文チェック」を機械的に行う。
 - 新規 hook スクリプト（SessionEnd/SessionStart など）を settings.json に配線する前に、sample JSON を stdin に pipe-test して bail 条件・self-detach・sentinel ガードを単体検証する。配線後の silent failure（特に `claude -p --bare` の OAuth 切れのような沈黙失敗）を未然に検出できる。
 - plan-driven な PR では、Issue #15 の `f2df20e` の convention に倣い、**実装の最初のコミットとして** `docs/superpowers/plans/<date>-<feature>.md` を含める。PR 作成後の追い commit になると CI 履歴とレビュー導線がズレるため、ブランチ作成直後に plan を commit する。
 - ブランチ push や `gh pr create` の前に、必ず `git fetch && gh pr list --state all --head <branch>` で既存 PR / merge 状況を確認する。ローカル master が古いまま push して「既に MERGED」で空振りするのを防ぐ。
