@@ -80,11 +80,6 @@ class ModernSettingViewSpec: QuickSpec {
                     let soundPicker = try form.picker(0)
                     expect(soundPicker) != nil
                 }
-
-                it("includes volume control slider") {
-                    // Future enhancement: volume control
-                    expect(true) == true
-                }
             }
 
             describe("Reset Functionality") {

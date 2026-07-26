@@ -84,27 +84,6 @@ struct SoundSettingsSection: View {
             }
             .padding(.vertical, 4)
 
-            // Sound Volume Control (Future Enhancement Placeholder)
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Label("Volume", systemImage: "speaker.wave.3.fill")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(.primary)
-
-                    Spacer()
-
-                    Text("50%")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                }
-
-                Slider(value: .constant(0.5), in: 0...1)
-                    .tint(.blue)
-                    .disabled(true) // Placeholder for future implementation
-                    .opacity(0.5)
-            }
-            .padding(.vertical, 4)
-
         } header: {
             HStack {
                 Image(systemName: "speaker.wave.2.circle.fill")
@@ -114,7 +93,7 @@ struct SoundSettingsSection: View {
             .font(.system(size: 13, weight: .semibold))
             .textCase(.uppercase)
         } footer: {
-            Text("Tap the play button to preview sounds. Volume control coming in future update.")
+            Text("Tap the play button to preview sounds.")
                 .font(.system(size: 11))
                 .foregroundColor(.secondary)
         }
