@@ -35,7 +35,6 @@
 		3864B7D82494D82300948ACA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3864B7D62494D82300948ACA /* LaunchScreen.storyboard */; };
 		3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7E22494D82300948ACA /* TimerViewSpec.swift */; };
 		3864B7EE2494D82300948ACA /* LeafTimerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3864B7ED2494D82300948ACA /* LeafTimerUITests.swift */; };
-		3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4424CD2272001B03E4 /* SettingView.swift */; };
 		3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */; };
 		3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4824CD3888001B03E4 /* CircleButton.swift */; };
 		3865AB4B24CD3FFA001B03E4 /* SpyAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */; };
@@ -137,7 +136,6 @@
 		3864B7E92494D82300948ACA /* LeafTimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeafTimerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3864B7ED2494D82300948ACA /* LeafTimerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafTimerUITests.swift; sourceTree = "<group>"; };
 		3864B7EF2494D82300948ACA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3865AB4424CD2272001B03E4 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAudioManager.swift; sourceTree = "<group>"; };
 		3865AB4824CD3888001B03E4 /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		3865AB4A24CD3FFA001B03E4 /* SpyAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyAudioManager.swift; sourceTree = "<group>"; };
@@ -301,7 +299,6 @@
 				6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */,
 				A244D33CACD5F760C129A96C /* HistoryView.swift */,
 				2AFDEFDC3D18E25A6C17C7FA /* OnboardingView.swift */,
-				3865AB4424CD2272001B03E4 /* SettingView.swift */,
 				3864B7CF2494D81D00948ACA /* TimerView.swift */,
 			);
 			path = View;
@@ -761,7 +758,6 @@
 				B41DECA1FAE3E49A1549CAC7 /* ReviewRequestPolicy.swift in Sources */,
 				8750244ABE17AE5577DB761E /* SessionStats.swift in Sources */,
 				D1996820E10ABF2E413A629D /* SessionStatsRepository.swift in Sources */,
-				3865AB4524CD2272001B03E4 /* SettingView.swift in Sources */,
 				3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */,
 				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
 				A9CA2FC2436DDDF5F5C56540 /* StatChip.swift in Sources */,

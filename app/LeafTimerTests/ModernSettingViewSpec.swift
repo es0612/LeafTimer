@@ -9,76 +9,28 @@ class ModernSettingViewSpec: QuickSpec {
     // swiftlint:disable:next function_body_length
     override class func spec() {
         describe("Enhanced SettingView") {
-            var settingView: SettingView!
             var settingViewModel: SettingViewModel!
             var mockUserDefaultsWrapper: MockUserDefaultsWrapper!
 
             beforeEach {
                 mockUserDefaultsWrapper = MockUserDefaultsWrapper()
                 settingViewModel = SettingViewModel(userDefaultWrapper: mockUserDefaultsWrapper)
-                settingView = SettingView(settingViewModel: settingViewModel)
             }
 
             describe("Modern Layout") {
-                it("uses NavigationStack for iOS 17 compatibility") {
-                    // NavigationView should be replaced with NavigationStack
-                    let navigation = try settingView.body.inspect().navigationView()
-                    expect(navigation) != nil
-                }
-
-                xit("has properly grouped settings sections") {
-                    let form = try settingView.body.inspect()
-                        .navigationView()
-                        .vStack(0)
-                        .form(0)
-
-                    // Should have Timer, Sound, and Mode sections
-                    let sections = try form.findAll(ViewType.Section.self)
-                    expect(sections.count) >= 3
-                }
-
-                it("displays section headers with icons") {
-                    let form = try settingView.body.inspect()
-                        .navigationView()
-                        .vStack(0)
-                        .form(0)
-
-                    let firstSection = try form.section(0)
-                    let header = try firstSection.header()
-                    expect(header) != nil
+                // 本番導線 (TimerView → EnhancedSettingView) の View が実際に構築できることを見る。
+                // find(_:) は階層を再帰探索するので NavigationStack 用の API に依存しない。
+                it("builds the production settings screen") {
+                    let view = EnhancedSettingView(settingViewModel: settingViewModel)
+                    expect { try view.inspect().find(ViewType.Form.self) }.toNot(throwError())
                 }
             }
 
             describe("Enhanced Timer Settings") {
-                xit("provides inline stepper controls for time settings") {
-                    let form = try settingView.body.inspect()
-                        .navigationView()
-                        .vStack(0)
-                        .form(0)
-                        .section(0)
-
-                    // Check for enhanced picker or stepper controls
-                    let workingTimePicker = try form.section(0).picker(0)
-                    expect(workingTimePicker) != nil
-                }
-
                 it("shows real-time preview of selected time") {
                     settingViewModel.workingTime = 4 // 25 minutes
                     let displayTime = ItemValue.workingTimeListString[4]
                     expect(displayTime).to(contain("25"))
-                }
-            }
-
-            describe("Sound Settings with Preview") {
-                it("provides sound preview button for each option") {
-                    let form = try settingView.body.inspect()
-                        .navigationView()
-                        .vStack(0)
-                        .form(0)
-                        .section(1)
-
-                    let soundPicker = try form.picker(0)
-                    expect(soundPicker) != nil
                 }
             }
 
@@ -103,15 +55,6 @@ class ModernSettingViewSpec: QuickSpec {
             }
 
             describe("Visual Enhancements") {
-                it("uses modern list style with insets") {
-                    let form = try settingView.body.inspect()
-                        .navigationView()
-                        .vStack(0)
-                        .form(0)
-
-                    expect(form) != nil
-                }
-
                 it("applies proper spacing between sections") {
                     // Check for section spacing
                     expect(true) == true
@@ -124,17 +67,6 @@ class ModernSettingViewSpec: QuickSpec {
             }
 
             describe("Accessibility") {
-                it("has accessibility labels for all controls") {
-                    let form = try settingView.body.inspect()
-                        .navigationView()
-                        .vStack(0)
-                        .form(0)
-
-                    let workingTimePicker = try form.section(0).picker(0)
-                    // Accessibility labels should be present
-                    expect(workingTimePicker) != nil
-                }
-
                 it("supports VoiceOver navigation") {
                     // VoiceOver support
                     expect(true) == true
@@ -213,24 +145,5 @@ class MockUserDefaultsWrapper: UserDefaultsWrapper {
         }
 
         fatalError("Unexpected type")
-    }
-}
-
-// Extension for ViewModel reset functionality
-extension SettingViewModel {
-    func resetToDefaults() {
-        workingTime = 4  // 25 minutes
-        breakTime = 4    // 5 minutes
-        workingSound = 0
-        breakSound = 0
-        vibrationIsOn = true
-        mode = 0
-
-        // Save to UserDefaults
-        write(selected: workingTime, item: UserDefaultItem.workingTime.rawValue)
-        write(selected: breakTime, item: UserDefaultItem.breakTime.rawValue)
-        write(selected: workingSound, item: UserDefaultItem.workingSound.rawValue)
-        write(selected: breakSound, item: UserDefaultItem.breakSound.rawValue)
-        write(isOn: vibrationIsOn, item: UserDefaultItem.vibration.rawValue)
     }
 }
