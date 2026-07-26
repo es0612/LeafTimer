@@ -4,6 +4,11 @@
 # Simulator used by `make unit-tests`, validated by `make precheck`, and read
 # back by fastlane (app/fastlane/Fastfile). Single source of truth — Issue #80.
 # Xcode を更新して機種が消えたら、この1行だけを直す。
+#
+# 注意: precheck は Makefile を「テキストとして」読んでこの代入を解決するため、
+# `make unit-tests SIMULATOR="iPhone SE (3rd generation)"` のようなコマンドライン
+# 上書きは precheck からは見えない (precheck は下の既定値を検証したまま通る)。
+# 別機種で回す時は、この行そのものを書き換えること。
 SIMULATOR ?= iPhone 17
 
 install:
