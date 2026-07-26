@@ -1,5 +1,11 @@
 # Pods/ is intentionally not committed and may be absent locally.
 # Run `make install` to fetch dependencies before the first build.
+
+# Simulator used by `make unit-tests`, validated by `make precheck`, and read
+# back by fastlane (app/fastlane/Fastfile). Single source of truth — Issue #80.
+# Xcode を更新して機種が消えたら、この1行だけを直す。
+SIMULATOR ?= iPhone 17
+
 install:
 	pod install
 update:
@@ -9,7 +15,7 @@ unit-tests:
 	@/usr/bin/time xcodebuild \
 	-workspace 'LeafTimer.xcworkspace' \
 	-scheme "LeafTimer" \
-	-destination "platform=iOS Simulator,name=iPhone 17,OS=latest" \
+	-destination "platform=iOS Simulator,name=$(SIMULATOR),OS=latest" \
 	build test
 
 precheck:

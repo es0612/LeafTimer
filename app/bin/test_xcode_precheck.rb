@@ -24,6 +24,42 @@ class XcodePrecheckTest < Minitest::Test
     assert_nil XcodePrecheck.destination_name("build:\n\techo hi\n")
   end
 
+  # --- destination_name: Make variable resolution (Issue #80) ---------------
+
+  def test_destination_name_resolves_make_variable
+    makefile = <<~MAKE
+      SIMULATOR ?= iPhone 17
+
+      unit-tests:
+      \t-destination "platform=iOS Simulator,name=$(SIMULATOR),OS=latest" \\
+    MAKE
+    assert_equal 'iPhone 17', XcodePrecheck.destination_name(makefile)
+  end
+
+  def test_destination_name_resolves_plain_assignment
+    makefile = <<~MAKE
+      SIMULATOR = iPhone SE (3rd generation)
+
+      unit-tests:
+      \t-destination "platform=iOS Simulator,name=$(SIMULATOR),OS=latest" \\
+    MAKE
+    assert_equal 'iPhone SE (3rd generation)', XcodePrecheck.destination_name(makefile)
+  end
+
+  def test_destination_name_keeps_unassigned_variable_visible
+    # 代入が無い変数は解決できない。生の "$(SIMULATOR)" を返して
+    # 呼び出し側 (precheck) が「そんなシミュレータは無い」と失敗できるようにする。
+    makefile = <<~MAKE
+      unit-tests:
+      \t-destination "platform=iOS Simulator,name=$(SIMULATOR),OS=latest" \\
+    MAKE
+    assert_equal '$(SIMULATOR)', XcodePrecheck.destination_name(makefile)
+  end
+
+  def test_expand_variable_returns_nil_when_absent
+    assert_nil XcodePrecheck.expand_variable('SIMULATOR', "all:\n\techo hi\n")
+  end
+
   # --- device_names (simctl parsing) ---------------------------------------
 
   def test_device_names_handles_parentheses_in_device_name

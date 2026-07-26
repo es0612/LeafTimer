@@ -47,7 +47,7 @@ App Store Connect → Xcode Cloud → **Create Workflow**:
   - macOS Version: Latest Release
 - **Actions**:
   - **Archive** (iOS):
-    - Scheme: `LeafTimer Release` (既存 scheme、`Fastfile` の `build_app` でも使用)
+    - Scheme: `LeafTimer` (共有 scheme はこの1本のみ。`Fastfile` の `build_app` でも使用)
     - Platform: iOS
     - Deployment Preparation: TestFlight (Internal Testing Only)
 - **Post-Actions**:

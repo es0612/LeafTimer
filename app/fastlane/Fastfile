@@ -1,3 +1,12 @@
+require_relative '../bin/xcode_precheck'
+
+# シミュレータ名は app/Makefile の SIMULATOR 変数を単一の情報源にする (Issue #80)。
+# fastlane の作業ディレクトリは app/fastlane/ なので、__dir__ 起点の絶対パスで
+# 親ディレクトリの Makefile を読む (相対パスだと実行位置によって壊れる)。
+SIMULATOR_NAME = XcodePrecheck.destination_name(
+  File.read(File.expand_path('../Makefile', __dir__))
+).freeze
+
 update_fastlane
 
 default_platform(:ios)
@@ -7,7 +16,7 @@ platform :ios do
 
   lane :unittests do
   scan(
-    device: "iPhone 17",
+    device: SIMULATOR_NAME,
     clean: true,
     scheme: "LeafTimer"
   )
@@ -23,7 +32,7 @@ platform :ios do
     commit_version_bump(xcodeproj: "LeafTimer.xcodeproj")
     push_to_git_remote
 
-    build_app(workspace: "LeafTimer.xcworkspace", scheme: "LeafTimer Release")
+    build_app(workspace: "LeafTimer.xcworkspace", scheme: "LeafTimer")
     upload_to_testflight(skip_waiting_for_build_processing: true)
   end
 

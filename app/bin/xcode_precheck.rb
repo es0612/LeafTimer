@@ -9,9 +9,28 @@ module XcodePrecheck
   DEVICE_LINE = /^\s*(.+?) \(\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\) \(/.freeze
 
   # Extract the simulator name from an xcodebuild `-destination` spec in a
-  # Makefile (or any text). Returns nil when no destination is present.
+  # Makefile (or any text). When the name is a Make variable reference such
+  # as `$(SIMULATOR)`, resolve it against that same Makefile's `VAR ?= value`
+  # or `VAR = value` assignment (Issue #80: the name is declared once at the
+  # top of the Makefile and consumed by both `make unit-tests` and fastlane).
+  # Returns nil when no destination is present, and the unresolved `$(VAR)`
+  # text when the variable has no assignment — so the caller still fails
+  # loudly instead of silently checking the wrong simulator.
   def self.destination_name(makefile_text)
     m = makefile_text.match(/-destination\s+"[^"]*?name=([^,"]+)/)
+    return nil unless m
+
+    name = m[1].strip
+    var = name[/\A\$[({]([A-Za-z_][A-Za-z0-9_]*)[)}]\z/, 1]
+    return name unless var
+
+    expand_variable(var, makefile_text) || name
+  end
+
+  # Resolve a Make variable assignment (`VAR = value`, `VAR ?= value`,
+  # `VAR := value`) from Makefile text. Returns nil when unassigned.
+  def self.expand_variable(var, makefile_text)
+    m = makefile_text.match(/^#{Regexp.escape(var)}\s*[:?+]?=\s*(.+?)\s*$/)
     m && m[1].strip
   end
 
