@@ -30,17 +30,3 @@ private struct AdsBannerView: UIViewRepresentable {
 
     func updateUIView(_ uiView: GADBannerView, context: Context) {}
 }
-
-struct ContentView: View {
-    var body: some View {
-        //        AdsView()
-        // サイズを変更する場合
-        AdsView().frame(width: 320, height: 50)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}

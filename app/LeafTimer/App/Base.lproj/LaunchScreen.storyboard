@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -19,7 +19,7 @@
                                 <rect key="frame" x="60" y="358.5" width="294" height="179"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.84708183999999997" green="0.91117113829999996" blue="0.8470515609" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" name="LaunchBackground"/>
                         <constraints>
                             <constraint firstItem="G7J-Db-Bhg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="60" id="dfv-uB-MSK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="G7J-Db-Bhg" secondAttribute="trailing" constant="60" id="iH3-wg-HD1"/>
@@ -35,5 +35,8 @@
     </scenes>
     <resources>
         <image name="splashIcon" width="300" height="179"/>
+        <namedColor name="LaunchBackground">
+            <color red="0.84708183999999997" green="0.91117113829999996" blue="0.8470515609" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>
