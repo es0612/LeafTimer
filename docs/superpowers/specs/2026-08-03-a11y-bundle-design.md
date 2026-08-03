@@ -68,9 +68,12 @@ onTapGesture に足す方式。VoiceOver 以外の支援技術に届かず、「
 - **#59**: 既存 `ModernTimerViewSpec` (ViewInspector) に「開始/停止が `Button` として
   存在する」検証を追加。Button 化前に実行して **RED** を確認 → Button 化で GREEN。
 - **新規テストファイルは target attach + `make precheck` で orphan でないことを確認**。
-- **仕上げの目視検証**: Simulator で設定画面を ja/en 両ロケールでスクショ
-  (`ios-simulator-locale-testing` skill)。TimerView は背景 4 状態ルールの対象だが、
-  今回は色を触らないため light/dark 各 1 枚の回帰確認に留める。
+- **仕上げの検証**: 設定画面は NavigationLink 遷移のため `simctl` ではタップ到達
+  できない (ios-simulator-app-verification skill の既知制約)。目視スクショの代わりに
+  ViewInspector の `find(text:)` で代表文言の key→値配線を検証し、さらに code 中の
+  NSLocalizedString キーと strings ファイルの突き合わせ grep で typo を検知する。
+  Simulator はトップ画面 (TimerView) の ja/en × light/dark 回帰スクショに使う
+  (`ios-simulator-locale-testing` skill)。
 - PR は新設した CI ゲート (pr-tests) の保護下で green を確認する。
 
 ## 成功基準
