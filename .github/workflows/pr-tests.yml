@@ -1,0 +1,57 @@
+name: pr-tests
+
+on:
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: pr-tests-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pr-tests:
+    name: pr-tests
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain versions
+        run: |
+          xcodebuild -version
+          xcrun simctl list devices available | grep "iPhone 17" || true
+
+      - name: Ensure tools (managed runner は preinstall を保証しない)
+        run: |
+          which pod || brew install cocoapods
+          which swiftlint || brew install swiftlint
+
+      - name: Restore secret plists
+        env:
+          KEYS_PLIST_BASE64: ${{ secrets.KEYS_PLIST_BASE64 }}
+          GOOGLE_SERVICE_INFO_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
+        run: |
+          if [ -z "$KEYS_PLIST_BASE64" ] || [ -z "$GOOGLE_SERVICE_INFO_PLIST_BASE64" ]; then
+            echo "::error::Secret plists unavailable (fork からの PR には secrets が渡らない)"
+            exit 1
+          fi
+          echo "$KEYS_PLIST_BASE64" | base64 -d > app/Keys.plist
+          echo "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 -d > app/GoogleService-Info.plist
+
+      - name: Cache Pods
+        uses: actions/cache@v4
+        with:
+          path: app/Pods
+          key: pods-${{ runner.os }}-${{ hashFiles('app/Podfile.lock') }}
+          restore-keys: pods-${{ runner.os }}-
+
+      - name: Pod install
+        working-directory: app
+        run: pod install
+
+      - name: Run make tests
+        working-directory: app
+        run: make tests
+
+      - name: Sort gate (pbxproj が未 sort なら fail)
+        run: git diff --exit-code -- app/LeafTimer.xcodeproj/project.pbxproj
