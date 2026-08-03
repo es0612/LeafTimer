@@ -113,8 +113,4 @@ final class AdsBootstrapperTests: XCTestCase {
             onStart?()
         }
     }
-
-    func testCIRedCheckIntentionalFailure() {
-        XCTFail("CI RED 検証用の意図的失敗 (revert 予定)")
-    }
 }
