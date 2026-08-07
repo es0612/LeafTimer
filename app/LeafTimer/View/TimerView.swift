@@ -64,11 +64,7 @@ struct TimerView: View {
                             .shadow(color: .gray, radius: 1, x: 1, y: 2)
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(
-                        timerViewModel.executeState
-                            ? NSLocalizedString("timer.a11y.stop", comment: "Stop timer button")
-                            : NSLocalizedString("timer.a11y.start", comment: "Start timer button")
-                    )
+                    .accessibilityLabel(timerViewModel.getAccessibilityLabel())
 
                     HStack(spacing: 10) {
                         StatChip(

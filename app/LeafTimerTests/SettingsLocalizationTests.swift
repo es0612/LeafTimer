@@ -40,7 +40,8 @@ final class SettingsLocalizationTests: XCTestCase {
         let appBundle = Bundle(for: TimerViewModel.self)
         guard let path = appBundle.path(forResource: locale, ofType: "lproj"),
               let lproj = Bundle(path: path) else {
-            return "<<missing \(locale).lproj>>"
+            XCTFail("\(locale).lproj が見つからない")
+            return "<<missing>>"
         }
         return lproj.localizedString(forKey: key, value: "<<missing>>", table: nil)
     }
