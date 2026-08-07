@@ -110,6 +110,16 @@ class ModernSettingViewSpec: QuickSpec {
                     expect(settingViewModel.workingTime).toNot(equal(initialTime))
                 }
             }
+
+            describe("Localized copy (Issue #60)") {
+                it("renders the reset button label from Localizable.strings") {
+                    let viewModel = SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
+                    let view = EnhancedSettingView(settingViewModel: viewModel)
+                    expect {
+                        try view.inspect().find(text: NSLocalizedString("settings.reset.button", comment: ""))
+                    }.toNot(throwError())
+                }
+            }
         }
     }
 }

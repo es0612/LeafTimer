@@ -93,7 +93,7 @@ struct SoundSettingsSection: View {
             .font(.system(size: 13, weight: .semibold))
             .textCase(.uppercase)
         } footer: {
-            Text("Tap the play button to preview sounds.")
+            Text(NSLocalizedString("settings.sound_footer", comment: "Sound section footer"))
                 .font(.system(size: 11))
                 .foregroundColor(.secondary)
         }

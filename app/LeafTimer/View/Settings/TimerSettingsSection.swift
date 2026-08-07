@@ -83,7 +83,7 @@ struct TimerSettingsSection: View {
                 HStack {
                     Image(systemName: "eye")
                         .font(.system(size: 14))
-                    Text("Preview Timer Settings")
+                    Text(NSLocalizedString("settings.timer.preview_button", comment: "Preview timer settings button"))
                         .font(.system(size: 14, weight: .medium))
                 }
                 .foregroundColor(.blue)
@@ -119,13 +119,13 @@ struct TimerPreviewSheet: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 30) {
-                Text("Timer Preview")
+                Text(NSLocalizedString("settings.timer.preview_title", comment: "Timer preview sheet title"))
                     .font(.title2)
                     .fontWeight(.bold)
 
                 VStack(spacing: 20) {
                     PreviewTimerDisplay(
-                        title: "Work Session",
+                        title: NSLocalizedString("settings.timer.preview_work", comment: "Work session preview label"),
                         time: workingTime,
                         color: .blue
                     )
@@ -135,7 +135,7 @@ struct TimerPreviewSheet: View {
                         .foregroundColor(.gray)
 
                     PreviewTimerDisplay(
-                        title: "Break Time",
+                        title: NSLocalizedString("settings.timer.preview_break", comment: "Break time preview label"),
                         time: breakTime,
                         color: .green
                     )
@@ -145,7 +145,7 @@ struct TimerPreviewSheet: View {
                 Spacer()
             }
             .padding()
-            .navigationBarItems(trailing: Button("Done") { dismiss() })
+            .navigationBarItems(trailing: Button(NSLocalizedString("settings.done", comment: "Done button")) { dismiss() })
         }
     }
 }

@@ -15,7 +15,7 @@ struct ResetSettingsSection: View {
                         .font(.system(size: 20))
                         .foregroundColor(.red)
 
-                    Text("Reset to Default Settings")
+                    Text(NSLocalizedString("settings.reset.button", comment: "Reset settings button"))
                         .font(.system(size: 15, weight: .medium))
                         .foregroundColor(.red)
 
@@ -24,33 +24,33 @@ struct ResetSettingsSection: View {
                 .padding(.vertical, 8)
             }
             .buttonStyle(PlainButtonStyle())
-            .alert("Reset Settings", isPresented: $showingResetAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Reset", role: .destructive) {
+            .alert(NSLocalizedString("settings.reset.alert_title", comment: "Reset alert title"), isPresented: $showingResetAlert) {
+                Button(NSLocalizedString("common.cancel", comment: "Cancel"), role: .cancel) { }
+                Button(NSLocalizedString("settings.reset.confirm", comment: "Reset confirm"), role: .destructive) {
                     resetToDefaults()
                 }
             } message: {
-                Text("This will reset all settings to their default values. This action cannot be undone.")
+                Text(NSLocalizedString("settings.reset.alert_message", comment: "Reset alert message"))
             }
-            .confirmationDialog("Settings Reset", isPresented: $showingResetConfirmation, titleVisibility: .visible) {
-                Button("OK") { }
+            .confirmationDialog(NSLocalizedString("settings.reset.done_title", comment: "Reset done title"), isPresented: $showingResetConfirmation, titleVisibility: .visible) {
+                Button(NSLocalizedString("common.ok", comment: "OK")) { }
             } message: {
-                Text("All settings have been reset to defaults.")
+                Text(NSLocalizedString("settings.reset.done_message", comment: "Reset done message"))
             }
 
         } header: {
             HStack {
                 Image(systemName: "gearshape.fill")
                     .foregroundColor(.gray)
-                Text("System")
+                Text(NSLocalizedString("settings.system_section", comment: "System section header"))
             }
             .font(.system(size: 13, weight: .semibold))
             .textCase(.uppercase)
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
-                Text("LeafTimer - Focus & Productivity")
+                Text(NSLocalizedString("settings.footer.app_name", comment: "Footer app name"))
                     .font(.system(size: 11, weight: .medium))
-                Text("© 2025 LeafTimer. All rights reserved.")
+                Text(NSLocalizedString("settings.footer.copyright", comment: "Footer copyright"))
                     .font(.system(size: 10))
             }
             .foregroundColor(.secondary)
