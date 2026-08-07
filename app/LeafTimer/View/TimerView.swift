@@ -56,12 +56,19 @@ struct TimerView: View {
                         .foregroundColor(.primary.opacity(0.9))
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .padding(.bottom, 50)
+                        .accessibilityLabel(NSLocalizedString("timer.a11y.remaining_time", comment: "Remaining time label"))
+                        .accessibilityValue(timerViewModel.getDisplayedTime())
 
-                    CircleButton(viewModel: timerViewModel)
-                        .shadow(color: .gray, radius: 1, x: 1, y: 2)
-                        .onTapGesture {
-                            didTapTimerButton()
-                        }
+                    Button(action: didTapTimerButton) {
+                        CircleButton(viewModel: timerViewModel)
+                            .shadow(color: .gray, radius: 1, x: 1, y: 2)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(
+                        timerViewModel.executeState
+                            ? NSLocalizedString("timer.a11y.stop", comment: "Stop timer button")
+                            : NSLocalizedString("timer.a11y.start", comment: "Start timer button")
+                    )
 
                     HStack(spacing: 10) {
                         StatChip(
@@ -91,6 +98,7 @@ struct TimerView: View {
                         Button(action: didTapResetButton) {
                             Image("reloadIcon").foregroundColor(.primary)
                         }
+                        .accessibilityLabel(NSLocalizedString("timer.a11y.reset", comment: "Reset timer button"))
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(
@@ -101,11 +109,13 @@ struct TimerView: View {
                             Image(systemName: "chart.bar.fill")
                                 .foregroundColor(.primary)
                         }
+                        .accessibilityLabel(NSLocalizedString("timer.a11y.history", comment: "History button"))
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(destination: EnhancedSettingView(settingViewModel: settingViewModel)) {
                             Image("settingIcon").foregroundColor(.primary)
                         }
+                        .accessibilityLabel(NSLocalizedString("timer.a11y.settings", comment: "Settings button"))
                     }
                 }
                 .onAppear {
