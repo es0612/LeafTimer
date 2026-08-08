@@ -77,3 +77,33 @@
 "settings.help_section" = "Help";
 "settings.replay_onboarding" = "View the intro again";
 
+// MARK: - Common (Issue #60)
+"common.cancel" = "Cancel";
+"common.ok" = "OK";
+
+// MARK: - Settings View hardcoded copy (Issue #60)
+"settings.done" = "Done";
+"settings.mode_footer" = "Pomodoro technique helps you stay focused with regular breaks.";
+"settings.timer.preview_button" = "Preview Timer Settings";
+"settings.timer.preview_title" = "Timer Preview";
+"settings.timer.preview_work" = "Work Session";
+"settings.timer.preview_break" = "Break Time";
+"settings.sound_footer" = "Tap the play button to preview sounds.";
+"settings.reset.button" = "Reset to Default Settings";
+"settings.reset.alert_title" = "Reset Settings";
+"settings.reset.confirm" = "Reset";
+"settings.reset.alert_message" = "This will reset all settings to their default values. This action cannot be undone.";
+"settings.reset.done_title" = "Settings Reset";
+"settings.reset.done_message" = "All settings have been reset to defaults.";
+"settings.system_section" = "System";
+"settings.footer.app_name" = "LeafTimer - Focus & Productivity";
+"settings.footer.copyright" = "© 2025 LeafTimer. All rights reserved.";
+
+// MARK: - Timer View accessibility (Issue #59)
+"timer.a11y.start" = "Start timer";
+"timer.a11y.stop" = "Stop timer";
+"timer.a11y.reset" = "Reset timer";
+"timer.a11y.history" = "History";
+"timer.a11y.settings" = "Settings";
+"timer.a11y.remaining_time" = "Remaining time";
+

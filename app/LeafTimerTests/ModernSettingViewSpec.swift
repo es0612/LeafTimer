@@ -67,12 +67,15 @@ class ModernSettingViewSpec: QuickSpec {
             }
 
             describe("Accessibility") {
-                it("supports VoiceOver navigation") {
+                // xit: 中身が expect(true) == true の常時 green (見せかけの検証)。実質的な a11y 検証は
+                // ModernTimerViewSpec の "Accessibility (Issue #59)" / TimerViewModelAccessibilityTests が担う。
+                xit("supports VoiceOver navigation") {
                     // VoiceOver support
                     expect(true) == true
                 }
 
-                it("provides accessibility hints for actions") {
+                // xit: 上記と同様、常時 green のプレースホルダーのため無効化 (レビュー指摘 M7)
+                xit("provides accessibility hints for actions") {
                     // Accessibility hints
                     expect(true) == true
                 }
@@ -108,6 +111,16 @@ class ModernSettingViewSpec: QuickSpec {
                     let initialTime = settingViewModel.workingTime
                     settingViewModel.workingTime = (initialTime + 1) % ItemValue.workingTimeList.count
                     expect(settingViewModel.workingTime).toNot(equal(initialTime))
+                }
+            }
+
+            describe("Localized copy (Issue #60)") {
+                it("renders the reset button label from Localizable.strings") {
+                    let viewModel = SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
+                    let view = EnhancedSettingView(settingViewModel: viewModel)
+                    expect {
+                        try view.inspect().find(text: NSLocalizedString("settings.reset.button", comment: ""))
+                    }.toNot(throwError())
                 }
             }
         }

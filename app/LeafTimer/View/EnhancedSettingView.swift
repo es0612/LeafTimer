@@ -40,7 +40,7 @@ struct EnhancedSettingView: View {
                     .font(.system(size: 13, weight: .semibold))
                     .textCase(.uppercase)
                 } footer: {
-                    Text("Pomodoro technique helps you stay focused with regular breaks.")
+                    Text(NSLocalizedString("settings.mode_footer", comment: "Mode section footer"))
                         .font(.system(size: 11))
                         .foregroundColor(.secondary)
                 }
@@ -82,7 +82,7 @@ struct EnhancedSettingView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(NSLocalizedString("settings.done", comment: "Done button")) {
                         dismiss()
                     }
                     .font(.system(size: 16, weight: .medium))

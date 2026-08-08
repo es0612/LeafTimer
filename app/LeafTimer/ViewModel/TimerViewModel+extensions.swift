@@ -36,6 +36,17 @@ extension TimerViewModel {
         }
     }
 
+    // Issue #59: 開始/停止ボタンの VoiceOver ラベル。View 側での状態分岐重複を避けるため ViewModel に集約する。
+    func getAccessibilityLabel() -> String {
+        switch executeState {
+        case true:
+            NSLocalizedString("timer.a11y.stop", comment: "Stop timer button")
+
+        case false:
+            NSLocalizedString("timer.a11y.start", comment: "Start timer button")
+        }
+    }
+
     func getBackgroundColor(colorScheme: ColorScheme) -> LinearGradient {
         if breakState {
             if colorScheme == .dark {

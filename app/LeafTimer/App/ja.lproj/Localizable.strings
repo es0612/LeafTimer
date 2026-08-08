@@ -77,3 +77,33 @@
 "onboarding.start_button" = "はじめる";
 "settings.help_section" = "ヘルプ";
 "settings.replay_onboarding" = "使い方をもう一度見る";
+
+// MARK: - Common (Issue #60)
+"common.cancel" = "キャンセル";
+"common.ok" = "OK";
+
+// MARK: - Settings View hardcoded copy (Issue #60)
+"settings.done" = "完了";
+"settings.mode_footer" = "ポモドーロ・テクニックは定期的な休憩で集中力を保ちます。";
+"settings.timer.preview_button" = "タイマー設定をプレビュー";
+"settings.timer.preview_title" = "タイマープレビュー";
+"settings.timer.preview_work" = "作業セッション";
+"settings.timer.preview_break" = "休憩時間";
+"settings.sound_footer" = "再生ボタンをタップするとサウンドを試聴できます。";
+"settings.reset.button" = "設定を初期値に戻す";
+"settings.reset.alert_title" = "設定のリセット";
+"settings.reset.confirm" = "リセット";
+"settings.reset.alert_message" = "すべての設定が初期値に戻ります。この操作は取り消せません。";
+"settings.reset.done_title" = "リセット完了";
+"settings.reset.done_message" = "すべての設定を初期値に戻しました。";
+"settings.system_section" = "システム";
+"settings.footer.app_name" = "LeafTimer - Focus & Productivity";
+"settings.footer.copyright" = "© 2025 LeafTimer. All rights reserved.";
+
+// MARK: - Timer View accessibility (Issue #59)
+"timer.a11y.start" = "タイマーを開始";
+"timer.a11y.stop" = "タイマーを停止";
+"timer.a11y.reset" = "タイマーをリセット";
+"timer.a11y.history" = "履歴";
+"timer.a11y.settings" = "設定";
+"timer.a11y.remaining_time" = "残り時間";
