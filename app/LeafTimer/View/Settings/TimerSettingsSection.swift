@@ -38,6 +38,7 @@ struct TimerSettingsSection: View {
                 }
                 .pickerStyle(.menu)
                 .labelsHidden()
+                .accessibilityLabel(NSLocalizedString("settings.working_time", comment: "Working time setting"))
             }
             .padding(.vertical, 4)
 
@@ -73,6 +74,7 @@ struct TimerSettingsSection: View {
                 }
                 .pickerStyle(.menu)
                 .labelsHidden()
+                .accessibilityLabel(NSLocalizedString("settings.break_time", comment: "Break time setting"))
             }
             .padding(.vertical, 4)
 

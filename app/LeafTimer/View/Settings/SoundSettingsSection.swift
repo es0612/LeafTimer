@@ -81,6 +81,7 @@ struct SoundSettingsSection: View {
                 ))
                 .labelsHidden()
                 .tint(.blue)
+                .accessibilityLabel(NSLocalizedString("settings.vibration", comment: "Vibration setting"))
             }
             .padding(.vertical, 4)
 
