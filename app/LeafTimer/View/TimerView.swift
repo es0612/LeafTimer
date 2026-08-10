@@ -57,7 +57,8 @@ struct TimerView: View {
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .padding(.bottom, 50)
                         .accessibilityLabel(NSLocalizedString("timer.a11y.remaining_time", comment: "Remaining time label"))
-                        .accessibilityValue(timerViewModel.getDisplayedTime())
+                        .accessibilityValue(timerViewModel.getAccessibilityTimeValue())
+                        .accessibilityAddTraits(.updatesFrequently)
 
                     Button(action: didTapTimerButton) {
                         CircleButton(viewModel: timerViewModel)
