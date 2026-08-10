@@ -47,6 +47,25 @@ extension TimerViewModel {
         }
     }
 
+    // Issue #97: 残り時間の VoiceOver 読み上げ値。"25:00" の数字列読みを避け、
+    // DateComponentsFormatter に単数複数・ロケール処理ごと委譲する。
+    // 毎秒呼ばれるが formatter は軽量で、locale 注入 (テスト決定性) と両立させるため都度生成のままにする。
+    func getAccessibilityTimeValue(locale: Locale = .current) -> String {
+        let formatter = DateComponentsFormatter()
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = locale
+        formatter.calendar = calendar
+        formatter.unitsStyle = .full
+        if currentTimeSecond < 60 {
+            // 0 を「0秒」と読ませるため zero を drop しない
+            formatter.allowedUnits = [.second]
+        } else {
+            formatter.allowedUnits = [.minute, .second]
+            formatter.zeroFormattingBehavior = .dropTrailing
+        }
+        return formatter.string(from: TimeInterval(currentTimeSecond)) ?? getDisplayedTime()
+    }
+
     func getBackgroundColor(colorScheme: ColorScheme) -> LinearGradient {
         if breakState {
             if colorScheme == .dark {
