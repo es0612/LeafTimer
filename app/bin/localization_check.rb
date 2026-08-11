@@ -26,13 +26,17 @@ module LocalizationCheck
   # Every key definition, in file order, repeats included — callers rely on
   # the repeats to detect duplicate definitions.
   #
-  # Two parser assumptions, both true of every .strings file in this repo but
+  # Three parser assumptions, all true of every .strings file in this repo but
   # not enforced:
   #   - one definition per line — two "key" = "value"; pairs crammed onto a
   #     single line would hide a duplicate, since only the first is captured.
   #   - BLOCK_COMMENT is a naive /\*.*?\*/ scan, so a literal "/*" inside a
   #     *value* string would be read as a comment start and swallow any key
   #     definitions up to the next "*/".
+  #   - STRINGS_KEY requires the opening quote, so an unquoted key (legal in
+  #     old-style plist, e.g. `b.c = "2";`) is never matched. A quoted and an
+  #     unquoted definition of the same key is therefore a duplicate that
+  #     this scan cannot see.
   def self.strings_keys(strings_text)
     strings_text.gsub(BLOCK_COMMENT, '')
                 .each_line
