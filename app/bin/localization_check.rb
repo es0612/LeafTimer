@@ -5,9 +5,10 @@
 # bin/localization-check.rb.
 module LocalizationCheck
   # NSLocalizedString("key", comment: ...) — the key may sit on a *following*
-  # line (AboutSettingsSection.swift:36-39 does exactly that), so this pattern
-  # deliberately spans newlines. A line-anchored grep silently misses those
-  # calls and then reports a perfectly live key as "unused".
+  # line (AboutSettingsSection.swift:36-39 does exactly that). The `\s*`
+  # between `(` and the opening quote is what lets this pattern span
+  # newlines and catch those calls; a line-anchored grep silently misses
+  # them and then reports a perfectly live key as "unused".
   CODE_KEY = /NSLocalizedString\(\s*"((?:[^"\\]|\\.)*)"/m.freeze
 
   # A key definition in a .strings file: "key" = "value";
@@ -24,6 +25,14 @@ module LocalizationCheck
 
   # Every key definition, in file order, repeats included — callers rely on
   # the repeats to detect duplicate definitions.
+  #
+  # Two parser assumptions, both true of every .strings file in this repo but
+  # not enforced:
+  #   - one definition per line — two "key" = "value"; pairs crammed onto a
+  #     single line would hide a duplicate, since only the first is captured.
+  #   - BLOCK_COMMENT is a naive /\*.*?\*/ scan, so a literal "/*" inside a
+  #     *value* string would be read as a comment start and swallow any key
+  #     definitions up to the next "*/".
   def self.strings_keys(strings_text)
     strings_text.gsub(BLOCK_COMMENT, '')
                 .each_line

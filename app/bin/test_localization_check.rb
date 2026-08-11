@@ -58,6 +58,7 @@ class LocalizationCheckTest < Minitest::Test
       */
 
       // MARK: - Timer View
+      // "old.key" = "コメントアウトされた定義";
       "timer.title" = "ポモドーロ";
     STRINGS
     assert_equal ['timer.title'], LocalizationCheck.strings_keys(strings)

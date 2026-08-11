@@ -35,8 +35,28 @@ unless absent.empty?
   exit 1
 end
 
-swift_text   = Dir.glob(File.join(SOURCE_DIR, '**', '*.swift')).sort.map { |f| File.read(f) }.join("\n")
-code_keys    = LocalizationCheck.code_keys(swift_text)
+# Tripwire: if the on-disk locale set drifts from LOCALES (a new .lproj added,
+# or one renamed/removed), fail loudly instead of silently checking a subset.
+# Globbing on Localizable.strings (not the .lproj dir) excludes Base.lproj,
+# which has no such file.
+found_locales = Dir.glob(File.join(SOURCE_DIR, 'App', '*.lproj', 'Localizable.strings'))
+                    .map { |path| File.basename(File.dirname(path), '.lproj') }.sort
+unless found_locales == LOCALES.sort
+  warn "❌ localization-check failed: locale set changed (found #{found_locales.join(', ')}, expected #{LOCALES.join(', ')})"
+  exit 1
+end
+
+swift_text = Dir.glob(File.join(SOURCE_DIR, '**', '*.swift')).sort.map { |f| File.read(f) }.join("\n")
+code_keys  = LocalizationCheck.code_keys(swift_text)
+
+# Guard the other false-green: if SOURCE_DIR ever moves, or the code migrates
+# off NSLocalizedString entirely, the glob above yields nothing and the report
+# below would find zero keys to compare — a silent, empty "pass".
+if code_keys.empty?
+  warn "❌ localization-check failed: no NSLocalizedString call found under #{SOURCE_DIR}"
+  exit 1
+end
+
 locale_texts = LOCALES.to_h { |locale| [locale, File.read(strings_path(locale))] }
 report       = LocalizationCheck.report(code_keys, locale_texts)
 
@@ -49,8 +69,8 @@ LOCALES.each do |locale|
   next if keys.empty?
 
   failures << "missing:#{locale}"
-  puts "❌ #{locale}: #{keys.size} key(s) used in code but not defined:"
-  keys.each { |key| puts "   - #{key}" }
+  warn "❌ #{locale}: #{keys.size} key(s) used in code but not defined:"
+  keys.each { |key| warn "   - #{key}" }
 end
 
 LOCALES.each do |locale|
@@ -58,8 +78,8 @@ LOCALES.each do |locale|
   next if keys.empty?
 
   failures << "parity:#{locale}"
-  puts "❌ #{locale}: #{keys.size} key(s) defined in another locale but missing here:"
-  keys.each { |key| puts "   - #{key}" }
+  warn "❌ #{locale}: #{keys.size} key(s) defined in another locale but missing here:"
+  keys.each { |key| warn "   - #{key}" }
 end
 
 LOCALES.each do |locale|
@@ -67,8 +87,8 @@ LOCALES.each do |locale|
   next if keys.empty?
 
   failures << "duplicate:#{locale}"
-  puts "❌ #{locale}: #{keys.size} key(s) defined more than once (the last one wins):"
-  keys.each { |key| puts "   - #{key}" }
+  warn "❌ #{locale}: #{keys.size} key(s) defined more than once (the last one wins):"
+  keys.each { |key| warn "   - #{key}" }
 end
 
 unless report[:unused].empty?
