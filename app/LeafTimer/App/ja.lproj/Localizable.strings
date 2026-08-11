@@ -97,6 +97,8 @@
 "settings.reset.done_title" = "リセット完了";
 "settings.reset.done_message" = "すべての設定を初期値に戻しました。";
 "settings.system_section" = "システム";
+// アプリ名 + タグラインはブランド表記として意図的に未翻訳のまま英語を維持する (Issue #98)。
+// 翻訳漏れではないので、i18n の棚卸しで日本語化しないこと。
 "settings.footer.app_name" = "LeafTimer - Focus & Productivity";
 "settings.footer.copyright" = "© 2025 LeafTimer. All rights reserved.";
 
