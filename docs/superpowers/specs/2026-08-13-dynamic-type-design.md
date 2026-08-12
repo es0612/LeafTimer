@@ -210,10 +210,18 @@ enum DebugInitialScreen {
 | (UserDefaults で `hasSeenOnboarding` を消す) | `OnboardingView` | 1 |
 
 - `#if DEBUG` により **Release ビルドには一切入らない**
-- `TimerView` の `NavigationStack` (`TimerView.swift:16`) 構造は変更しない。DEBUG 分岐で目的の View を直接返すだけに留める
+- `DebugInitialScreen` は**新規ファイルを作らず `TimerView.swift` 内に `#if DEBUG` で置く**。新規 Swift ファイルを足すと、案B を退けた理由 (pbxproj 登録 / orphan 検査 / `make sort` のセレモニー) を自分で買い戻すことになる
+- `TimerView` の `NavigationStack` (`TimerView.swift:16`) 構造は変更しない。DEBUG 分岐で目的の View を返す
+- ただし `EnhancedSettingView` / `HistoryView` は通常 `NavigationStack` の内側で描画されるため、**DEBUG 分岐でも `NavigationStack` でラップして返す**。裸で返すとツールバーや `navigationTitle` が描画されず、baseline として不正確になる
 - 今後の UI 検証 (#62 Reduce Motion / #64 SE・iPad 対応) でも再利用できる資産になる
 
-オンボーディングは既存の UserDefaults 経路で観測できるため、`-InitialScreen=onboarding` は用意しない (YAGNI)。
+オンボーディングは既存の UserDefaults 経路で観測できるため、`-InitialScreen=onboarding` は用意しない (YAGNI)。撮影時は **`simctl uninstall` ではなくキー削除**を使う。
+
+```bash
+xcrun simctl spawn booted defaults delete jp.ema.LeafTimer hasSeenOnboarding
+```
+
+`uninstall` は ATT の決定もリセットするため、次回起動で ATT ダイアログが出て**手動タップが 1 回必要**になる (Issue #90 のコメントに記録済み)。キー削除ならこれを避けられる。
 
 ## 設計 4: 再発防止ガード
 
@@ -245,6 +253,9 @@ app/bin/test_dynamic_type_check.rb   # minitest
 | 単一行の違反 `.font(.system(size: 15))` | 🔴 検出される |
 | 複数行の違反 `.font(.system(\n size: 78, ...))` | 🔴 検出される |
 | 変数サイズ `.font(.system(size: timerFontSize, ...))` | 🟢 検出されない |
+| **上限付き変数** `.font(.system(size: min(timerFontSize, 110), ...))` | 🟢 検出されない |
+
+4 つ目のフィクスチャは必須である。設計 2 で実際に書くコードは `size: min(timerFontSize, 110)` であり、**数値リテラル `110` を含む**。「`.font(.system(...)` 内に数字があれば違反」という素朴な実装は 3 つ目のフィクスチャを通過しながら実コードを落とすため、この 4 つ目でしか検出できない。判定は「`size:` の**直後のトークン**が数値リテラルか」で行う。
 
 ### Makefile への配線
 
@@ -275,6 +286,15 @@ xcrun simctl io booted screenshot /tmp/settings-AX5.png
 
 - 標準: `extra-small` / `small` / `medium` / `large` / `extra-large` / `extra-extra-large` / `extra-extra-extra-large`
 - 拡張: `accessibility-medium` / `accessibility-large` / `accessibility-extra-large` / `accessibility-extra-extra-large` / `accessibility-extra-extra-extra-large`
+
+### 実施順序の制約 (重要)
+
+完了条件の「標準サイズのスクリーンショットが置換前と実質同一」は、**置換前に `large` の 5 枚を撮っておかなければ検証できない**。しかし設定画面・履歴・プレビューの撮影には DEBUG 起動引数が必要で、それは実装物である。したがって作業順序は次に固定する。
+
+1. **DEBUG 起動引数フック (設計 3) を単独で先に実装・commit** — 表示内容を変えないため、この時点のスクリーンショットが正当な baseline になる
+2. `large` の baseline 5 枚を撮影して保存
+3. 40 箇所の置換 (設計 1・2) を実施
+4. 検証マトリクス 13 枚を撮影し、`large` の 5 枚を baseline と比較
 
 ### 検証マトリクス (13 枚)
 
@@ -321,6 +341,7 @@ cd /Users/shinya/workspace/claude/LeafTimer/app && BUILT_DIR=$(xcodebuild \
 
 ## 完了条件
 
+- [ ] DEBUG 起動引数フックを**先に**実装し、置換前に `large` の baseline 5 枚を撮影済み
 - [ ] 40 箇所すべてが text style または `@ScaledMetric` に置換されている
 - [ ] `make dynamic-type-check` が green、かつ意図的に壊した入力で RED になることを実証済み
 - [ ] `make tests` チェーンに組み込まれ green
