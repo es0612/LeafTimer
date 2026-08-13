@@ -120,33 +120,37 @@ struct TimerPreviewSheet: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                Text(NSLocalizedString("settings.timer.preview_title", comment: "Timer preview sheet title"))
-                    .font(.title2)
-                    .fontWeight(.bold)
+            // AX5 では見出し + 2 カードの合計高さが画面を超えるため ScrollView で包む。
+            // Spacer() は固定 VStack 時代に余白を吸収する役割だったが、
+            // ScrollView の内容は元々コンテンツの実サイズで上詰めされるため不要。
+            ScrollView {
+                VStack(spacing: 30) {
+                    Text(NSLocalizedString("settings.timer.preview_title", comment: "Timer preview sheet title"))
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
 
-                VStack(spacing: 20) {
-                    PreviewTimerDisplay(
-                        title: NSLocalizedString("settings.timer.preview_work", comment: "Work session preview label"),
-                        time: workingTime,
-                        color: .blue
-                    )
+                    VStack(spacing: 20) {
+                        PreviewTimerDisplay(
+                            title: NSLocalizedString("settings.timer.preview_work", comment: "Work session preview label"),
+                            time: workingTime,
+                            color: .blue
+                        )
 
-                    Image(systemName: "arrow.down")
-                        .font(.title3)
-                        .foregroundColor(.gray)
+                        Image(systemName: "arrow.down")
+                            .font(.title3)
+                            .foregroundColor(.gray)
 
-                    PreviewTimerDisplay(
-                        title: NSLocalizedString("settings.timer.preview_break", comment: "Break time preview label"),
-                        time: breakTime,
-                        color: .green
-                    )
+                        PreviewTimerDisplay(
+                            title: NSLocalizedString("settings.timer.preview_break", comment: "Break time preview label"),
+                            time: breakTime,
+                            color: .green
+                        )
+                    }
+                    .padding()
                 }
                 .padding()
-
-                Spacer()
             }
-            .padding()
             .navigationBarItems(trailing: Button(NSLocalizedString("settings.done", comment: "Done button")) { dismiss() })
         }
     }
