@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 固定 font size 40 箇所を SwiftUI 標準 text style / 上限付き `@ScaledMetric` へ移行し、iOS の「文字を大きく」に AX5 まで追従させる。
+**Goal:** 固定 font size 40 箇所を SwiftUI 標準 text style / 上限付き `@ScaledMetric` へ移行し、iOS の「文字を大きく」に AX5 まで追従させる（HistoryView の 7 日グラフのみ `accessibility3` 上限、詳細は設計ドキュメントの「例外」節を参照）。
 
 **Architecture:** 独自の Font 抽象レイヤは作らず、SwiftUI 標準 text style へ直接置換する (設計の案A)。40 箇所中 38 箇所は tap でしか到達できないため、`#if DEBUG` の起動引数フックで観測手段を先に用意する。再発防止は `make dynamic-type-check` (Ruby) で機械的に担保する。
 

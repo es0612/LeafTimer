@@ -193,11 +193,11 @@ struct TimerView: View {
 /// 起動引数 `-InitialScreen=<name>` を読む。既存の `-UMPDebugGeographyEEA`
 /// (Components/AdsConsentServices.swift:20) と同じ発想。
 enum DebugInitialScreen {
-    static var requested: String? {
+    static let requested: String? = {
         ProcessInfo.processInfo.arguments
             .first { $0.hasPrefix("-InitialScreen=") }?
             .replacingOccurrences(of: "-InitialScreen=", with: "")
-    }
+    }()
 }
 #endif
 

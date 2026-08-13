@@ -174,9 +174,9 @@ struct PreviewTimerDisplay: View {
             Text(title)
                 .font(.subheadline.weight(.medium))
                 .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
                 // fixedSize(vertical: true) が無いと AX5 で高さが 1 行分に圧縮され、
                 // 「作業セッション」等が語中省略される (Issue #58 Task 7 実測)。
-                .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text(timeString)
