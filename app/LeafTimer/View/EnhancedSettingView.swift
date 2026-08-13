@@ -21,13 +21,13 @@ struct EnhancedSettingView: View {
                             NSLocalizedString("settings.pomodoro_mode", comment: "Pomodoro mode"),
                             systemImage: "leaf.fill"
                         )
-                        .font(.system(size: 15, weight: .medium))
+                        .font(.subheadline.weight(.medium))
                         .foregroundColor(.green)
 
                         Spacer()
 
                         Image(systemName: "checkmark")
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.subheadline.weight(.semibold))
                             .foregroundColor(.green)
                     }
                     .padding(.vertical, 8)
@@ -37,11 +37,11 @@ struct EnhancedSettingView: View {
                             .foregroundColor(.orange)
                         Text(NSLocalizedString("settings.mode_section", comment: "Mode section header"))
                     }
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.footnote.weight(.semibold))
                     .textCase(.uppercase)
                 } footer: {
                     Text(NSLocalizedString("settings.mode_footer", comment: "Mode section footer"))
-                        .font(.system(size: 11))
+                        .font(.caption2)
                         .foregroundColor(.secondary)
                 }
 
@@ -54,7 +54,7 @@ struct EnhancedSettingView: View {
                             NSLocalizedString("settings.replay_onboarding", comment: "Replay onboarding"),
                             systemImage: "questionmark.circle"
                         )
-                        .font(.system(size: 15, weight: .medium))
+                        .font(.subheadline.weight(.medium))
                     }
                 } header: {
                     HStack {
@@ -62,7 +62,7 @@ struct EnhancedSettingView: View {
                             .foregroundColor(.orange)
                         Text(NSLocalizedString("settings.help_section", comment: "Help section header"))
                     }
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.footnote.weight(.semibold))
                     .textCase(.uppercase)
                 }
 
@@ -85,7 +85,7 @@ struct EnhancedSettingView: View {
                     Button(NSLocalizedString("settings.done", comment: "Done button")) {
                         dismiss()
                     }
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.callout.weight(.medium))
                 }
             }
             .onAppear {

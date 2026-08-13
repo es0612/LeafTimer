@@ -13,13 +13,13 @@ struct AboutSettingsSection: View {
                         NSLocalizedString("settings.review_app", comment: "Review this app"),
                         systemImage: "star.fill"
                     )
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
 
                     Spacer()
 
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.caption.weight(.semibold))
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 8)
@@ -30,14 +30,14 @@ struct AboutSettingsSection: View {
                     .foregroundColor(.yellow)
                 Text(NSLocalizedString("settings.about_section", comment: "About section header"))
             }
-            .font(.system(size: 13, weight: .semibold))
+            .font(.footnote.weight(.semibold))
             .textCase(.uppercase)
         } footer: {
             Text(NSLocalizedString(
                 "settings.review_app_footer",
                 comment: "Footer for review section"
             ))
-            .font(.system(size: 11))
+            .font(.caption2)
             .foregroundColor(.secondary)
         }
     }

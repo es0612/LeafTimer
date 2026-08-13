@@ -47,7 +47,7 @@ struct HistoryView: View {
                 .foregroundColor(color)
                 .frame(width: 24)
             Text(text)
-                .font(.system(size: 17, weight: .medium))
+                .font(.body.weight(.medium))
                 .foregroundColor(.primary)
             Spacer()
         }
@@ -56,7 +56,7 @@ struct HistoryView: View {
     private var last7DaysSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(NSLocalizedString("history.last_7_days", comment: ""))
-                .font(.system(size: 14, weight: .semibold))
+                .font(.subheadline.weight(.semibold))
                 .foregroundColor(.secondary)
                 .padding(.horizontal)
 
@@ -64,13 +64,13 @@ struct HistoryView: View {
                 ForEach(viewModel.last7Days, id: \.date) { day in
                     VStack(spacing: 4) {
                         Text("\(day.count)")
-                            .font(.system(size: 11))
+                            .font(.caption2)
                             .foregroundColor(.secondary)
                         Rectangle()
                             .fill(barColor(for: day.count))
                             .frame(height: barHeight(for: day.count))
                         Text(shortLabel(date: day.date))
-                            .font(.system(size: 10))
+                            .font(.caption2)
                             .foregroundColor(.secondary)
                     }
                     .frame(maxWidth: .infinity)

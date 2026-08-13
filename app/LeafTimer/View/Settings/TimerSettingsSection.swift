@@ -13,13 +13,13 @@ struct TimerSettingsSection: View {
                         NSLocalizedString("settings.working_time", comment: "Working time setting"),
                         systemImage: "timer"
                     )
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
 
                     Spacer()
 
                     Text(ItemValue.workingTimeListString[viewModel.workingTime])
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
                         .foregroundColor(.blue)
                         .animation(.easeInOut(duration: 0.2), value: viewModel.workingTime)
                 }
@@ -49,13 +49,13 @@ struct TimerSettingsSection: View {
                         NSLocalizedString("settings.break_time", comment: "Break time setting"),
                         systemImage: "pause.circle"
                     )
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
 
                     Spacer()
 
                     Text(ItemValue.breakTimeListString[viewModel.breakTime])
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
                         .foregroundColor(.green)
                         .animation(.easeInOut(duration: 0.2), value: viewModel.breakTime)
                 }
@@ -84,9 +84,9 @@ struct TimerSettingsSection: View {
             }) {
                 HStack {
                     Image(systemName: "eye")
-                        .font(.system(size: 14))
+                        .font(.subheadline)
                     Text(NSLocalizedString("settings.timer.preview_button", comment: "Preview timer settings button"))
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.subheadline.weight(.medium))
                 }
                 .foregroundColor(.blue)
                 .padding(.vertical, 8)
@@ -101,7 +101,7 @@ struct TimerSettingsSection: View {
                     .foregroundColor(.blue)
                 Text(NSLocalizedString("settings.timer_section", comment: "Timer section header"))
             }
-            .font(.system(size: 13, weight: .semibold))
+            .font(.footnote.weight(.semibold))
             .textCase(.uppercase)
         }
         .sheet(isPresented: $showingTimePreview) {
@@ -133,7 +133,7 @@ struct TimerPreviewSheet: View {
                     )
 
                     Image(systemName: "arrow.down")
-                        .font(.system(size: 20))
+                        .font(.title3)
                         .foregroundColor(.gray)
 
                     PreviewTimerDisplay(
@@ -166,7 +166,7 @@ struct PreviewTimerDisplay: View {
     var body: some View {
         VStack(spacing: 8) {
             Text(title)
-                .font(.system(size: 14, weight: .medium))
+                .font(.subheadline.weight(.medium))
                 .foregroundColor(.secondary)
 
             Text(timeString)
