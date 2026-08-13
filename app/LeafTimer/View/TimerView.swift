@@ -10,9 +10,56 @@ struct TimerView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var showOnboarding = false
 
+    /// タイマー数字は 78pt と大きく、本文と同率 (AX5 で約 3.1 倍) に拡大すると
+    /// 画面幅に収まらない。largeTitle 基準 (約 1.76 倍) に緩めた上で上限を張る。
+    @ScaledMetric(relativeTo: .largeTitle) private var timerFontSize: CGFloat = 78
+
     // MARK: - View
 
     var body: some View {
+#if DEBUG
+        if let screen = DebugInitialScreen.requested {
+            debugScreen(screen)
+        } else {
+            timerContent
+        }
+#else
+        timerContent
+#endif
+    }
+
+#if DEBUG
+    /// 検証用に単一画面を直接表示する。`simctl` には tap が無いため、
+    /// 設定・履歴・プレビューは通常の導線 (歯車 → NavigationLink) では
+    /// スクリーンショットを撮れない。
+    ///
+    /// EnhancedSettingView / HistoryView は通常 NavigationStack の内側で
+    /// 描画されるので、ここでも NavigationStack で包む。裸で返すと
+    /// ツールバーと navigationTitle が出ず、baseline が不正確になる。
+    /// TimerPreviewSheet は自前で NavigationView を持つため包まない。
+    @ViewBuilder
+    private func debugScreen(_ screen: String) -> some View {
+        switch screen {
+        case "settings":
+            NavigationStack {
+                EnhancedSettingView(settingViewModel: settingViewModel)
+            }
+        case "history":
+            NavigationStack {
+                HistoryView(viewModel: timerViewModel.historyViewModel)
+            }
+        case "timePreview":
+            TimerPreviewSheet(
+                workingTime: ItemValue.workingTimeList[settingViewModel.workingTime],
+                breakTime: ItemValue.breakTimeList[settingViewModel.breakTime]
+            )
+        default:
+            timerContent
+        }
+    }
+#endif
+
+    private var timerContent: some View {
         NavigationStack {
             ZStack {
                 timerViewModel.getBackgroundColor(colorScheme: colorScheme)
@@ -49,10 +96,9 @@ struct TimerView: View {
 
                 VStack {
                     Text(timerViewModel.getDisplayedTime())
-                        .font(.system(
-                            size: 78, weight: .bold, design: .monospaced
-                        )
-                        )
+                        .font(.system(size: min(timerFontSize, 110), weight: .bold, design: .monospaced))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                         .foregroundColor(.primary.opacity(0.9))
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .padding(.bottom, 50)
@@ -142,6 +188,18 @@ struct TimerView: View {
         timerViewModel.reset()
     }
 }
+
+#if DEBUG
+/// 起動引数 `-InitialScreen=<name>` を読む。既存の `-UMPDebugGeographyEEA`
+/// (Components/AdsConsentServices.swift:20) と同じ発想。
+enum DebugInitialScreen {
+    static let requested: String? = {
+        ProcessInfo.processInfo.arguments
+            .first { $0.hasPrefix("-InitialScreen=") }?
+            .replacingOccurrences(of: "-InitialScreen=", with: "")
+    }()
+}
+#endif
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {

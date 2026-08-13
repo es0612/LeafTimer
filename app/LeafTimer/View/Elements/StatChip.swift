@@ -13,7 +13,7 @@ struct StatChip: View {
             Image(systemName: systemImage)
                 .foregroundColor(tint)
             Text(text)
-                .font(.system(size: 15, weight: .medium))
+                .font(.subheadline.weight(.medium))
                 .foregroundColor(.primary)
         }
         .padding(.horizontal, 14)

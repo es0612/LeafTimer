@@ -13,13 +13,13 @@ struct TimerSettingsSection: View {
                         NSLocalizedString("settings.working_time", comment: "Working time setting"),
                         systemImage: "timer"
                     )
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
 
                     Spacer()
 
                     Text(ItemValue.workingTimeListString[viewModel.workingTime])
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
                         .foregroundColor(.blue)
                         .animation(.easeInOut(duration: 0.2), value: viewModel.workingTime)
                 }
@@ -49,13 +49,13 @@ struct TimerSettingsSection: View {
                         NSLocalizedString("settings.break_time", comment: "Break time setting"),
                         systemImage: "pause.circle"
                     )
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
 
                     Spacer()
 
                     Text(ItemValue.breakTimeListString[viewModel.breakTime])
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
                         .foregroundColor(.green)
                         .animation(.easeInOut(duration: 0.2), value: viewModel.breakTime)
                 }
@@ -84,9 +84,9 @@ struct TimerSettingsSection: View {
             }) {
                 HStack {
                     Image(systemName: "eye")
-                        .font(.system(size: 14))
+                        .font(.subheadline)
                     Text(NSLocalizedString("settings.timer.preview_button", comment: "Preview timer settings button"))
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.subheadline.weight(.medium))
                 }
                 .foregroundColor(.blue)
                 .padding(.vertical, 8)
@@ -101,7 +101,7 @@ struct TimerSettingsSection: View {
                     .foregroundColor(.blue)
                 Text(NSLocalizedString("settings.timer_section", comment: "Timer section header"))
             }
-            .font(.system(size: 13, weight: .semibold))
+            .font(.footnote.weight(.semibold))
             .textCase(.uppercase)
         }
         .sheet(isPresented: $showingTimePreview) {
@@ -120,33 +120,37 @@ struct TimerPreviewSheet: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                Text(NSLocalizedString("settings.timer.preview_title", comment: "Timer preview sheet title"))
-                    .font(.title2)
-                    .fontWeight(.bold)
+            // AX5 では見出し + 2 カードの合計高さが画面を超えるため ScrollView で包む。
+            // Spacer() は固定 VStack 時代に余白を吸収する役割だったが、
+            // ScrollView の内容は元々コンテンツの実サイズで上詰めされるため不要。
+            ScrollView {
+                VStack(spacing: 30) {
+                    Text(NSLocalizedString("settings.timer.preview_title", comment: "Timer preview sheet title"))
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
 
-                VStack(spacing: 20) {
-                    PreviewTimerDisplay(
-                        title: NSLocalizedString("settings.timer.preview_work", comment: "Work session preview label"),
-                        time: workingTime,
-                        color: .blue
-                    )
+                    VStack(spacing: 20) {
+                        PreviewTimerDisplay(
+                            title: NSLocalizedString("settings.timer.preview_work", comment: "Work session preview label"),
+                            time: workingTime,
+                            color: .blue
+                        )
 
-                    Image(systemName: "arrow.down")
-                        .font(.system(size: 20))
-                        .foregroundColor(.gray)
+                        Image(systemName: "arrow.down")
+                            .font(.title3)
+                            .foregroundColor(.gray)
 
-                    PreviewTimerDisplay(
-                        title: NSLocalizedString("settings.timer.preview_break", comment: "Break time preview label"),
-                        time: breakTime,
-                        color: .green
-                    )
+                        PreviewTimerDisplay(
+                            title: NSLocalizedString("settings.timer.preview_break", comment: "Break time preview label"),
+                            time: breakTime,
+                            color: .green
+                        )
+                    }
+                    .padding()
                 }
                 .padding()
-
-                Spacer()
             }
-            .padding()
             .navigationBarItems(trailing: Button(NSLocalizedString("settings.done", comment: "Done button")) { dismiss() })
         }
     }
@@ -157,6 +161,8 @@ struct PreviewTimerDisplay: View {
     let time: Int
     let color: Color
 
+    @ScaledMetric(relativeTo: .largeTitle) private var timeFontSize: CGFloat = 48
+
     private var timeString: String {
         let minutes = time / 60
         let seconds = time % 60
@@ -166,11 +172,17 @@ struct PreviewTimerDisplay: View {
     var body: some View {
         VStack(spacing: 8) {
             Text(title)
-                .font(.system(size: 14, weight: .medium))
+                .font(.subheadline.weight(.medium))
                 .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                // fixedSize(vertical: true) が無いと AX5 で高さが 1 行分に圧縮され、
+                // 「作業セッション」等が語中省略される (Issue #58 Task 7 実測)。
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(timeString)
-                .font(.system(size: 48, weight: .light, design: .monospaced))
+                .font(.system(size: min(timeFontSize, 72), weight: .light, design: .monospaced))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
                 .foregroundColor(color)
 
             RoundedRectangle(cornerRadius: 20)

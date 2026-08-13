@@ -15,7 +15,7 @@ struct SoundSettingsSection: View {
                     NSLocalizedString("settings.working_sound", comment: "Working sound setting"),
                     systemImage: "speaker.wave.2.fill"
                 )
-                .font(.system(size: 15, weight: .medium))
+                .font(.subheadline.weight(.medium))
                 .foregroundColor(.primary)
 
                 ForEach(0 ..< ItemValue.soundList.count, id: \.self) { index in
@@ -27,10 +27,10 @@ struct SoundSettingsSection: View {
                             HStack {
                                 Image(systemName: viewModel.workingSound == index ? "checkmark.circle.fill" : "circle")
                                     .foregroundColor(viewModel.workingSound == index ? .blue : .gray)
-                                    .font(.system(size: 20))
+                                    .font(.title3)
 
                                 Text(ItemValue.soundList[index])
-                                    .font(.system(size: 15))
+                                    .font(.subheadline)
                                     .foregroundColor(.primary)
 
                                 Spacer()
@@ -41,7 +41,7 @@ struct SoundSettingsSection: View {
                                         playSound(at: index)
                                     }) {
                                         Image(systemName: playingSoundIndex == index && isPlayingSound ? "pause.circle.fill" : "play.circle.fill")
-                                            .font(.system(size: 22))
+                                            .font(.title2)
                                             .foregroundColor(.blue)
                                     }
                                     .buttonStyle(BorderlessButtonStyle())
@@ -62,7 +62,7 @@ struct SoundSettingsSection: View {
                     NSLocalizedString("settings.vibration", comment: "Vibration setting"),
                     systemImage: "iphone.radiowaves.left.and.right"
                 )
-                .font(.system(size: 15, weight: .medium))
+                .font(.subheadline.weight(.medium))
                 .foregroundColor(.primary)
 
                 Spacer()
@@ -91,11 +91,11 @@ struct SoundSettingsSection: View {
                     .foregroundColor(.green)
                 Text(NSLocalizedString("settings.sound_section", comment: "Sound section header"))
             }
-            .font(.system(size: 13, weight: .semibold))
+            .font(.footnote.weight(.semibold))
             .textCase(.uppercase)
         } footer: {
             Text(NSLocalizedString("settings.sound_footer", comment: "Sound section footer"))
-                .font(.system(size: 11))
+                .font(.caption2)
                 .foregroundColor(.secondary)
         }
     }

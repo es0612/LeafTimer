@@ -12,11 +12,11 @@ struct ResetSettingsSection: View {
             }) {
                 HStack {
                     Image(systemName: "arrow.counterclockwise.circle.fill")
-                        .font(.system(size: 20))
+                        .font(.title3)
                         .foregroundColor(.red)
 
                     Text(NSLocalizedString("settings.reset.button", comment: "Reset settings button"))
-                        .font(.system(size: 15, weight: .medium))
+                        .font(.subheadline.weight(.medium))
                         .foregroundColor(.red)
 
                     Spacer()
@@ -44,14 +44,14 @@ struct ResetSettingsSection: View {
                     .foregroundColor(.gray)
                 Text(NSLocalizedString("settings.system_section", comment: "System section header"))
             }
-            .font(.system(size: 13, weight: .semibold))
+            .font(.footnote.weight(.semibold))
             .textCase(.uppercase)
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
                 Text(NSLocalizedString("settings.footer.app_name", comment: "Footer app name"))
-                    .font(.system(size: 11, weight: .medium))
+                    .font(.caption2.weight(.medium))
                 Text(NSLocalizedString("settings.footer.copyright", comment: "Footer copyright"))
-                    .font(.system(size: 10))
+                    .font(.caption2)
             }
             .foregroundColor(.secondary)
             .padding(.top, 8)
