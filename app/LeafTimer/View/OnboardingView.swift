@@ -5,6 +5,8 @@ struct OnboardingView: View {
 
     @State private var selection = 0
 
+    @ScaledMetric(relativeTo: .largeTitle) private var emojiFontSize: CGFloat = 72
+
     private struct Page {
         let emoji: String
         let title: String
@@ -47,7 +49,7 @@ struct OnboardingView: View {
                     ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
                         VStack(spacing: 24) {
                             Text(page.emoji)
-                                .font(.system(size: 72))
+                                .font(.system(size: min(emojiFontSize, 100)))
                             Text(page.title)
                                 .font(.title.bold())
                                 .foregroundColor(.primary)

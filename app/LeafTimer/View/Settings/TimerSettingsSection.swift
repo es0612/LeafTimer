@@ -157,6 +157,8 @@ struct PreviewTimerDisplay: View {
     let time: Int
     let color: Color
 
+    @ScaledMetric(relativeTo: .largeTitle) private var timeFontSize: CGFloat = 48
+
     private var timeString: String {
         let minutes = time / 60
         let seconds = time % 60
@@ -170,7 +172,9 @@ struct PreviewTimerDisplay: View {
                 .foregroundColor(.secondary)
 
             Text(timeString)
-                .font(.system(size: 48, weight: .light, design: .monospaced))
+                .font(.system(size: min(timeFontSize, 72), weight: .light, design: .monospaced))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
                 .foregroundColor(color)
 
             RoundedRectangle(cornerRadius: 20)

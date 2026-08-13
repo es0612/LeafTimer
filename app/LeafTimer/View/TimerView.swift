@@ -10,6 +10,10 @@ struct TimerView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var showOnboarding = false
 
+    /// タイマー数字は 78pt と大きく、本文と同率 (AX5 で約 3.1 倍) に拡大すると
+    /// 画面幅に収まらない。largeTitle 基準 (約 1.76 倍) に緩めた上で上限を張る。
+    @ScaledMetric(relativeTo: .largeTitle) private var timerFontSize: CGFloat = 78
+
     // MARK: - View
 
     var body: some View {
@@ -92,10 +96,9 @@ struct TimerView: View {
 
                 VStack {
                     Text(timerViewModel.getDisplayedTime())
-                        .font(.system(
-                            size: 78, weight: .bold, design: .monospaced
-                        )
-                        )
+                        .font(.system(size: min(timerFontSize, 110), weight: .bold, design: .monospaced))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                         .foregroundColor(.primary.opacity(0.9))
                         .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         .padding(.bottom, 50)
