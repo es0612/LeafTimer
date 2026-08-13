@@ -379,6 +379,8 @@ cd /Users/shinya/workspace/claude/LeafTimer/app && make unit-tests 2>&1 | tee /t
 
 期待: 出力に `** TEST SUCCEEDED **` が含まれる。`Error 6x` / `** TEST FAILED **` が無いこと。
 
+**もし ViewInspector 系のテストが落ちたら、それはフックのバグではない。** `body` を `if let ... else` で包んだことで階層に `ConditionalContent` が 1 段挟まり、既存テストの traversal path がずれたのが原因。正しい対処は**テスト側の traversal を直すこと**で、フックを撤回することではない。
+
 ```bash
 grep -c "\*\* TEST SUCCEEDED \*\*" /tmp/58-task2.log
 ```
@@ -895,10 +897,16 @@ cd /Users/shinya/workspace/claude/LeafTimer/app && xcodebuild -workspace LeafTim
 
 期待: `** BUILD SUCCEEDED **`
 
-`BUILT_PRODUCTS_DIR` を Task 3 Step 1 と同じ方法で取得し、絶対パスで install する:
+ビルド成果物のパスを取得する。**`find app/build ...` で `.app` を探してはいけない** — そこには古いビルドの残骸があり、掴むと「変更が反映されていない」と silent に誤診する:
 
 ```bash
-xcrun simctl install booted "<BUILT_DIR>/LeafTimer.app"
+cd /Users/shinya/workspace/claude/LeafTimer/app && xcodebuild -workspace LeafTimer.xcworkspace -scheme LeafTimer -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" -showBuildSettings 2>/dev/null | grep -m1 BUILT_PRODUCTS_DIR | sed 's/.*= //'
+```
+
+出力された絶対パスを使って install する:
+
+```bash
+xcrun simctl install booted "<上で得た BUILT_PRODUCTS_DIR>/LeafTimer.app"
 mkdir -p /tmp/58-verify
 ```
 
@@ -908,7 +916,49 @@ mkdir -p /tmp/58-verify
 xcrun simctl ui booted content_size large
 ```
 
-Task 3 Step 3〜5 と同じ手順で 5 画面を `/tmp/58-verify/<screen>-large.png` に撮る。
+launch と screenshot は**別コマンド**で実行する (foreground の `sleep` が使えないため、ターン境界を splash の待ち時間に充てる)。5 画面ぶんを順に撮る:
+
+```bash
+xcrun simctl terminate booted jp.ema.LeafTimer 2>/dev/null; xcrun simctl launch booted jp.ema.LeafTimer
+```
+
+```bash
+xcrun simctl io booted screenshot /tmp/58-verify/timer-large.png && echo "saved"
+```
+
+```bash
+xcrun simctl terminate booted jp.ema.LeafTimer 2>/dev/null; xcrun simctl launch booted jp.ema.LeafTimer -InitialScreen=settings
+```
+
+```bash
+xcrun simctl io booted screenshot /tmp/58-verify/settings-large.png && echo "saved"
+```
+
+```bash
+xcrun simctl terminate booted jp.ema.LeafTimer 2>/dev/null; xcrun simctl launch booted jp.ema.LeafTimer -InitialScreen=history
+```
+
+```bash
+xcrun simctl io booted screenshot /tmp/58-verify/history-large.png && echo "saved"
+```
+
+```bash
+xcrun simctl terminate booted jp.ema.LeafTimer 2>/dev/null; xcrun simctl launch booted jp.ema.LeafTimer -InitialScreen=timePreview
+```
+
+```bash
+xcrun simctl io booted screenshot /tmp/58-verify/timePreview-large.png && echo "saved"
+```
+
+オンボーディングは `simctl uninstall` を使わない (ATT の決定までリセットされ、次回起動で ATT ダイアログが出て手動タップが必要になる。Issue #90 のコメントに記録済み):
+
+```bash
+xcrun simctl terminate booted jp.ema.LeafTimer 2>/dev/null; xcrun simctl spawn booted defaults delete jp.ema.LeafTimer hasSeenOnboarding; xcrun simctl launch booted jp.ema.LeafTimer
+```
+
+```bash
+xcrun simctl io booted screenshot /tmp/58-verify/onboarding-large.png && echo "saved"
+```
 
 各画像を Read ツールで開き、`/tmp/58-baseline/<screen>-large.png` と**並べて目視比較**する。
 
@@ -920,7 +970,7 @@ Task 3 Step 3〜5 と同じ手順で 5 画面を `/tmp/58-verify/<screen>-large.
 xcrun simctl ui booted content_size extra-extra-extra-large
 ```
 
-`timer` / `settings` / `history` の 3 画面を `/tmp/58-verify/<screen>-xxxl.png` に撮る。
+本 Task の Step 2 に挙げた terminate/launch → screenshot のコマンド対を、`timer` / `settings` / `history` の 3 画面について再実行する。保存先だけ `-large.png` から `-xxxl.png` に変える (`/tmp/58-verify/timer-xxxl.png` など)。
 
 期待: 文字が拡大しており、見切れ・重なりが無いこと。
 
@@ -930,7 +980,7 @@ xcrun simctl ui booted content_size extra-extra-extra-large
 xcrun simctl ui booted content_size accessibility-extra-extra-extra-large
 ```
 
-5 画面すべてを `/tmp/58-verify/<screen>-ax5.png` に撮る。
+本 Task の Step 2 に挙げた terminate/launch → screenshot のコマンド対を、5 画面すべてについて再実行する。保存先だけ `-large.png` から `-ax5.png` に変える (`/tmp/58-verify/settings-ax5.png` など)。オンボーディングは再度 `defaults delete jp.ema.LeafTimer hasSeenOnboarding` を挟む。
 
 各画像を Read ツールで開き、次を確認する:
 
@@ -1070,6 +1120,8 @@ EOF
 ```bash
 until gh pr checks <PR番号> --json name,bucket --jq 'all(.[]; .bucket != "pending")' 2>/dev/null | grep -q true; do sleep 30; done; gh pr checks <PR番号>
 ```
+
+**このループが実行環境で `sleep` を弾かれて動かない場合**は、`Monitor` ツールで同じ条件 (`bucket != "pending"` が全件 true) を待つか、`gh pr checks <PR番号>` を数分おきに単発で叩いて代替する。Global Constraints の「foreground の `sleep` は使えない」はここにも当てはまる。
 
 このリポジトリは Auto-merge が無効 (`gh pr merge --auto` は失敗する)。CI 完了を確認してから `gh pr merge <PR番号> --merge` を明示的に実行する。
 
