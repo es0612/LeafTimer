@@ -170,6 +170,8 @@ struct PreviewTimerDisplay: View {
             Text(title)
                 .font(.subheadline.weight(.medium))
                 .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(timeString)
                 .font(.system(size: min(timeFontSize, 72), weight: .light, design: .monospaced))

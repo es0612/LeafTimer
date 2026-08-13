@@ -306,6 +306,27 @@ xcrun simctl io booted screenshot /tmp/settings-AX5.png
 
 ライト/ダークは掛けない。本変更は**フォントのみで色に触らない**ため直交しており、色の可読性検証は #26 / #39 で実施済み。
 
+### 例外: HistoryView の「過去 7 日」グラフは AX5 まで保証しない (Task 7 実測、2026-08-13)
+
+**「AX5 まで崩れない」という保証には 1 箇所だけ例外がある。** `HistoryView.swift` の `last7DaysSection` (過去 7 日の棒グラフ) は、**`DynamicTypeSize.accessibility3` までを保証範囲とし、AX5 (`accessibility5`) までは拡大させない。**
+
+```swift
+.dynamicTypeSize(...DynamicTypeSize.accessibility3)
+```
+
+**理由:** 7 列 × (件数ラベル + 日付ラベル) という密集レイアウトのため、Dynamic Type を上限なく拡大すると各列の折り返し高さが列ごとに不揃いになり、件数と日付の対応が視覚的に判別不能になる。実測で上限を探索した結果:
+
+| 上限値 | 結果 |
+| --- | --- |
+| `accessibility1` | ✅ 崩れず (2 行折り返しなし〜わずか) |
+| `accessibility2` | ✅ 崩れず (7 列とも均等な 2 行折り返し) |
+| `accessibility3` | ✅ 崩れず (7 列とも均等な 2 行折り返し、`accessibility2` と同等の見た目) |
+| `accessibility4` | ❌ 崩壊再発 (日付ラベルが 3 行に折り返り、列ごとに高さが不揃いになる) |
+
+`accessibility3` を採用し、`accessibility4` 以上(`accessibility5`=AX5 を含む) はそこで頭打ちにする。この上限は**グラフのサブツリーのみ**に適用し、同じ画面の上部の統計行 (「現在 N 日連続」等) は AX5 までそのまま拡大する。
+
+**master との比較で見れば改善である:** master (このブランチ以前) は件数・日付ラベルとも固定 11pt/10pt で一切拡大しなかった。`accessibility3` までの拡大保証は、固定値だった状態に対して純粋な改善であり、後退ではない。
+
 ### ビルド成果物の取得
 
 `app/Makefile` の `xcodebuild` は `-derivedDataPath` を指定していないため、`app/build/` を `find` しない (古い残骸を掴む)。
