@@ -54,7 +54,7 @@ format-check:
 quality: lint format-check
 	@echo "Code quality checks completed"
 
-tests: precheck localization-check sort lint unit-tests
+tests: precheck localization-check dynamic-type-check sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta
@@ -68,3 +68,8 @@ localization-check:
 	@echo "Running localization-check..."
 	@ruby bin/test_localization_check.rb
 	@ruby bin/localization-check.rb
+
+dynamic-type-check:
+	@echo "Running dynamic-type-check..."
+	@ruby bin/test_dynamic_type_check.rb
+	@ruby bin/dynamic-type-check.rb
