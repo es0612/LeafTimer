@@ -48,8 +48,8 @@
 
 21. push や `gh pr create` の前に `git fetch && gh pr list --state all --head <branch>` で既存 PR と merge 状況を確認する。
 22. plan-driven PR では plan doc を実装より前の最初の commit にする。
-23. CI 待ちは `gh pr checks --watch` でなく次のポーリングを使う: `until gh pr checks <PR> --json name,bucket --jq 'all(.[]; .bucket != "pending")' 2>/dev/null | grep -q true; do sleep 30; done`
-24. このリポジトリは Auto-merge 無効。CI 完了を確認してから `gh pr merge <PR> --merge` を明示実行する。
+23. CI 待ちは `gh pr checks --watch` や `until ... sleep 30` ポーリングでなく、**フォアグラウンドの `gh run watch <run-id> --interval 30`** を run ごとに実行する (run ID は `gh pr checks <PR>` の URL 末尾から取る)。この環境の Bash は sleep が無効でターン内待機できず、バックグラウンドタスクの完了通知や Monitor イベントは早発・偽発しうる (PR #111 で実行中ジョブの偽 pass イベントを実測)。
+24. このリポジトリは Auto-merge 無効。merge は非同期通知を根拠にせず、必ず `gh pr checks <PR> && gh pr merge <PR> --merge` の同一チェーンで再検証をゲートにして実行する。
 25. PR 本文にローカルパスの画像は埋め込めない。スクショは SendUserFile でユーザーに渡し、PR にはユーザーがブラウザで添付する。
 26. マネージド CI runner は CocoaPods / Bundler 等の preinstall を保証しない。CI hook の冒頭で `set -euo pipefail` 配下の明示 install を先頭に置く。
 27. `make` の依存チェーンに Apple 同梱外の ruby gem 等を足す時は `require` を `rescue LoadError` でガードし、gem 不在でも green を維持する。
