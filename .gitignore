@@ -1,8 +1,5 @@
 .DS_Store
 
-# Serena tooling cache (memories are kept tracked)
-.serena/cache/
-
 # Claude Code plan-mode artifacts (auto-generated per session)
 # Anchor with leading slash so docs/superpowers/plans/ is not affected.
 /plans/
