@@ -55,3 +55,15 @@ CLAUDE.md の常時ルールの出典となった事故経緯の全文アーカ�
 - `gh pr checks <PR> --watch` は GitHub GraphQL API 呼び出しが `read: operation timed out` で失敗することがある (PR #96 で実績)。安定しているのは `until gh pr checks <PR> --json name,bucket --jq 'all(.[]; .bucket != "pending")' 2>/dev/null | grep -q true; do sleep 30; done` のポーリングループなので、`--watch` より先にこちらを使う。
 - このリポジトリは GitHub の Auto-merge が無効 (`gh pr merge --auto` は "Auto merge is not allowed for this repository (enablePullRequestAutoMerge)" で失敗、PR #100 で実績)。CI 完了をポーリングで確認してから `gh pr merge <PR> --merge` を明示的に実行する。
 
+
+## 2026-08-15 追記: CI 待ちポーリングの陳腐化と非同期通知の偽陽性 (PR #111)
+
+CLAUDE.md ルール 23 の旧内容「`until gh pr checks <PR> --json name,bucket --jq 'all(.[]; .bucket != "pending")' 2>/dev/null | grep -q true; do sleep 30; done`」は、PR #96 時点では有効だったが、2026-08-15 の環境では Bash の sleep が無効化されておりターン内で待機できない。同セッション (PR #111 の CI 待ち) で観測した事実:
+
+- バックグラウンド実行したポーリングループは**最終的に正常完走していた** (出力ファイルに全 pass の結果が残っていた) が、**「completed」通知が実際の完了より早く届き**、その時点で出力ファイルは空だった。
+- Monitor ツールのイベントは CI 開始 2 分時点で「claude-review: pass」を 2 回偽報告した (実際の所要は 10m20s)。sleep 無効により高速ポーリング化し、API レプリカ間の不整合な応答を拾ったとみられる。
+- 「background Bash が壊れている」という診断は**誤り**だった (advisor が訂正)。壊れていたのは通知のタイミングと内容のみ。
+- 誤 merge を防いだのは `gh pr checks 111 && gh pr merge 111` の同一チェーンゲート。偽 pass イベント直後の merge 試行が、チェーン先頭の再検証 (exit 8) で止まった。
+- 確実に動いたのはフォアグラウンドの `gh run watch <run-id> --interval 30` (ツール内部で待機するため shell の sleep 無効化の影響を受けない)。
+
+この経緯からルール 23/24 を改訂した (docs/retro-2026-08-15-ci-wait ブランチ)。
