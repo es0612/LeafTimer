@@ -1,3 +1,4 @@
+import SwiftUI
 import XCTest
 
 @testable import LeafTimer
@@ -46,5 +47,14 @@ final class AdaptiveLayoutTests: XCTestCase {
     func testCircleButtonDiameterIsCapped() {
         XCTAssertEqual(CircleButton.resolvedDiameter(scaled: 150), 150)
         XCTAssertEqual(CircleButton.resolvedDiameter(scaled: 320), 210)
+    }
+
+    // Issue #113: accessibility サイズでは StatChip の横並びが SE 幅に収まらず
+    // 左チップが「今…」に省略されるため、縦積みレイアウトへ切り替える
+    func testStatChipsStackVerticallyOnlyAtAccessibilitySizes() {
+        XCTAssertFalse(StatChip.usesVerticalLayout(for: .large))
+        XCTAssertFalse(StatChip.usesVerticalLayout(for: .xxxLarge))
+        XCTAssertTrue(StatChip.usesVerticalLayout(for: .accessibility1))
+        XCTAssertTrue(StatChip.usesVerticalLayout(for: .accessibility5))
     }
 }
