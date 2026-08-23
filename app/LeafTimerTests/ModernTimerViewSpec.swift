@@ -172,10 +172,14 @@ class ModernTimerViewSpec: QuickSpec {
                 }
 
                 it("maintains proper spacing in layout") {
+                    // Issue #64: navigationStack 直下に GeometryReader を挿入し、葉の VStack を
+                    // leafLayer(metrics:) (GIFView を直接返す @ViewBuilder) に置き換えたため、
+                    // ZStack の子は [背景, leafLayer, 主要コンテンツ VStack] の順で index 2 になった。
                     let vStack = try timerView.body.inspect()
                         .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
+                        .geometryReader()
+                        .zStack()
+                        .vStack(2)
 
                     expect(vStack) != nil
                 }

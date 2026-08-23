@@ -61,120 +61,126 @@ struct TimerView: View {
 
     private var timerContent: some View {
         NavigationStack {
-            ZStack {
-                timerViewModel.getBackgroundColor(colorScheme: colorScheme)
-                    .ignoresSafeArea(.all)
+            GeometryReader { geometry in
+                let metrics = TimerLayoutMetrics(contentSize: geometry.size)
+                ZStack {
+                    timerViewModel.getBackgroundColor(colorScheme: colorScheme)
+                        .ignoresSafeArea(.all)
 
-                VStack {
-                    if timerViewModel.breakState {
-                        GIFView(gifName: "leaf3")
-                            .frame(width: 350, height: 350, alignment: .center)
-                            .padding(.bottom, 300)
+                    leafLayer(metrics: metrics)
 
-                    } else {
-                        if timerViewModel.getLeafPattern() == LeafPattern.small {
-                            GIFView(gifName: "leaf1")
-                                .frame(width: 90, height: 90, alignment: .center)
-                                .padding(.trailing, 22)
-                                .padding(.bottom, 105)
-                        }
-
-                        if timerViewModel.getLeafPattern() == LeafPattern.mid {
-                            GIFView(gifName: "leaf2")
-                                .frame(width: 200, height: 200, alignment: .center)
-                                .padding(.leading, 11)
-                                .padding(.bottom, 150)
-                        }
-
-                        if timerViewModel.getLeafPattern() == LeafPattern.big {
-                            GIFView(gifName: "leaf3")
-                                .frame(width: 350, height: 350, alignment: .center)
-                                .padding(.bottom, 300)
-                        }
-                    }
-                }
-
-                VStack {
-                    Text(timerViewModel.getDisplayedTime())
-                        .font(.system(size: min(timerFontSize, 110), weight: .bold, design: .monospaced))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                        .foregroundColor(.primary.opacity(0.9))
-                        .shadow(color: .gray, radius: 1, x: 1, y: 2)
-                        .padding(.bottom, 50)
-                        .accessibilityLabel(NSLocalizedString("timer.a11y.remaining_time", comment: "Remaining time label"))
-                        .accessibilityValue(timerViewModel.getAccessibilityTimeValue())
-                        .accessibilityAddTraits(.updatesFrequently)
-
-                    Button(action: didTapTimerButton) {
-                        CircleButton(viewModel: timerViewModel)
+                    VStack {
+                        Text(timerViewModel.getDisplayedTime())
+                            .font(.system(size: min(timerFontSize, 110), weight: .bold, design: .monospaced))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                            .foregroundColor(.primary.opacity(0.9))
                             .shadow(color: .gray, radius: 1, x: 1, y: 2)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(timerViewModel.getAccessibilityLabel())
+                            .padding(.bottom, 50)
+                            .accessibilityLabel(NSLocalizedString("timer.a11y.remaining_time", comment: "Remaining time label"))
+                            .accessibilityValue(timerViewModel.getAccessibilityTimeValue())
+                            .accessibilityAddTraits(.updatesFrequently)
 
-                    HStack(spacing: 10) {
-                        StatChip(
-                            systemImage: "leaf.fill",
-                            tint: .green,
-                            text: String(
-                                format: NSLocalizedString("timer.stat.today", comment: "Today's pomodoro count"),
-                                timerViewModel.todaysCount
-                            )
-                        )
-                        StatChip(
-                            systemImage: "flame.fill",
-                            tint: .orange,
-                            text: String(
-                                format: NSLocalizedString("timer.stat.streak", comment: "Current streak"),
-                                timerViewModel.currentStreak
-                            )
-                        )
-                    }
-                    .padding()
-                    .padding(.top, 20)
-                }
-                .navigationTitle(NSLocalizedString("timer.title", comment: "Timer navigation title"))
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: didTapResetButton) {
-                            Image("reloadIcon").foregroundColor(.primary)
+                        Button(action: didTapTimerButton) {
+                            CircleButton(viewModel: timerViewModel)
+                                .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         }
-                        .accessibilityLabel(NSLocalizedString("timer.a11y.reset", comment: "Reset timer button"))
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink(
-                            destination: HistoryView(
-                                viewModel: timerViewModel.historyViewModel
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(timerViewModel.getAccessibilityLabel())
+
+                        HStack(spacing: 10) {
+                            StatChip(
+                                systemImage: "leaf.fill",
+                                tint: .green,
+                                text: String(
+                                    format: NSLocalizedString("timer.stat.today", comment: "Today's pomodoro count"),
+                                    timerViewModel.todaysCount
+                                )
                             )
-                        ) {
-                            Image(systemName: "chart.bar.fill")
-                                .foregroundColor(.primary)
+                            StatChip(
+                                systemImage: "flame.fill",
+                                tint: .orange,
+                                text: String(
+                                    format: NSLocalizedString("timer.stat.streak", comment: "Current streak"),
+                                    timerViewModel.currentStreak
+                                )
+                            )
                         }
-                        .accessibilityLabel(NSLocalizedString("timer.a11y.history", comment: "History button"))
+                        .padding()
+                        .padding(.top, 20)
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink(destination: EnhancedSettingView(settingViewModel: settingViewModel)) {
-                            Image("settingIcon").foregroundColor(.primary)
+                    .navigationTitle(NSLocalizedString("timer.title", comment: "Timer navigation title"))
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button(action: didTapResetButton) {
+                                Image("reloadIcon").foregroundColor(.primary)
+                            }
+                            .accessibilityLabel(NSLocalizedString("timer.a11y.reset", comment: "Reset timer button"))
                         }
-                        .accessibilityLabel(NSLocalizedString("timer.a11y.settings", comment: "Settings button"))
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink(
+                                destination: HistoryView(
+                                    viewModel: timerViewModel.historyViewModel
+                                )
+                            ) {
+                                Image(systemName: "chart.bar.fill")
+                                    .foregroundColor(.primary)
+                            }
+                            .accessibilityLabel(NSLocalizedString("timer.a11y.history", comment: "History button"))
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink(destination: EnhancedSettingView(settingViewModel: settingViewModel)) {
+                                Image("settingIcon").foregroundColor(.primary)
+                            }
+                            .accessibilityLabel(NSLocalizedString("timer.a11y.settings", comment: "Settings button"))
+                        }
+                    }
+                    .onAppear {
+                        timerViewModel.readData()
+                        timerViewModel.openScreen()
+                        if settingViewModel.shouldShowOnboarding() {
+                            showOnboarding = true
+                        }
+                    }
+                    .fullScreenCover(isPresented: $showOnboarding) {
+                        OnboardingView {
+                            settingViewModel.markOnboardingSeen()
+                            showOnboarding = false
+                        }
                     }
                 }
-                .onAppear {
-                    timerViewModel.readData()
-                    timerViewModel.openScreen()
-                    if settingViewModel.shouldShowOnboarding() {
-                        showOnboarding = true
-                    }
-                }
-                .fullScreenCover(isPresented: $showOnboarding) {
-                    OnboardingView {
-                        settingViewModel.markOnboardingSeen()
-                        showOnboarding = false
-                    }
-                }
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
+        }
+    }
+
+    /// Issue #64: 葉の固定 frame/padding を TimerLayoutMetrics の比率値に置き換えた層。
+    @ViewBuilder
+    private func leafLayer(metrics: TimerLayoutMetrics) -> some View {
+        let pattern: LeafPattern? = {
+            if timerViewModel.breakState { return .big }
+#if DEBUG
+            if let forced = DebugLeafPattern.requested { return forced }
+#endif
+            return timerViewModel.getLeafPattern()
+        }()
+
+        if let pattern {
+            let gifName = switch pattern {
+            case .small: "leaf1"
+            case .mid: "leaf2"
+            case .big: "leaf3"
+            }
+            GIFView(gifName: gifName)
+                .frame(
+                    width: metrics.leafSize(for: pattern),
+                    height: metrics.leafSize(for: pattern),
+                    alignment: .center
+                )
+                .padding(.leading, metrics.leafLeadingPadding(for: pattern))
+                .padding(.trailing, metrics.leafTrailingPadding(for: pattern))
+                .padding(.bottom, metrics.leafBottomPadding(for: pattern))
         }
     }
 
@@ -197,6 +203,22 @@ enum DebugInitialScreen {
         ProcessInfo.processInfo.arguments
             .first { $0.hasPrefix("-InitialScreen=") }?
             .replacingOccurrences(of: "-InitialScreen=", with: "")
+    }()
+}
+
+/// Issue #64: 葉パターンは進捗依存で simctl から tap 操作できないため、
+/// レイアウト検証用に起動引数で強制する。DebugInitialScreen と同じ発想。
+enum DebugLeafPattern {
+    static let requested: LeafPattern? = {
+        let value = ProcessInfo.processInfo.arguments
+            .first { $0.hasPrefix("-LeafPattern=") }?
+            .replacingOccurrences(of: "-LeafPattern=", with: "")
+        switch value {
+        case "small": return .small
+        case "mid": return .mid
+        case "big": return .big
+        default: return nil
+        }
     }()
 }
 #endif
