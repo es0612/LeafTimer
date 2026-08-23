@@ -307,8 +307,8 @@
 				6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */,
 				A244D33CACD5F760C129A96C /* HistoryView.swift */,
 				2AFDEFDC3D18E25A6C17C7FA /* OnboardingView.swift */,
-				3864B7CF2494D81D00948ACA /* TimerView.swift */,
 				8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */,
+				3864B7CF2494D81D00948ACA /* TimerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -361,6 +361,7 @@
 		3864B7E12494D82300948ACA /* LeafTimerTests */ = {
 			isa = PBXGroup;
 			children = (
+				64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */,
 				12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */,
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
@@ -386,7 +387,6 @@
 				367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */,
 				011A26D8BCAD28F9B1BFECC1 /* TimerViewModelAccessibilityTests.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
-				64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */,
 			);
 			path = LeafTimerTests;
 			sourceTree = "<group>";
@@ -774,12 +774,12 @@
 				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
 				A9CA2FC2436DDDF5F5C56540 /* StatChip.swift in Sources */,
 				84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */,
+				31F87DA529F509E1D44B65FB /* TimerLayoutMetrics.swift in Sources */,
 				582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
 				3856FB8324AC19F7007F40E5 /* TimerViewModel.swift in Sources */,
 				3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */,
-				31F87DA529F509E1D44B65FB /* TimerLayoutMetrics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,6 +787,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87B3FCB54C2563308FDDE9C4 /* AdaptiveLayoutTests.swift in Sources */,
 				08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */,
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
@@ -811,7 +812,6 @@
 				669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */,
 				6E53F451AEEC9A8E3F11DB73 /* TimerViewModelAccessibilityTests.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
-				87B3FCB54C2563308FDDE9C4 /* AdaptiveLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
