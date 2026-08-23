@@ -6,13 +6,19 @@ struct TimerLayoutMetrics: Equatable {
     /// iPhone 17 で GeometryReader が返す content 高さの近似。ここで scale = 1.0 になり
     /// 現行の固定値 (90/200/350pt) が維持される。
     static let referenceContentHeight: CGFloat = 760
+    /// iPhone 17 の画面幅。Issue #114: iPad Split View の細長ウィンドウ (幅 320pt ×
+    /// 高さ ~1000pt) で高さ比だけだと big 葉が横にはみ出すため、幅比との min を取る。
+    static let referenceContentWidth: CGFloat = 390
     /// 下限は SE 系の視認性、上限は iPad でのバルーン化防止。
     static let scaleRange: ClosedRange<CGFloat> = 0.55...1.35
 
     let scale: CGFloat
 
     init(contentSize: CGSize) {
-        let rawScale = contentSize.height / Self.referenceContentHeight
+        let rawScale = min(
+            contentSize.height / Self.referenceContentHeight,
+            contentSize.width / Self.referenceContentWidth
+        )
         scale = min(max(rawScale, Self.scaleRange.lowerBound), Self.scaleRange.upperBound)
     }
 

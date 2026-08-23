@@ -42,6 +42,15 @@ final class AdaptiveLayoutTests: XCTestCase {
         XCTAssertEqual(metrics.scale, 0.55, accuracy: 0.001)
     }
 
+    // Issue #114: iPad Split View の細長ウィンドウ (幅 320 × 高さ 1000) では
+    // 高さ比 (1.32) でなく幅比 (320/390 ≈ 0.82) が採用され、big 葉がはみ出さない
+    func testNarrowTallWindowUsesWidthRatio() {
+        let metrics = TimerLayoutMetrics(contentSize: CGSize(width: 320, height: 1000))
+
+        XCTAssertEqual(metrics.scale, 320.0 / 390.0, accuracy: 0.001)
+        XCTAssertLessThanOrEqual(metrics.leafSize(for: .big), 320)
+    }
+
     // AX5 で @ScaledMetric が拡大した直径は 210pt でキャップされる
     func testCircleButtonDiameterIsCapped() {
         XCTAssertEqual(CircleButton.resolvedDiameter(scaled: 150), 150)
