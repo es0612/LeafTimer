@@ -41,4 +41,10 @@ final class AdaptiveLayoutTests: XCTestCase {
 
         XCTAssertEqual(metrics.scale, 0.55, accuracy: 0.001)
     }
+
+    // AX5 で @ScaledMetric が拡大した直径は 210pt でキャップされる
+    func testCircleButtonDiameterIsCapped() {
+        XCTAssertEqual(CircleButton.resolvedDiameter(scaled: 150), 150)
+        XCTAssertEqual(CircleButton.resolvedDiameter(scaled: 320), 210)
+    }
 }
