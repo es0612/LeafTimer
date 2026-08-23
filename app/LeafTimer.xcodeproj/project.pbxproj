@@ -15,6 +15,7 @@
 		27AC7EA43074765A7875051B /* KeyManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */; };
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
 		2FB91AC254201D5F19E31B12 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7357CD442DB907774538B896 /* HistoryViewModel.swift */; };
+		31F87DA529F509E1D44B65FB /* TimerLayoutMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */; };
 		363E8C15E0B07F563138BE48 /* AdsConsentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */; };
 		3818BC6424E38E5E0070C612 /* LocalUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6324E38E5E0070C612 /* LocalUserDefaultWrapper.swift */; };
 		3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6524E3902F0070C612 /* TimerViewModel+extensions.swift */; };
@@ -54,6 +55,7 @@
 		805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */; };
 		84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */; };
 		8750244ABE17AE5577DB761E /* SessionStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */; };
+		87B3FCB54C2563308FDDE9C4 /* AdaptiveLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */; };
 		8BA106ABCE3F785BD2F48DF9 /* MockReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */; };
 		8FCEACFA0C364E12D6C2EA03 /* Pods_LeafTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */; };
 		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
@@ -159,6 +161,7 @@
 		58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.release.xcconfig"; sourceTree = "<group>"; };
 		5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsLogicTests.swift; path = LeafTimerTests/SessionStatsLogicTests.swift; sourceTree = SOURCE_ROOT; };
 		5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpySessionStatsRepository.swift; path = LeafTimerTests/SpySessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
+		64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdaptiveLayoutTests.swift; path = LeafTimerTests/AdaptiveLayoutTests.swift; sourceTree = SOURCE_ROOT; };
 		67AB20F46B6C8D33B5653CA4 /* SoundSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSection.swift; sourceTree = "<group>"; };
 		6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatLocalizationTests.swift; path = LeafTimerTests/StatLocalizationTests.swift; sourceTree = SOURCE_ROOT; };
 		6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedSettingView.swift; sourceTree = "<group>"; };
@@ -168,6 +171,7 @@
 		7DAD93010F495D56669DB0F5 /* OnboardingLocalizationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingLocalizationTests.swift; path = LeafTimerTests/OnboardingLocalizationTests.swift; sourceTree = SOURCE_ROOT; };
 		7FBD5086205B41F0F0930480 /* OnboardingGateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingGateTests.swift; path = LeafTimerTests/OnboardingGateTests.swift; sourceTree = SOURCE_ROOT; };
 		8653E98698211081B54C46C8 /* Pods_LeafTimer_LeafTimerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimer_LeafTimerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimerLayoutMetrics.swift; path = LeafTimer/View/TimerLayoutMetrics.swift; sourceTree = SOURCE_ROOT; };
 		93FFE81224FE3E8E00AA1BD1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		93FFE81324FF1BE500AA1BD1 /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSettingsSection.swift; sourceTree = "<group>"; };
@@ -303,6 +307,7 @@
 				6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */,
 				A244D33CACD5F760C129A96C /* HistoryView.swift */,
 				2AFDEFDC3D18E25A6C17C7FA /* OnboardingView.swift */,
+				8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */,
 				3864B7CF2494D81D00948ACA /* TimerView.swift */,
 			);
 			path = View;
@@ -356,6 +361,7 @@
 		3864B7E12494D82300948ACA /* LeafTimerTests */ = {
 			isa = PBXGroup;
 			children = (
+				64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */,
 				12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */,
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
@@ -768,6 +774,7 @@
 				1DA7D67C578599E61615EB0A /* SoundSettingsSection.swift in Sources */,
 				A9CA2FC2436DDDF5F5C56540 /* StatChip.swift in Sources */,
 				84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */,
+				31F87DA529F509E1D44B65FB /* TimerLayoutMetrics.swift in Sources */,
 				582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */,
 				3864B7D02494D81D00948ACA /* TimerView.swift in Sources */,
 				3818BC6624E3902F0070C612 /* TimerViewModel+extensions.swift in Sources */,
@@ -780,6 +787,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87B3FCB54C2563308FDDE9C4 /* AdaptiveLayoutTests.swift in Sources */,
 				08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */,
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
