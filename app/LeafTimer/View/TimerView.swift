@@ -8,6 +8,7 @@ struct TimerView: View {
     @ObservedObject
     var settingViewModel: SettingViewModel
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showOnboarding = false
 
     /// タイマー数字は 78pt と大きく、本文と同率 (AX5 で約 3.1 倍) に拡大すると
@@ -59,6 +60,13 @@ struct TimerView: View {
     }
 #endif
 
+    /// Issue #113: 標準サイズは横並び、accessibility サイズは縦積み。
+    private var statChipLayout: AnyLayout {
+        StatChip.usesVerticalLayout(for: dynamicTypeSize)
+            ? AnyLayout(VStackLayout(spacing: 10))
+            : AnyLayout(HStackLayout(spacing: 10))
+    }
+
     private var timerContent: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -88,7 +96,8 @@ struct TimerView: View {
                         .buttonStyle(.plain)
                         .accessibilityLabel(timerViewModel.getAccessibilityLabel())
 
-                        HStack(spacing: 10) {
+                        // Issue #113: accessibility サイズでは横並びが SE 幅に収まらないため縦積みへ
+                        statChipLayout {
                             StatChip(
                                 systemImage: "leaf.fill",
                                 tint: .green,

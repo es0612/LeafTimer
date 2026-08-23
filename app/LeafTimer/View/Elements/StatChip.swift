@@ -8,6 +8,12 @@ struct StatChip: View {
     let tint: Color
     let text: String
 
+    /// Issue #113: accessibility サイズでは 2 チップの横並びが SE 幅 (375pt) に収まらず
+    /// 左チップが「今…」に省略されるため、呼び出し側は縦積みレイアウトへ切り替える。
+    static func usesVerticalLayout(for size: DynamicTypeSize) -> Bool {
+        size.isAccessibilitySize
+    }
+
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: systemImage)
