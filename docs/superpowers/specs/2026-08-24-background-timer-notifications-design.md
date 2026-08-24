@@ -84,7 +84,9 @@ struct PhaseReconciler {
 
 `UNUserNotificationCenterDelegate` は実装しない (デフォルト挙動 = フォアグラウンドでは通知非表示)。フォアグラウンドでは既存のサウンド/バイブが完了を伝え、バックグラウンド (audio 生存含む) では OS が通知を表示する。
 
-## 通知文言 (xcstrings, ja/en)
+## 通知文言 (Localizable.strings, ja/en)
+
+(注: 当初 xcstrings と書いたが、本リポは従来型 `ja.lproj/en.lproj Localizable.strings` + `NSLocalizedString` 構成のためそちらに追記する)
 
 | key | ja | en |
 | --- | --- | --- |
@@ -93,7 +95,7 @@ struct PhaseReconciler {
 | `notification.breakEnd.title` | 休憩終了！ | Break's over! |
 | `notification.breakEnd.body` | 次のポモドーロを始めよう | Let's start the next Pomodoro |
 
-追加は xcstrings-bulk-update スキルの手順に従う。
+追記後 `make localization-check` で検証する。
 
 ## エラー処理
 
