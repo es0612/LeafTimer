@@ -255,6 +255,10 @@ class TimerViewModel: ObservableObject {
                 audioManager.start()
             }
         }
+
+        // 稼働中に設定画面から戻った場合、旧 duration で予約済みの
+        // チェーン 2 件目以降を新 duration で引き直す (Issue #54 I-1)
+        rescheduleNotifications()
     }
 
     func countWork() {

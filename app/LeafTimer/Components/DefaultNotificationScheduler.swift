@@ -8,16 +8,28 @@ class DefaultNotificationScheduler: NotificationScheduler {
     private let center = UNUserNotificationCenter.current()
     private static let identifierPrefix = "jp.ema.LeafTimer.phase."
     private var didRequestAuthorization = false
+    // Issue #54 I-2: 許可応答前に scheduleChain された entries を保持し、
+    // granted 後に自己完結で再予約する (add() の .notDetermined 未検証セマンティクスに依存しない)
+    private var lastEntries: [NotificationEntry] = []
 
     func requestAuthorizationIfNeeded() {
         guard !didRequestAuthorization else { return }
         didRequestAuthorization = true
-        center.requestAuthorization(options: [.alert, .sound]) { _, _ in }
+        center.requestAuthorization(options: [.alert, .sound]) { [weak self] granted, _ in
+            guard granted, let self else { return }
+            DispatchQueue.main.async {
+                self.addRequests(for: self.lastEntries)
+            }
+        }
     }
 
     func scheduleChain(entries: [NotificationEntry]) {
         cancelAll()
+        lastEntries = entries
+        addRequests(for: entries)
+    }
 
+    private func addRequests(for entries: [NotificationEntry]) {
         for (index, entry) in entries.enumerated() {
             let interval = entry.fireDate.timeIntervalSinceNow
             guard interval > 0 else { continue }
@@ -35,7 +47,12 @@ class DefaultNotificationScheduler: NotificationScheduler {
                 content: content,
                 trigger: trigger
             )
-            center.add(request)
+            // Issue #54 M-2: 予約失敗はログのみ (spec: 致命ではない)
+            center.add(request) { error in
+                if let error {
+                    print("LeafTimer: notification add failed - \(error)")
+                }
+            }
         }
     }
 

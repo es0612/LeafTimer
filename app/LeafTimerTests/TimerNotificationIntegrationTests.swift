@@ -108,6 +108,32 @@ final class TimerNotificationIntegrationTests: XCTestCase {
         XCTAssertTrue(spy.scheduledChains.isEmpty)
     }
 
+    // 稼働中に設定画面から戻る (readData) → チェーン再予約され、2 件目は新 duration を反映
+    func testReadDataWhileRunningReschedulesChainWithNewDuration() {
+        let clock = FakeClock()
+        let (vm, spy, _, _) = makeViewModel(clock: clock)
+
+        vm.onPressedTimerButton()
+        XCTAssertEqual(spy.scheduledChains.count, 1)
+        let originalWorkEndFireDate = spy.scheduledChains[0][0].fireDate
+
+        // 休憩時間を index 9 (10分) に変更して設定画面から戻ったことを模倣
+        vm.userDefaultWrapper.saveData(key: UserDefaultItem.breakTime.rawValue, value: 9)
+        vm.readData()
+
+        XCTAssertEqual(spy.scheduledChains.count, 2)
+        XCTAssertEqual(vm.fullBreakTimeSecond, ItemValue.breakTimeList[9])
+
+        let newChain = spy.scheduledChains[1]
+        // 1 件目 (workEnd) は endDate 据え置きのまま変わらない
+        XCTAssertEqual(newChain[0].fireDate, originalWorkEndFireDate)
+        // 2 件目 (breakEnd) は新 breakDuration で引き直される
+        XCTAssertEqual(
+            newChain[1].fireDate,
+            newChain[0].fireDate.addingTimeInterval(TimeInterval(ItemValue.breakTimeList[9]))
+        )
+    }
+
     // フォアグラウンド稼働中の自然なフェーズ切替 (updateTime が 0 到達) でも再予約
     func testNaturalPhaseSwitchReschedulesChain() {
         let clock = FakeClock()
