@@ -10,6 +10,7 @@ class TimerViewModel: ObservableObject {
     private var sessionStatsRepository: SessionStatsRepository
     var reviewPolicy: ReviewRequestPolicy
     var reviewRequester: ReviewRequesting
+    var notificationScheduler: NotificationScheduler
 
     // MARK: - Observed Parameter
 
@@ -50,6 +51,7 @@ class TimerViewModel: ObservableObject {
         sessionStatsRepository: SessionStatsRepository,
         reviewPolicy: ReviewRequestPolicy = ThresholdReviewRequestPolicy(),
         reviewRequester: ReviewRequesting = StoreKitReviewRequester(),
+        notificationScheduler: NotificationScheduler = DefaultNotificationScheduler(),
         now: @escaping () -> Date = { Date() }
     ) {
         self.timerManager = timerManager
@@ -58,6 +60,7 @@ class TimerViewModel: ObservableObject {
         self.sessionStatsRepository = sessionStatsRepository
         self.reviewPolicy = reviewPolicy
         self.reviewRequester = reviewRequester
+        self.notificationScheduler = notificationScheduler
         self.now = now
 
         fullTimeSecond = 25 * 60
@@ -81,6 +84,14 @@ class TimerViewModel: ObservableObject {
             userDefaultWrapper.saveData(key: UserDefaultItem.breakSound.rawValue, value: 0)
             userDefaultWrapper.saveData(key: "hasLaunchedBefore", value: 1)
         }
+
+        // Issue #54: suspend 中に跨いだフェーズを復帰時にリコンサイルする
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(willEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     // MARK: - Methods
@@ -91,6 +102,8 @@ class TimerViewModel: ObservableObject {
             executeState = true
             endDate = now().addingTimeInterval(TimeInterval(currentTimeSecond))
             timerManager.start(target: self)
+            notificationScheduler.requestAuthorizationIfNeeded()
+            rescheduleNotifications()
             UIApplication.shared.isIdleTimerDisabled = true
 
             if !breakState {
@@ -101,6 +114,7 @@ class TimerViewModel: ObservableObject {
             executeState = false
             endDate = nil
             timerManager.stop()
+            notificationScheduler.cancelAll()
             audioManager.stop()
 
             UIApplication.shared.isIdleTimerDisabled = false
@@ -141,6 +155,7 @@ class TimerViewModel: ObservableObject {
 
             switchBreakState()
             reset()
+            rescheduleNotifications()
 
             return
         }
@@ -164,6 +179,60 @@ class TimerViewModel: ObservableObject {
             audioManager.finish()
             countWork()
         }
+    }
+
+    // Issue #54: 現在の endDate / フェーズから先 3 往復分の通知チェーンを予約し直す
+    private func rescheduleNotifications() {
+        guard executeState, let endDate else { return }
+        let entries = NotificationChainBuilder.build(
+            endDate: endDate,
+            breakState: breakState,
+            workDuration: fullTimeSecond,
+            breakDuration: fullBreakTimeSecond
+        )
+        notificationScheduler.scheduleChain(entries: entries)
+    }
+
+    @objc private func willEnterForeground() {
+        handleWillEnterForeground()
+    }
+
+    // Issue #54: suspend 中に跨いだフェーズを壁時計から一括反映する。
+    // audio 生存でバックグラウンド稼働し続けた場合は updateTime が進行済みのため
+    // 跨ぎゼロ (no-op) になり二重カウントしない。
+    func handleWillEnterForeground() {
+        guard executeState, let endDate else { return }
+
+        let result = PhaseReconciler.reconcile(
+            endDate: endDate,
+            breakState: breakState,
+            workDuration: fullTimeSecond,
+            breakDuration: fullBreakTimeSecond,
+            now: now()
+        )
+
+        let crossed = result.completedWorkCount > 0 || result.breakState != breakState
+        guard crossed else {
+            currentTimeSecond = result.remainingSeconds
+            return
+        }
+
+        for _ in 0..<result.completedWorkCount {
+            countWork()
+        }
+
+        breakState = result.breakState
+        currentTimeSecond = result.remainingSeconds
+        self.endDate = result.newEndDate
+
+        // suspend 中に audio は止まっているので新フェーズに合わせて張り直す
+        if breakState {
+            audioManager.stop()
+        } else {
+            audioManager.start()
+        }
+
+        rescheduleNotifications()
     }
 
     func read(item: String) -> Int {
