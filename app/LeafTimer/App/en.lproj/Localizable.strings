@@ -106,3 +106,9 @@
 "timer.a11y.settings" = "Settings";
 "timer.a11y.remaining_time" = "Remaining time";
 
+/* Issue #54: phase-end notifications */
+"notification.workEnd.title" = "Great work!";
+"notification.workEnd.body" = "Time for a break 🍃";
+"notification.breakEnd.title" = "Break's over!";
+"notification.breakEnd.body" = "Let's start the next Pomodoro";
+

@@ -109,3 +109,9 @@
 "timer.a11y.history" = "履歴";
 "timer.a11y.settings" = "設定";
 "timer.a11y.remaining_time" = "残り時間";
+
+/* Issue #54: フェーズ終了通知 */
+"notification.workEnd.title" = "作業おつかれさま！";
+"notification.workEnd.body" = "休憩しよう🍃";
+"notification.breakEnd.title" = "休憩終了！";
+"notification.breakEnd.body" = "次のポモドーロを始めよう";
