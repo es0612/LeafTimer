@@ -2,13 +2,31 @@ import UIKit
 
 class GIFPlayerView: UIView {
     private let imageView = UIImageView()
+    // Issue #62: Reduce Motion 切替で復元できるよう、アニメ画像を保持する
+    private var animatedImage: UIImage?
 
     convenience init(gifName: String) {
         self.init()
-        let gif = UIImage.gif(asset: gifName)
-        imageView.image = gif
+        animatedImage = UIImage.gif(asset: gifName)
+        imageView.image = animatedImage
         imageView.contentMode = .scaleAspectFit
         addSubview(imageView)
+    }
+
+    // Issue #62: Reduce Motion 有効時は先頭フレームの静止画に差し替える
+    func setReduceMotion(_ reduce: Bool) {
+        // UIImageView.image の setter は新旧画像を isEqual: で比較し、
+        // _UIAnimatedImage は自身の先頭フレームと等価判定されるため、
+        // アニメ→静止フレームの直接代入は無視される。nil を挟んで確実に差し替える
+        imageView.image = nil
+        imageView.image = reduce
+            ? (animatedImage?.images?.first ?? animatedImage)
+            : animatedImage
+    }
+
+    // テスト用の観測点 (静止/アニメの判定は images の有無で行う)
+    var displayedImage: UIImage? {
+        imageView.image
     }
 
     override init(frame: CGRect) {
