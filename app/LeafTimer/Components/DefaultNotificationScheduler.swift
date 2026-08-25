@@ -57,8 +57,14 @@ class DefaultNotificationScheduler: NotificationScheduler {
     }
 
     func cancelAll() {
+        // Issue #120: 許可ダイアログ応答と Stop の交錯レースで completion が
+        // 停止済みチェーンを復活させないよう、保持中 entries も同時に破棄する
+        lastEntries = []
         let identifiers = (0..<(NotificationChainBuilder.cycles * 2))
             .map { Self.identifierPrefix + String($0) }
         center.removePendingNotificationRequests(withIdentifiers: identifiers)
+        // Issue #120 (M-1): 配送済みバナーも通知センターから掃除する。
+        // scheduleChain 経由でも呼ばれるため、再予約時に stale バナーが消えるのは意図した挙動
+        center.removeDeliveredNotifications(withIdentifiers: identifiers)
     }
 }

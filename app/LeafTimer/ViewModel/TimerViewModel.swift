@@ -85,6 +85,10 @@ class TimerViewModel: ObservableObject {
             userDefaultWrapper.saveData(key: "hasLaunchedBefore", value: 1)
         }
 
+        // Issue #120: 稼働状態は復元しない (spec スコープ外) ため、cold start 時点で
+        // 旧プロセスが予約した通知チェーンは常に stale。起動時に掃除する。
+        notificationScheduler.cancelAll()
+
         // Issue #54: suspend 中に跨いだフェーズを復帰時にリコンサイルする
         NotificationCenter.default.addObserver(
             self,
