@@ -43,15 +43,26 @@ final class TimerNotificationIntegrationTests: XCTestCase {
         )
     }
 
-    // 停止 → cancelAll
+    // Issue #120: cold start では旧プロセスの予約チェーンが残りうるため、
+    // init (稼働状態を復元しない) 時点で cancelAll して stale 通知を掃除する
+    func testInitCancelsStaleNotificationChain() {
+        let clock = FakeClock()
+        let (_, spy, _, _) = makeViewModel(clock: clock)
+
+        XCTAssertEqual(spy.cancelAllCallCount, 1)
+    }
+
+    // 停止 → cancelAll (init 時の cold start 掃除分とは別に +1)
     func testStopCancelsChain() {
         let clock = FakeClock()
         let (vm, spy, _, _) = makeViewModel(clock: clock)
 
         vm.onPressedTimerButton()
+        let countAfterStart = spy.cancelAllCallCount
+
         vm.onPressedTimerButton()
 
-        XCTAssertEqual(spy.cancelAllCallCount, 1)
+        XCTAssertEqual(spy.cancelAllCallCount, countAfterStart + 1)
     }
 
     // 跨ぎゼロの foreground 復帰 → 統計は増えない (冪等)
