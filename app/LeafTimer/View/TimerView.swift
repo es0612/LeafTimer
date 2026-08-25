@@ -94,6 +94,10 @@ struct TimerView: View {
                                 .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         }
                         .buttonStyle(.plain)
+                        // Issue #61: 最頻操作の開始/停止に押下手応えを付ける。
+                        // executeState はタップ以外で変化しないため誤発火しない。
+                        // vibration 設定 (フェーズ終了バイブ用) とは意図的に非連動
+                        .sensoryFeedback(.impact(weight: .medium), trigger: timerViewModel.executeState)
                         .accessibilityLabel(timerViewModel.getAccessibilityLabel())
 
                         // Issue #113: accessibility サイズでは横並びが SE 幅に収まらないため縦積みへ
