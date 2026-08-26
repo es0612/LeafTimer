@@ -11,9 +11,10 @@ protocol UserDefaultsWrapper {
 class LocalUserDefaultsWrapper: UserDefaultsWrapper {
     private let userDefaults = UserDefaults.standard
 
+    // Issue #70: synchronize() は iOS 12 以降 deprecated かつ不要 (UserDefaults が自動で永続化する)
+
     func saveData(key: String, value: Int) {
         userDefaults.set(value, forKey: key)
-        userDefaults.synchronize()
     }
 
     func loadData(key: String) -> Int {
@@ -24,7 +25,6 @@ class LocalUserDefaultsWrapper: UserDefaultsWrapper {
 
     func saveData(key: String, value: Bool) {
         userDefaults.set(value, forKey: key)
-        userDefaults.synchronize()
     }
 
     func loadData(key: String) -> Bool {

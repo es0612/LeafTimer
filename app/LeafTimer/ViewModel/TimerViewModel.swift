@@ -79,10 +79,10 @@ class TimerViewModel: ObservableObject {
         loadCount()
 
         // Set default sound settings on first launch only
-        if userDefaultWrapper.loadData(key: "hasLaunchedBefore") == 0 {
+        if userDefaultWrapper.loadData(key: UserDefaultItem.hasLaunchedBefore.rawValue) == 0 {
             userDefaultWrapper.saveData(key: UserDefaultItem.workingSound.rawValue, value: 0)
             userDefaultWrapper.saveData(key: UserDefaultItem.breakSound.rawValue, value: 0)
-            userDefaultWrapper.saveData(key: "hasLaunchedBefore", value: 1)
+            userDefaultWrapper.saveData(key: UserDefaultItem.hasLaunchedBefore.rawValue, value: 1)
         }
 
         // Issue #120: 稼働状態は復元しない (spec スコープ外) ため、cold start 時点で
