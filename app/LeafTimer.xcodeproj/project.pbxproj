@@ -15,6 +15,7 @@
 		23B54FA3468C5D513D72FD66 /* SettingsLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037C3033F9AEAEA675BC6C68 /* SettingsLocalizationTests.swift */; };
 		27AC7EA43074765A7875051B /* KeyManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */; };
 		280A1ACF1D8FE77F8846CD2D /* PhaseReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BFDDB48A2F26F01F43D02 /* PhaseReconcilerTests.swift */; };
+		0A48268940D40F73F0B14574 /* CircleButtonRatioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543E641FEA3219B656FB2E36 /* CircleButtonRatioTests.swift */; };
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
 		2FB91AC254201D5F19E31B12 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7357CD442DB907774538B896 /* HistoryViewModel.swift */; };
 		31F87DA529F509E1D44B65FB /* TimerLayoutMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */; };
@@ -182,6 +183,7 @@
 		6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedSettingView.swift; sourceTree = "<group>"; };
 		70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModelTests.swift; path = LeafTimerTests/HistoryViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		727BFDDB48A2F26F01F43D02 /* PhaseReconcilerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PhaseReconcilerTests.swift; path = LeafTimerTests/PhaseReconcilerTests.swift; sourceTree = SOURCE_ROOT; };
+		543E641FEA3219B656FB2E36 /* CircleButtonRatioTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CircleButtonRatioTests.swift; path = LeafTimerTests/CircleButtonRatioTests.swift; sourceTree = SOURCE_ROOT; };
 		7357CD442DB907774538B896 /* HistoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModel.swift; path = LeafTimer/ViewModel/HistoryViewModel.swift; sourceTree = SOURCE_ROOT; };
 		778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdsConsentServices.swift; path = LeafTimer/Components/AdsConsentServices.swift; sourceTree = SOURCE_ROOT; };
 		7DAD93010F495D56669DB0F5 /* OnboardingLocalizationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingLocalizationTests.swift; path = LeafTimerTests/OnboardingLocalizationTests.swift; sourceTree = SOURCE_ROOT; };
@@ -386,6 +388,7 @@
 				64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */,
 				12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */,
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
+				543E641FEA3219B656FB2E36 /* CircleButtonRatioTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
 				E176D57E6ED7830F284CC7F0 /* GIFPlayerViewTests.swift */,
 				70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */,
@@ -821,6 +824,7 @@
 				87B3FCB54C2563308FDDE9C4 /* AdaptiveLayoutTests.swift in Sources */,
 				08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */,
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
+				0A48268940D40F73F0B14574 /* CircleButtonRatioTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
 				DFA99213C93B4A65B8D89363 /* GIFPlayerViewTests.swift in Sources */,
 				CF50496645D51CA09C4F1D85 /* HistoryViewModelTests.swift in Sources */,
