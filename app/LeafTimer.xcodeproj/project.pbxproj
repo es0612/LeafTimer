@@ -24,6 +24,7 @@
 		3818BC6924E392B60070C612 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6824E392B60070C612 /* SettingViewModel.swift */; };
 		3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */; };
 		3818BC6D24EA4DA10070C612 /* UserDefaultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */; };
+		9077CDE9322D05874B4A23FE /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD29EC8547FD3C8868C106 /* AppLogger.swift */; };
 		3818BC6F24EA5B970070C612 /* river1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3818BC6E24EA5B970070C612 /* river1.mp3 */; };
 		3818BC7124EB4E9A0070C612 /* noSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3818BC7024EB4E990070C612 /* noSound.mp3 */; };
 		3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */; };
@@ -135,6 +136,7 @@
 		3818BC6824E392B60070C612 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		3818BC6A24E6D5BB0070C612 /* Binding+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+extension.swift"; sourceTree = "<group>"; };
 		3818BC6C24EA4DA10070C612 /* UserDefaultItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultItem.swift; sourceTree = "<group>"; };
+		2FBD29EC8547FD3C8868C106 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		3818BC6E24EA5B970070C612 /* river1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = river1.mp3; sourceTree = "<group>"; };
 		3818BC7024EB4E990070C612 /* noSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = noSound.mp3; sourceTree = "<group>"; };
 		3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyTimerManager.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 			children = (
 				99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */,
 				778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */,
+				2FBD29EC8547FD3C8868C106 /* AppLogger.swift */,
 				93FFE81324FF1BE500AA1BD1 /* DateManager.swift */,
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
 				19D8E028689D26973B9FDB51 /* DefaultNotificationScheduler.swift */,
@@ -776,6 +779,7 @@
 				363E8C15E0B07F563138BE48 /* AdsConsentServices.swift in Sources */,
 				38C95EF325D7270D00D80736 /* AdsView.swift in Sources */,
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
+				9077CDE9322D05874B4A23FE /* AppLogger.swift in Sources */,
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
 				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
 				93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */,

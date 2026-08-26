@@ -29,7 +29,7 @@ class DefaultAudioManager: AudioManager {
             try audioSession.setActive(true, options: [])
         } catch {
             // Graceful fallback for audio session setup failure
-            print("Failed to setup audio session: \(error)")
+            AppLogger.audio.error("Failed to setup audio session: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -85,7 +85,7 @@ class DefaultAudioManager: AudioManager {
     // iOS 17: Improved error handling and resource management
     private func setupStopAudio() {
         guard let path = Bundle.main.path(forResource: "warning1", ofType: "mp3") else {
-            print("Warning: Could not find warning1.mp3")
+            AppLogger.audio.warning("Could not find warning1.mp3")
             return
         }
 
@@ -95,7 +95,7 @@ class DefaultAudioManager: AudioManager {
             stopAudioPlayer?.prepareToPlay()
             stopAudioPlayer?.volume = 0.5
         } catch {
-            print("Failed to setup stop audio: \(error)")
+            AppLogger.audio.error("Failed to setup stop audio: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -114,7 +114,7 @@ class DefaultAudioManager: AudioManager {
             workingAudioPlayer?.prepareToPlay()
             workingAudioPlayer?.volume = 0.3
         } catch {
-            print("Failed to setup working audio: \(error)")
+            AppLogger.audio.error("Failed to setup working audio: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -123,7 +123,7 @@ class DefaultAudioManager: AudioManager {
         do {
             try audioSession.setActive(true, options: [])
         } catch {
-            print("Failed to activate audio session: \(error)")
+            AppLogger.audio.error("Failed to activate audio session: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -136,7 +136,7 @@ class DefaultAudioManager: AudioManager {
         do {
             try audioSession.setActive(false, options: [.notifyOthersOnDeactivation])
         } catch {
-            print("Failed to deactivate audio session: \(error)")
+            AppLogger.audio.error("Failed to deactivate audio session: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -146,7 +146,7 @@ class DefaultAudioManager: AudioManager {
         do {
             try audioSession.setActive(false, options: [.notifyOthersOnDeactivation])
         } catch {
-            print("Failed to deactivate audio session in deinit: \(error)")
+            AppLogger.audio.error("Failed to deactivate audio session in deinit: \(error.localizedDescription, privacy: .public)")
         }
     }
 }
