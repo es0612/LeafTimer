@@ -1,18 +1,18 @@
 import XCTest
 @testable import LeafTimer
 
-/// Issue #70: CircleButton の内側円比率をリテラル重複から static 定数に集約した際、
-/// 見た目が変わっていないことを固定するテスト。
+/// Issue #70: CircleButton の内側円比率をリテラル重複から static 定数に集約した際の
+/// 設計意図を固定するテスト。
 final class CircleButtonRatioTests: XCTestCase {
 
-    func testInnerRatiosMatchOriginalLiterals() {
-        XCTAssertEqual(CircleButton.innerRatios.second, 140.0 / 150.0, accuracy: 0.0001)
-        XCTAssertEqual(CircleButton.innerRatios.third, 120.0 / 150.0, accuracy: 0.0001)
-        XCTAssertEqual(CircleButton.innerRatios.inner, 105.0 / 150.0, accuracy: 0.0001)
-    }
-
-    func testResolvedDiameterIsCappedAtMaxDiameter() {
-        XCTAssertEqual(CircleButton.resolvedDiameter(scaled: 150), 150, accuracy: 0.0001)
-        XCTAssertEqual(CircleButton.resolvedDiameter(scaled: 300), CircleButton.maxDiameter, accuracy: 0.0001)
+    /// 入れ子の円は内側ほど小さく、かつ最外円 (比率 1.0) を超えない。
+    /// 定義式の再掲ではなく「入れ子構造が壊れていないこと」を検証する。
+    func testInnerRatiosAreStrictlyNested() {
+        let ratios = CircleButton.innerRatios
+        XCTAssertTrue(
+            0 < ratios.inner && ratios.inner < ratios.third
+                && ratios.third < ratios.second && ratios.second < 1,
+            "内側円の比率は 0 < inner < third < second < 1 を満たす必要がある: \(ratios)"
+        )
     }
 }

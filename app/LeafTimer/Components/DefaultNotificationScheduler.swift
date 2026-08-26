@@ -50,7 +50,7 @@ class DefaultNotificationScheduler: NotificationScheduler {
             // Issue #54 M-2: 予約失敗はログのみ (spec: 致命ではない)
             center.add(request) { error in
                 if let error {
-                    AppLogger.notification.error("notification add failed - \(error.localizedDescription, privacy: .public)")
+                    AppLogger.notification.error("notification add failed - \(String(describing: error), privacy: .public)")
                 }
             }
         }

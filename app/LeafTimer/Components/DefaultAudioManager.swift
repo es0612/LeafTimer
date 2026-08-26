@@ -29,7 +29,7 @@ class DefaultAudioManager: AudioManager {
             try audioSession.setActive(true, options: [])
         } catch {
             // Graceful fallback for audio session setup failure
-            AppLogger.audio.error("Failed to setup audio session: \(error.localizedDescription, privacy: .public)")
+            AppLogger.audio.error("Failed to setup audio session: \(String(describing: error), privacy: .public)")
         }
     }
 
@@ -95,7 +95,7 @@ class DefaultAudioManager: AudioManager {
             stopAudioPlayer?.prepareToPlay()
             stopAudioPlayer?.volume = 0.5
         } catch {
-            AppLogger.audio.error("Failed to setup stop audio: \(error.localizedDescription, privacy: .public)")
+            AppLogger.audio.error("Failed to setup stop audio: \(String(describing: error), privacy: .public)")
         }
     }
 
@@ -114,7 +114,7 @@ class DefaultAudioManager: AudioManager {
             workingAudioPlayer?.prepareToPlay()
             workingAudioPlayer?.volume = 0.3
         } catch {
-            AppLogger.audio.error("Failed to setup working audio: \(error.localizedDescription, privacy: .public)")
+            AppLogger.audio.error("Failed to setup working audio: \(String(describing: error), privacy: .public)")
         }
     }
 
@@ -123,7 +123,7 @@ class DefaultAudioManager: AudioManager {
         do {
             try audioSession.setActive(true, options: [])
         } catch {
-            AppLogger.audio.error("Failed to activate audio session: \(error.localizedDescription, privacy: .public)")
+            AppLogger.audio.error("Failed to activate audio session: \(String(describing: error), privacy: .public)")
         }
     }
 
@@ -136,7 +136,7 @@ class DefaultAudioManager: AudioManager {
         do {
             try audioSession.setActive(false, options: [.notifyOthersOnDeactivation])
         } catch {
-            AppLogger.audio.error("Failed to deactivate audio session: \(error.localizedDescription, privacy: .public)")
+            AppLogger.audio.error("Failed to deactivate audio session: \(String(describing: error), privacy: .public)")
         }
     }
 
@@ -146,7 +146,7 @@ class DefaultAudioManager: AudioManager {
         do {
             try audioSession.setActive(false, options: [.notifyOthersOnDeactivation])
         } catch {
-            AppLogger.audio.error("Failed to deactivate audio session in deinit: \(error.localizedDescription, privacy: .public)")
+            AppLogger.audio.error("Failed to deactivate audio session in deinit: \(String(describing: error), privacy: .public)")
         }
     }
 }

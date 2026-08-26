@@ -171,7 +171,6 @@ struct TimerView: View {
     }
 
     /// Issue #64: 葉の固定 frame/padding を TimerLayoutMetrics の比率値に置き換えた層。
-    @ViewBuilder
     private func leafLayer(metrics: TimerLayoutMetrics) -> some View {
         // Issue #70: 3 分岐すべてが非 nil を返すため Optional は実質デッドだった。
         // 誤読を招くので非 Optional に落とす (振る舞い不変)。
