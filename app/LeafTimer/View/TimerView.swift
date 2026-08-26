@@ -127,7 +127,8 @@ struct TimerView: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button(action: didTapResetButton) {
-                                Image("reloadIcon").foregroundColor(.primary)
+                                Image(systemName: "arrow.counterclockwise")
+                                    .foregroundColor(.primary)
                             }
                             .accessibilityLabel(NSLocalizedString("timer.a11y.reset", comment: "Reset timer button"))
                         }
@@ -144,7 +145,8 @@ struct TimerView: View {
                         }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             NavigationLink(destination: EnhancedSettingView(settingViewModel: settingViewModel)) {
-                                Image("settingIcon").foregroundColor(.primary)
+                                Image(systemName: "gearshape.fill")
+                                    .foregroundColor(.primary)
                             }
                             .accessibilityLabel(NSLocalizedString("timer.a11y.settings", comment: "Settings button"))
                         }
