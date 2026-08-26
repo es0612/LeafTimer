@@ -12,6 +12,10 @@ enum UserDefaultItem: String {
     case lastReviewRequestedCount
 
     case hasSeenOnboarding
+
+    /// Issue #70: TimerViewModel が生文字列で参照していた初回起動フラグ。
+    /// rawValue は既存ユーザーの永続化キーと一致させる必要があるため変更禁止。
+    case hasLaunchedBefore
 }
 
 enum ItemValue {

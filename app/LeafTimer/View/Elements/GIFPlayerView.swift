@@ -69,7 +69,7 @@ extension UIImage {
     public class func gif(data: Data) -> UIImage? {
         // Create source from data
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
-            print("SwiftGif: Source for the image does not exist")
+            AppLogger.gif.error("Source for the image does not exist")
             return nil
         }
 
@@ -79,13 +79,13 @@ extension UIImage {
     public class func gif(url: String) -> UIImage? {
         // Validate URL
         guard let bundleURL = URL(string: url) else {
-            print("SwiftGif: This image named \"\(url)\" does not exist")
+            AppLogger.gif.error("Image at url does not exist: \(url, privacy: .public)")
             return nil
         }
 
         // Validate data
         guard let imageData = try? Data(contentsOf: bundleURL) else {
-            print("SwiftGif: Cannot turn image named \"\(url)\" into NSData")
+            AppLogger.gif.error("Cannot turn image at url into NSData: \(url, privacy: .public)")
             return nil
         }
 
@@ -97,13 +97,13 @@ extension UIImage {
         guard let bundleURL = Bundle.main
             .url(forResource: name, withExtension: "gif")
         else {
-            print("SwiftGif: This image named \"\(name)\" does not exist")
+            AppLogger.gif.error("Image named does not exist: \(name, privacy: .public)")
             return nil
         }
 
         // Validate data
         guard let imageData = try? Data(contentsOf: bundleURL) else {
-            print("SwiftGif: Cannot turn image named \"\(name)\" into NSData")
+            AppLogger.gif.error("Cannot turn image named into NSData: \(name, privacy: .public)")
             return nil
         }
 
@@ -114,7 +114,7 @@ extension UIImage {
     public class func gif(asset: String) -> UIImage? {
         // Create source from assets catalog
         guard let dataAsset = NSDataAsset(name: asset) else {
-            print("SwiftGif: Cannot turn image named \"\(asset)\" into NSDataAsset")
+            AppLogger.gif.error("Cannot turn image named into NSDataAsset: \(asset, privacy: .public)")
             return nil
         }
 

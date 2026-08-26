@@ -13,7 +13,14 @@ final class StoreKitReviewRequester: ReviewRequesting {
             .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
             return
         }
-        SKStoreReviewController.requestReview(in: scene)
+        // Issue #70: SKStoreReviewController.requestReview(in:) は iOS 18 で deprecated。
+        // deployment target が iOS 17 のため #available ガードなしで移行できる。
+        // requestReview() は Timer コールバック (main queue async) と
+        // UIApplication.willEnterForegroundNotification の @objc ハンドラ経由でのみ
+        // 呼ばれ、常に main thread から呼ばれる前提のため assumeIsolated で通す。
+        MainActor.assumeIsolated {
+            AppStore.requestReview(in: scene)
+        }
     }
 
     func openAppStoreReviewPage() {

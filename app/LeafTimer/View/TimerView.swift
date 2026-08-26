@@ -171,9 +171,10 @@ struct TimerView: View {
     }
 
     /// Issue #64: 葉の固定 frame/padding を TimerLayoutMetrics の比率値に置き換えた層。
-    @ViewBuilder
     private func leafLayer(metrics: TimerLayoutMetrics) -> some View {
-        let pattern: LeafPattern? = {
+        // Issue #70: 3 分岐すべてが非 nil を返すため Optional は実質デッドだった。
+        // 誤読を招くので非 Optional に落とす (振る舞い不変)。
+        let pattern: LeafPattern = {
             if timerViewModel.breakState { return .big }
 #if DEBUG
             if let forced = DebugLeafPattern.requested { return forced }
@@ -181,22 +182,20 @@ struct TimerView: View {
             return timerViewModel.getLeafPattern()
         }()
 
-        if let pattern {
-            let gifName = switch pattern {
-            case .small: "leaf1"
-            case .mid: "leaf2"
-            case .big: "leaf3"
-            }
-            GIFView(gifName: gifName)
-                .frame(
-                    width: metrics.leafSize(for: pattern),
-                    height: metrics.leafSize(for: pattern),
-                    alignment: .center
-                )
-                .padding(.leading, metrics.leafLeadingPadding(for: pattern))
-                .padding(.trailing, metrics.leafTrailingPadding(for: pattern))
-                .padding(.bottom, metrics.leafBottomPadding(for: pattern))
+        let gifName = switch pattern {
+        case .small: "leaf1"
+        case .mid: "leaf2"
+        case .big: "leaf3"
         }
+        return GIFView(gifName: gifName)
+            .frame(
+                width: metrics.leafSize(for: pattern),
+                height: metrics.leafSize(for: pattern),
+                alignment: .center
+            )
+            .padding(.leading, metrics.leafLeadingPadding(for: pattern))
+            .padding(.trailing, metrics.leafTrailingPadding(for: pattern))
+            .padding(.bottom, metrics.leafBottomPadding(for: pattern))
     }
 
     // MARK: - Private methods

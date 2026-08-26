@@ -31,4 +31,39 @@ final class OnboardingGateTests: XCTestCase {
         viewModel.markOnboardingSeen()
         XCTAssertFalse(viewModel.shouldShowOnboarding())
     }
+
+    // MARK: - Issue #70: 初回起動キーの enum 化
+
+    /// `hasLaunchedBefore` の永続化キーは既存ユーザーの設定を保つため
+    /// 文字列 "hasLaunchedBefore" から変えてはならない。
+    func testHasLaunchedBeforeRawValueIsUnchanged() {
+        XCTAssertEqual(UserDefaultItem.hasLaunchedBefore.rawValue, "hasLaunchedBefore")
+    }
+
+    /// 初回起動時 (キー未設定) にサウンド既定値と初回フラグが
+    /// すべて UserDefaultItem 経由のキーで書かれることを検証する。
+    func testFirstLaunchWritesDefaultsUsingEnumKeys() {
+        let wrapper = MockUserDefaultWrapper()
+        wrapper.setValue(for: UserDefaultItem.hasLaunchedBefore.rawValue, value: 0)
+
+        // notificationScheduler を Spy にするのは、既定の DefaultNotificationScheduler だと
+        // init 内の cancelAll() が実 UNUserNotificationCenter に触れてしまうため。
+        _ = TimerViewModel(
+            timerManager: SpyTimerManager(),
+            audioManager: SpyAudioManager(),
+            userDefaultWrapper: wrapper,
+            sessionStatsRepository: SpySessionStatsRepository(),
+            notificationScheduler: SpyNotificationScheduler()
+        )
+
+        // UserDefaultsWrapper.loadData は戻り値型でオーバーロードされているため、
+        // 型注釈付きの let で Int 版を明示的に選ぶ。
+        let workingSound: Int = wrapper.loadData(key: UserDefaultItem.workingSound.rawValue)
+        let breakSound: Int = wrapper.loadData(key: UserDefaultItem.breakSound.rawValue)
+        let launchedFlag: Int = wrapper.loadData(key: UserDefaultItem.hasLaunchedBefore.rawValue)
+
+        XCTAssertEqual(workingSound, 0)
+        XCTAssertEqual(breakSound, 0)
+        XCTAssertEqual(launchedFlag, 1)
+    }
 }

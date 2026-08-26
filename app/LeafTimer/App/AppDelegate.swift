@@ -8,9 +8,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var backgroundTaskID = UIBackgroundTaskIdentifier(rawValue: 0)
 
-    var oldBackgroundTaskID = UIBackgroundTaskIdentifier(rawValue: 0)
-    var timer: Timer?
-
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -20,15 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window = UIWindow()
 
+        // Issue #70: 同一の UserDefaults.standard を見るラッパーを VM ごとに
+        // 別インスタンス生成していたため 1 つに集約する (振る舞いは不変)。
+        let userDefaultWrapper = LocalUserDefaultsWrapper()
+
         let contentView = TimerView(
             timerViewModel: TimerViewModel(
                 timerManager: DefaultTimerManager(),
                 audioManager: DefaultAudioManager(),
-                userDefaultWrapper: LocalUserDefaultsWrapper(),
+                userDefaultWrapper: userDefaultWrapper,
                 sessionStatsRepository: LocalSessionStatsRepository()
             ),
             settingViewModel: SettingViewModel(
-                userDefaultWrapper: LocalUserDefaultsWrapper()
+                userDefaultWrapper: userDefaultWrapper
             )
         )
 
@@ -57,15 +58,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 新しいタスクを登録
         backgroundTaskID = application.beginBackgroundTask {
             [weak self] in
-            application.endBackgroundTask((self?.backgroundTaskID)!)
-            self?.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
+            // Issue #70: expiration handler は self 解放後にも呼ばれうるため
+            // force unwrap を guard let に置き換える。
+            guard let self else { return }
+            application.endBackgroundTask(self.backgroundTaskID)
+            self.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
     }
 
     // アプリがアクティブになる度に呼ばれる
     func applicationDidBecomeActive(_ application: UIApplication) {
         // タスクの解除
-        timer?.invalidate()
         application.endBackgroundTask(backgroundTaskID)
     }
 }

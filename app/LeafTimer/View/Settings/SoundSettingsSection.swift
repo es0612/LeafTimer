@@ -125,7 +125,7 @@ struct SoundSettingsSection: View {
                         }
                     }
                 } catch {
-                    print("Error playing sound: \(error)")
+                    AppLogger.audio.error("Error playing sound: \(String(describing: error), privacy: .public)")
                 }
             }
         }
