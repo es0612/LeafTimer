@@ -294,7 +294,14 @@ class TimerViewModel: ObservableObject {
             totalCount: totalCount, lastRequestedCount: lastRequested
         ) else { return }
 
-        reviewRequester.requestReview()
+        // Issue #128: 到達経路は (A) Timer コールバック (DefaultTimerManager が
+        // DispatchQueue.main.async で発火) と (B) willEnterForegroundNotification
+        // (UIKit が main thread で post) の 2 経路のみで、常に main thread。
+        // TimerViewModel 全体の actor 隔離は #69 (@Observable 移行) で行うため、
+        // ここでは境界 1 箇所の assumeIsolated に留める。
+        MainActor.assumeIsolated {
+            reviewRequester.requestReview()
+        }
         userDefaultWrapper.saveData(
             key: UserDefaultItem.lastReviewRequestedCount.rawValue,
             value: totalCount

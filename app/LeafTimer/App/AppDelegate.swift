@@ -6,7 +6,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    var backgroundTaskID = UIBackgroundTaskIdentifier(rawValue: 0)
+    var backgroundTaskID = UIBackgroundTaskIdentifier.invalid
 
     func application(
         _ application: UIApplication,
@@ -68,7 +68,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // アプリがアクティブになる度に呼ばれる
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // タスクの解除
+        // Issue #128: 初回 activation 等、background task 未登録なら何もしない。
+        guard backgroundTaskID != .invalid else { return }
         application.endBackgroundTask(backgroundTaskID)
+        backgroundTaskID = .invalid
     }
 }
