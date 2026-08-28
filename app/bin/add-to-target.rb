@@ -7,7 +7,11 @@
 #   group_path   : project-relative group path (e.g. LeafTimer/Components)
 # Idempotent: re-running is a no-op if the file is already attached to the target.
 
-require 'xcodeproj'
+begin
+  require "xcodeproj"
+rescue LoadError
+  abort "xcodeproj gem が必要です: gem install xcodeproj"
+end
 
 abort "usage: add-to-target.rb <project> <file> <target> <group>" if ARGV.length != 4
 proj_path, file_path, target_name, group_path = ARGV
@@ -29,10 +33,13 @@ end
 
 already_in_target = target.source_build_phase.files.any? { |bf| bf.file_ref == ref }
 if already_in_target
+  # Issue #130 fix round 1 (I-1): no-op 経路で project.save を呼ぶと、
+  # xcodeproj gem が pbxproj 全体を自身の正準順で再シリアライズし、
+  # 無関係な並べ替え差分が発生する (実測: #130 タスクで発覚)。
+  # 変更が無いのだから保存もしない。
   puts "no-op: #{file_path} already attached to #{target_name}"
 else
   target.add_file_references([ref])
   puts "added: #{file_path} -> #{target_name}"
+  project.save
 end
-
-project.save

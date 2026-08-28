@@ -10,33 +10,30 @@ class TimerViewSpec: QuickSpec {
     override class func spec() {
         describe("test for TimerView") {
             var timerView: TimerView!
+            var timerViewModel: TimerViewModel!
             var spyTimerManager: SpyTimerManager!
 
             beforeEach {
                 spyTimerManager = SpyTimerManager()
+                timerViewModel = TimerViewModel(
+                    timerManager: spyTimerManager,
+                    audioManager: SpyAudioManager(),
+                    userDefaultWrapper: LocalUserDefaultsWrapper(),
+                    sessionStatsRepository: SpySessionStatsRepository()
+                )
                 timerView = TimerView(
-                    timerViewModel: TimerViewModel(
-                        timerManager: spyTimerManager,
-                        audioManager: SpyAudioManager(),
-                        userDefaultWrapper: LocalUserDefaultsWrapper(),
-                        sessionStatsRepository: SpySessionStatsRepository()
-                    ),
+                    timerViewModel: timerViewModel,
                     settingViewModel: SettingViewModel(userDefaultWrapper: LocalUserDefaultsWrapper())
                 )
             }
 
-            xit("displayed remaining time.") {
+            // Issue #129: index パスでなく find(text:) で実際の表示文字列を検索する形へ移行。
+            // 期待値は UserDefaults 依存のため定数でなく getDisplayedTime() から動的に取得する。
+            it("displayed remaining time.") {
                 let textViewString = try timerView.body
-                    .inspect().navigationStack().zStack(0).vStack(1).text(0).string()
+                    .inspect().find(text: timerViewModel.getDisplayedTime()).string()
 
-                expect(textViewString) == "25:00"
-            }
-
-            xit("displayed start button.") {
-//                let stopButton = try timerView.body
-//                .inspect().navigationView().vStack(0).button(1)
-//
-//                expect(try stopButton.text().string()).to(equal("START"))
+                expect(textViewString) == timerViewModel.getDisplayedTime()
             }
 
             it("displayed navigation bar") {
@@ -45,16 +42,20 @@ class TimerViewSpec: QuickSpec {
                 expect(navStack) != nil
             }
 
-            xit("displayed navigation bar button item") {
+            // Issue #129: toolbar modifier は VStack (GeometryReader > ZStack > VStack) に
+            // 付与されているため正しいパスへ移行
+            it("displayed navigation bar button item") {
                 let toolbarButton = try timerView.body.inspect().navigationStack()
-                    .zStack(0).vStack(1).toolbar()
+                    .geometryReader().zStack().vStack(2).toolbar()
 
                 expect(toolbarButton) != nil
             }
 
-            xit("call timerManager methods when button tapped") {
-                let stopButton = try timerView.body
-                    .inspect().navigationStack().zStack(0).vStack(1).button(1)
+            // Issue #129: index パスでなく CircleButton を包む Button を find() で検索する形へ移行
+            it("call timerManager methods when button tapped") {
+                let stopButton = try timerView.body.inspect().find(ViewType.Button.self, where: { candidate in
+                    (try? candidate.find(CircleButton.self)) != nil
+                })
 
                 try stopButton.tap()
 
