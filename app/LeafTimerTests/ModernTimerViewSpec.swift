@@ -37,13 +37,6 @@ class ModernTimerViewSpec: QuickSpec {
                     expect(navStack) != nil
                 }
 
-                // xit: ViewInspector 0.10.2 の navigationTitle() は Binding<String> 形式のみ対応で、Text 型タイトルは取得不可 (Issue #16)
-                xit("has proper navigation title") {
-                    let navStack = try timerView.body.inspect().navigationStack()
-                    let title = try navStack.navigationTitle()
-                    expect(title.isEmpty) == false
-                }
-
                 // navigationBarTitleDisplayMode is not yet supported by ViewInspector
                 // it("uses inline navigation bar display mode") {
                 //     let navStack = try timerView.body.inspect().navigationStack()
@@ -53,13 +46,10 @@ class ModernTimerViewSpec: QuickSpec {
             }
 
             describe("Timer Display") {
-                // xit: TimerView の実装変更で vStack(1).text(0) の位置に GIFView が存在するためパス不一致 (Issue #16)
-                xit("displays timer with modern typography") {
+                // Issue #129: index パスでなく表示文字列で直接検索する find(text:) に移行
+                it("displays timer with modern typography") {
                     let timeText = try timerView.body.inspect()
-                        .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
-                        .text(0)
+                        .find(text: timerViewModel.getDisplayedTime())
 
                     let font = try timeText.attributes().font()
                     expect(font) != nil
@@ -78,13 +68,10 @@ class ModernTimerViewSpec: QuickSpec {
             }
 
             describe("Modern Controls") {
-                // xit: TimerView の実装変更で vStack(1).view(CircleButton, 1) のパスが不一致 (view absent) (Issue #16)
-                xit("has CircleButton for timer control") {
+                // Issue #129: index パスでなく find() で CircleButton を直接検索する形へ移行
+                it("has CircleButton for timer control") {
                     let button = try timerView.body.inspect()
-                        .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
-                        .view(CircleButton.self, 1)
+                        .find(ViewType.View<CircleButton>.self)
 
                     expect(button) != nil
                 }
@@ -95,60 +82,63 @@ class ModernTimerViewSpec: QuickSpec {
                     expect(spyTimerManager.startWasCalled || spyTimerManager.stopWasCalled) == true
                 }
 
-                // xit: TimerView の実装変更で vStack(1) に toolbar modifier が存在しないためパス不一致 (Issue #16)
-                xit("has reset button in toolbar") {
+                // Issue #129: toolbar modifier は VStack (zStack 内 index 2) に付与されているため
+                // GeometryReader を挟んだ正しいパスへ移行
+                it("has reset button in toolbar") {
                     let toolbar = try timerView.body.inspect()
                         .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
+                        .geometryReader()
+                        .zStack()
+                        .vStack(2)
                         .toolbar()
 
                     expect(toolbar) != nil
                 }
 
-                // xit: TimerView の実装変更で vStack(1) に toolbar modifier が存在しないためパス不一致 (Issue #16)
-                xit("has settings navigation link in toolbar") {
-                    let navStack = try timerView.body.inspect().navigationStack()
-                    let toolbar = try navStack.zStack(0).vStack(1).toolbar()
+                // Issue #129: 同上のパス修正
+                it("has settings navigation link in toolbar") {
+                    let toolbar = try timerView.body.inspect()
+                        .navigationStack()
+                        .geometryReader()
+                        .zStack()
+                        .vStack(2)
+                        .toolbar()
+
                     expect(toolbar) != nil
                 }
             }
 
             describe("Session Stats Display") {
-                // xit: TimerView の実装変更で vStack(1).text(2) のパスが不一致 (view absent) (Issue #16)
-                xit("shows today's session count") {
-                    let countText = try timerView.body.inspect()
-                        .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
-                        .text(2)
-                        .string()
+                // Issue #129: StatChip の text は String(format:) 済みの完成文字列のため
+                // 同じフォーマットで期待値を組み立てて find(text:) で検索する
+                it("shows today's session count") {
+                    let expectedText = String(
+                        format: NSLocalizedString("timer.stat.today", comment: "Today's pomodoro count"),
+                        timerViewModel.todaysCount
+                    )
+                    let countText = try timerView.body.inspect().find(text: expectedText)
 
-                    expect(countText).to(contain(String(timerViewModel.todaysCount)))
+                    expect(countText) != nil
                 }
 
-                // xit: TimerView の実装変更で vStack(1).text(2) のパスが不一致 (view absent) (Issue #16)
-                xit("updates session count when timer completes") {
+                // Issue #129: 同上の find(text:) 形式へ移行
+                it("updates session count when timer completes") {
                     timerViewModel.todaysCount = 5
-                    let countText = try timerView.body.inspect()
-                        .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
-                        .text(2)
-                        .string()
+                    let expectedText = String(
+                        format: NSLocalizedString("timer.stat.today", comment: "Today's pomodoro count"),
+                        timerViewModel.todaysCount
+                    )
+                    let countText = try timerView.body.inspect().find(text: expectedText)
 
-                    expect(countText).to(contain("5"))
+                    expect(countText) != nil
                 }
             }
 
             describe("Visual Feedback") {
-                // xit: TimerView の実装変更で zStack(0).vStack(0) の位置に LinearGradient が存在するためパス不一致 (Issue #16)
-                xit("displays GIF animation based on timer state") {
+                // Issue #129: index パスでなく find() で GIFView を直接検索する形へ移行
+                it("displays GIF animation based on timer state") {
                     let gifView = try timerView.body.inspect()
-                        .navigationStack()
-                        .zStack(0)
-                        .vStack(0)
-                        .view(GIFView.self, 0)
+                        .find(ViewType.View<GIFView>.self)
 
                     expect(gifView) != nil
                 }
