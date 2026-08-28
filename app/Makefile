@@ -31,6 +31,23 @@ precheck:
 sort:
 	@perl ./bin/sortXcodeProject "LeafTimer.xcodeproj/project.pbxproj"
 
+# 新規 Swift ファイルの pbxproj 配線 (Issue #130)。TARGET は取り違え事故防止のため必須。
+#   make add-file FILE=LeafTimer/Components/Foo.swift TARGET=app
+#   make add-file FILE=LeafTimerTests/FooTests.swift TARGET=test
+add-file:
+	@test -n "$(FILE)" && test -n "$(TARGET)" || { \
+		echo "usage: make add-file FILE=<project-relative path> TARGET=app|test"; exit 1; }
+	@test -f "$(FILE)" || { echo "error: file not found: $(FILE)"; exit 1; }
+	@case "$(TARGET)" in \
+		app)  XCTARGET=LeafTimer ;; \
+		test) XCTARGET=LeafTimerTests ;; \
+		*) echo "error: TARGET must be 'app' or 'test' (got '$(TARGET)')"; exit 1 ;; \
+	esac; \
+	ruby bin/test_add_to_target.rb && \
+	ruby bin/add-to-target.rb LeafTimer.xcodeproj "$(FILE)" "$$XCTARGET" "$$(dirname "$(FILE)")"
+	@$(MAKE) sort
+	@$(MAKE) precheck
+
 lint:
 	@echo "Running SwiftLint..."
 	@swiftlint lint

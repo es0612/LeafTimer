@@ -7,7 +7,11 @@
 #   group_path   : project-relative group path (e.g. LeafTimer/Components)
 # Idempotent: re-running is a no-op if the file is already attached to the target.
 
-require 'xcodeproj'
+begin
+  require "xcodeproj"
+rescue LoadError
+  abort "xcodeproj gem が必要です: gem install xcodeproj"
+end
 
 abort "usage: add-to-target.rb <project> <file> <target> <group>" if ARGV.length != 4
 proj_path, file_path, target_name, group_path = ARGV
