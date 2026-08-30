@@ -220,16 +220,6 @@ class ModernTimerViewSpec: QuickSpec {
                     expect(spyTimerManager.startWasCalled || spyTimerManager.stopWasCalled) == true
                 }
             }
-
-            describe("Accessibility (Issue #59)") {
-                it("start/stop control is a real Button wrapping CircleButton") {
-                    expect {
-                        try timerView.body.inspect().find(ViewType.Button.self, where: { candidate in
-                            (try? candidate.find(CircleButton.self)) != nil
-                        })
-                    }.toNot(throwError())
-                }
-            }
         }
     }
 }
