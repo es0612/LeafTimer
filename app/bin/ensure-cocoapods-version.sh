@@ -11,7 +11,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOCK="${SCRIPT_DIR}/../Podfile.lock"
 CHECK_ONLY=false
-[ "${1:-}" = "--check-only" ] && CHECK_ONLY=true
+case "${1:-}" in
+  --check-only) CHECK_ONLY=true ;;
+  "") ;;
+  *) echo "usage: $0 [--check-only]" >&2; exit 2 ;;
+esac
 
 want="$(sed -n 's/^COCOAPODS: *//p' "$LOCK" | tr -d '[:space:]')"
 if [ -z "$want" ]; then
@@ -35,6 +39,10 @@ hash -r
 have="$(pod --version | tr -d '[:space:]')"
 if [ "$have" != "$want" ]; then
   echo "❌ ensure-cocoapods-version: install 後も不一致 have='$have' want='$want'" >&2
+  echo "   command -v pod: $(command -v pod || echo 'not found')" >&2
+  echo "   gem list cocoapods:" >&2
+  gem list cocoapods 2>/dev/null >&2 || true
+  echo "   PATH=$PATH" >&2
   exit 1
 fi
 echo "✅ cocoapods $have installed to match Podfile.lock"

@@ -65,7 +65,7 @@ jobs:
           {
             echo "## Code Coverage"
             echo '```'
-            xcrun xccov view --report --only-targets build/TestResults.xcresult
+            xcrun xccov view --report --only-targets build/TestResults.xcresult || echo "(coverage データなし)"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           xcrun xccov view --report --only-targets build/TestResults.xcresult | grep -E "LeafTimer\.app" || true
