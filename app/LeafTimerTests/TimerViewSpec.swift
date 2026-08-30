@@ -27,13 +27,15 @@ class TimerViewSpec: QuickSpec {
                 )
             }
 
-            // Issue #129: index パスでなく find(text:) で実際の表示文字列を検索する形へ移行。
-            // 期待値は UserDefaults 依存のため定数でなく getDisplayedTime() から動的に取得する。
+            // Issue #132: find(text: getDisplayedTime()) を getDisplayedTime() と比較するのは同語反復だった。
+            // currentTimeSecond を固定して UserDefaults 非依存の定数 "20:00" を期待値にする。
             it("displayed remaining time.") {
-                let textViewString = try timerView.body
-                    .inspect().find(text: timerViewModel.getDisplayedTime()).string()
+                timerViewModel.currentTimeSecond = 1200
 
-                expect(textViewString) == timerViewModel.getDisplayedTime()
+                let textViewString = try timerView.body
+                    .inspect().find(text: "20:00").string()
+
+                expect(textViewString) == "20:00"
             }
 
             it("displayed navigation bar") {
@@ -42,13 +44,17 @@ class TimerViewSpec: QuickSpec {
                 expect(navStack) != nil
             }
 
-            // Issue #129: toolbar modifier は VStack (GeometryReader > ZStack > VStack) に
-            // 付与されているため正しいパスへ移行
+            // Issue #132: toolbar の存在だけでなく 3 つの ToolbarItem (reset / history / settings) の
+            // アイコンまで検証する。item(3) が無いことも確認して増減を検出する。
             it("displayed navigation bar button item") {
-                let toolbarButton = try timerView.body.inspect().navigationStack()
+                let toolbar = try timerView.body.inspect().navigationStack()
                     .geometryReader().zStack().vStack(2).toolbar()
 
-                expect(toolbarButton) != nil
+                let icons = try (0..<3).map { index in
+                    try toolbar.item(index).find(ViewType.Image.self).actualImage().name()
+                }
+                expect(icons) == ["arrow.counterclockwise", "chart.bar.fill", "gearshape.fill"]
+                expect { try toolbar.item(3) }.to(throwError())
             }
 
             // Issue #129: index パスでなく CircleButton を包む Button を find() で検索する形へ移行
