@@ -48,7 +48,9 @@ jobs:
 
       - name: Pod install
         working-directory: app
-        run: pod install
+        run: |
+          want="$(sed -n 's/^COCOAPODS: *//p' Podfile.lock | tr -d '[:space:]')"
+          pod "_${want}_" install
 
       - name: Run make tests
         working-directory: app
