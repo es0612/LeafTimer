@@ -181,9 +181,10 @@ class ModernTimerViewSpec: QuickSpec {
 
             describe("Accessibility") {
                 // Issue #133: 旧コメントの「vStack(1).text(0) の位置に GIFView が存在するためパス不一致」は
-                // #129 の調査で反証済み。実際の原因は (a) navigationStack 直下の GeometryReader を
-                // パスに含めていなかったこと、(b) ZStack の子が [背景, leafLayer, VStack] の順で
-                // 主要 VStack が index 2 (旧パスは 1) だったこと。index パスをやめ find() で復活する。
+                // 事実だが不完全だった (#129 で判明)。GIFView の存在は xit を続ける理由にならず、真の原因は
+                // (a) navigationStack 直下の GeometryReader をパスに含めていなかったこと、
+                // (b) ZStack の子が [背景, leafLayer, VStack] の順で主要 VStack が index 2 (旧パスは 1) だったこと。
+                // index パスをやめ find() で復活する。
                 it("has accessibility labels for timer display") {
                     let timeText = try timerView.body.inspect()
                         .find(text: timerViewModel.getDisplayedTime())
