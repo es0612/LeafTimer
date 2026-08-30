@@ -500,10 +500,6 @@
 						CreatedOnToolsVersion = 11.5;
 						TestTargetID = 3864B7C72494D81D00948ACA;
 					};
-					3864B7E82494D82300948ACA = {
-						CreatedOnToolsVersion = 11.5;
-						TestTargetID = 3864B7C72494D81D00948ACA;
-					};
 				};
 			};
 			buildConfigurationList = 3864B7C32494D81D00948ACA /* Build configuration list for PBXProject "LeafTimer" */;
