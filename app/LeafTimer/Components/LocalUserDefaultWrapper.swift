@@ -9,7 +9,13 @@ protocol UserDefaultsWrapper {
 }
 
 class LocalUserDefaultsWrapper: UserDefaultsWrapper {
-    private let userDefaults = UserDefaults.standard
+    private let userDefaults: UserDefaults
+
+    /// Issue #77: テストから suite 指定の UserDefaults を注入できるようにする。
+    /// 既存の呼び出し (引数なし) は .standard のまま。
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+    }
 
     // Issue #70: synchronize() は iOS 12 以降 deprecated かつ不要 (UserDefaults が自動で永続化する)
 
