@@ -82,8 +82,8 @@ class ModernTimerViewSpec: QuickSpec {
                     expect(spyTimerManager.startWasCalled || spyTimerManager.stopWasCalled) == true
                 }
 
-                // Issue #129: toolbar modifier は VStack (zStack 内 index 2) に付与されているため
-                // GeometryReader を挟んだ正しいパスへ移行
+                // Issue #132: expect(toolbar) != nil は ToolbarItem を全部消しても pass する。
+                // item(0) の中の SF Symbol 名まで検証する。
                 it("has reset button in toolbar") {
                     let toolbar = try timerView.body.inspect()
                         .navigationStack()
@@ -92,10 +92,11 @@ class ModernTimerViewSpec: QuickSpec {
                         .vStack(2)
                         .toolbar()
 
-                    expect(toolbar) != nil
+                    let resetIcon = try toolbar.item(0).find(ViewType.Image.self).actualImage().name()
+                    expect(resetIcon) == "arrow.counterclockwise"
                 }
 
-                // Issue #129: 同上のパス修正
+                // Issue #132: 同上。settings は 3 番目の ToolbarItem (index 2)
                 it("has settings navigation link in toolbar") {
                     let toolbar = try timerView.body.inspect()
                         .navigationStack()
@@ -104,7 +105,10 @@ class ModernTimerViewSpec: QuickSpec {
                         .vStack(2)
                         .toolbar()
 
-                    expect(toolbar) != nil
+                    let settingsItem = try toolbar.item(2)
+                    expect(try settingsItem.navigationLink()) != nil
+                    let settingsIcon = try settingsItem.find(ViewType.Image.self).actualImage().name()
+                    expect(settingsIcon) == "gearshape.fill"
                 }
             }
 
@@ -176,26 +180,26 @@ class ModernTimerViewSpec: QuickSpec {
             }
 
             describe("Accessibility") {
-                // xit: TimerView の実装変更で vStack(1).text(0) の位置に GIFView が存在するためパス不一致 (Issue #16)
-                xit("has accessibility labels for timer display") {
+                // Issue #133: 旧コメントの「vStack(1).text(0) の位置に GIFView が存在するためパス不一致」は
+                // #129 の調査で反証済み。実際の原因は (a) navigationStack 直下の GeometryReader を
+                // パスに含めていなかったこと、(b) ZStack の子が [背景, leafLayer, VStack] の順で
+                // 主要 VStack が index 2 (旧パスは 1) だったこと。index パスをやめ find() で復活する。
+                it("has accessibility labels for timer display") {
                     let timeText = try timerView.body.inspect()
-                        .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
-                        .text(0)
+                        .find(text: timerViewModel.getDisplayedTime())
 
-                    expect(timeText) != nil
+                    let label = try timeText.accessibilityLabel().string()
+                    expect(label) == NSLocalizedString("timer.a11y.remaining_time", comment: "")
                 }
 
-                // xit: TimerView の実装変更で vStack(1).view(CircleButton, 1) のパスが不一致 (view absent) (Issue #16)
-                xit("has accessibility labels for controls") {
-                    let button = try timerView.body.inspect()
-                        .navigationStack()
-                        .zStack(0)
-                        .vStack(1)
-                        .view(CircleButton.self, 1)
+                // Issue #133: 同上 (旧コメントの vStack(1).view(CircleButton, 1) 不一致も同じ原因)
+                it("has accessibility labels for controls") {
+                    let button = try timerView.body.inspect().find(ViewType.Button.self, where: { candidate in
+                        (try? candidate.find(CircleButton.self)) != nil
+                    })
 
-                    expect(button) != nil
+                    let label = try button.accessibilityLabel().string()
+                    expect(label) == timerViewModel.getAccessibilityLabel()
                 }
             }
 
