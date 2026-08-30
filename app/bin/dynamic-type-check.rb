@@ -12,10 +12,11 @@
 # `.font(.system(size: min(timerFontSize, 110), weight: .bold))`, which this
 # check deliberately allows.
 #
-# Issue #108 widened the net to `Font.custom("Name", size: 15)` and
+# Issue #108 widened the net to `Font.custom("Name", fixedSize: 15)` and
 # `UIFont.systemFont(ofSize: 15)` (and its bold/italic/monospaced variants):
-# they bypass Dynamic Type the same way. Use `.font(.custom("Name", size: 15,
-# relativeTo: .body))` or `UIFont.preferredFont(forTextStyle:)` instead.
+# they bypass Dynamic Type the same way. Use `Font.custom("Name", size: 15)`
+# (scales with the body text style) / `relativeTo:` or
+# `UIFont.preferredFont(forTextStyle:)` instead.
 #
 # Usage:
 #   ruby bin/dynamic-type-check.rb

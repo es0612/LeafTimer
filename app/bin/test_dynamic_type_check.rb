@@ -42,9 +42,16 @@ class DynamicTypeCheckTest < Minitest::Test
     assert_equal [1], DynamicTypeCheck.violations(swift)
   end
 
-  # Issue #108: Font.custom / UIFont.systemFont も Dynamic Type を無効化する。
+  # Issue #108: Font.custom(fixedSize:) / UIFont.systemFont も Dynamic Type を無効化する。
+  # Font.custom(_:size:) は Apple 公式ドキュメントどおり body text style に追従して
+  # スケールするので違反ではない (Font.custom(_:fixedSize:) が固定サイズの API)。
   def test_detects_font_custom_fixed_size
-    swift = 'Text("a").font(Font.custom("Avenir", size: 15))'
+    swift = 'Text("a").font(Font.custom("Avenir", fixedSize: 15))'
+    assert_equal [1], DynamicTypeCheck.violations(swift)
+  end
+
+  def test_detects_font_custom_shorthand_fixed_size
+    swift = 'Text("a").font(.custom("Avenir", fixedSize: 15))'
     assert_equal [1], DynamicTypeCheck.violations(swift)
   end
 
@@ -89,9 +96,14 @@ class DynamicTypeCheckTest < Minitest::Test
     assert_empty DynamicTypeCheck.violations(swift)
   end
 
-  # Issue #108: 変数・正しい API は許可
-  def test_ignores_font_custom_with_variable_size
-    swift = 'Text("a").font(Font.custom("Avenir", size: scaledSize))'
+  # Issue #108: Font.custom(_:size:) は body text style に追従してスケールするので許可。
+  def test_ignores_font_custom_scaling_size
+    swift = 'Text("a").font(Font.custom("Avenir", size: 15))'
+    assert_empty DynamicTypeCheck.violations(swift)
+  end
+
+  def test_ignores_font_custom_relative_to
+    swift = 'Text("a").font(.custom("Avenir", size: 15, relativeTo: .body))'
     assert_empty DynamicTypeCheck.violations(swift)
   end
 

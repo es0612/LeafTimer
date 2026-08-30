@@ -22,16 +22,17 @@ module DynamicTypeCheck
   # too.
   #
   # Issue #108: two more shapes that also disable Dynamic Type —
-  #   `Font.custom("Name", size: 15)`  and  `UIFont.systemFont(ofSize: 15)`
+  #   `Font.custom("Name", fixedSize: 15)`  and  `UIFont.systemFont(ofSize: 15)`
   #   (plus boldSystemFont / italicSystemFont / monospacedSystemFont …).
-  # Same principle: the token right after `size:` / `ofSize:` must be a digit.
-  # `Font.custom("Name", size: scaledSize)` and
-  # `UIFont.preferredFont(forTextStyle:)` stay allowed.
+  # Same principle: the token right after `fixedSize:` / `ofSize:` must be a
+  # digit. `Font.custom("Name", size: 15)` scales with the body text style
+  # (per Apple's docs) and stays allowed, as does
+  # `UIFont.preferredFont(forTextStyle:)`.
   FIXED_FONT_SIZE = %r{
     (?:
-      \.system\(\s*size:                 # .system(size: 15)
-      | Font\.custom\([^)]*?,\s*size:     # Font.custom("Name", size: 15)
-      | \.\w*[sS]ystemFont\(\s*ofSize:    # UIFont.systemFont(ofSize: 15), boldSystemFont, …
+      \.system\(\s*size:                  # .system(size: 15)
+      | \.custom\([^)]*?,\s*fixedSize:     # Font.custom("Name", fixedSize: 15) / .custom(…)
+      | \.\w*[sS]ystemFont\(\s*ofSize:     # UIFont.systemFont(ofSize: 15), boldSystemFont, …
     )
     \s*[0-9]
   }mx.freeze
