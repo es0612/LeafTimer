@@ -17,8 +17,13 @@ final class LocalizationTestSupportTests: XCTestCase {
     }
 
     func testMissingLocaleReturnsSentinelAndFails() {
-        // lproj が丸ごと無い場合は XCTFail + "<<missing>>" (PR #96 で塞いだ抜け穴の固定)
-        XCTExpectFailure("zz.lproj は存在しないので XCTFail が記録される")
-        XCTAssertEqual(localized("timer.title", locale: "zz"), "<<missing>>")
+        // lproj が丸ごと無い場合は XCTFail + "<<missing>>" (PR #96 で塞いだ抜け穴の固定)。
+        // XCTExpectFailure はクロージャ形でスコープを localized 呼び出しだけに絞る —
+        // 無引数形だと直後の XCTAssertEqual の失敗まで吸収して vacuous pass になる。
+        var result = ""
+        XCTExpectFailure("zz.lproj は存在しないので XCTFail が記録される") {
+            result = localized("timer.title", locale: "zz")
+        }
+        XCTAssertEqual(result, "<<missing>>")
     }
 }
