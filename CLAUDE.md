@@ -26,7 +26,7 @@
 
 ### 計画・検証設計
 
-7. plan / spec に書く tool・script・path は、書く前に Glob か Read で実在を 1 回確認する (他 issue コメント等の二次情報を primary 扱いしない)。
+7. plan / spec に書く tool・script・path は、書く前に Glob か Read で実在を 1 回確認する (他 issue コメント等の二次情報を primary 扱いしない)。issue 本文の API 前提も二次情報 — checker に encode する前に Apple docs を `curl` で原文確認する (#108 の「`Font.custom(size:)` は固定サイズ」は誤りで、固定になるのは `fixedSize:` — PR #144 の task review で判明)。plan に書くコード片は `ruby -c` / `ruby -ryaml` で構文確認する (`/…/x` regex のコメント内 `/`、YAML plain scalar の ` #` で plan 逐語が壊れた — PR #144)。
 8. checker / linter / validator を作る・レビューする時は「意図的に壊した入力で正しく RED になる」ことを fixture で実証する。正常系 GREEN だけの確認は vacuously green。**mutation の対象は「新規に強化した全テスト」に広げる** (#133 の a11y 2 件だけ未実証で final review 指摘、PR #137)。また mutation を設計する前に「どの入力がその分岐を通るか」を確認する — plan 指定の sentinel 定数変更は既存テストが実在キーしか見ないため 1 件も波及せず、lproj path 解決の破壊に切り替えて 12 件同時 fail を取得した (PR #137)。実時間依存テストでは `XCTNSPredicateExpectation(object: nil)` が約 1 秒ポーリングなので timeout は「発火予定時刻 + 数秒」の余裕を取り、固定時間窓での下限アサーションは「初回発火を predicate で待ってから delta 判定」にする (PR #140 の `DefaultTimerManagerTests`)。
 9. フォールバック分岐を残す実装の RED テストは、新パスに必ず入る前提条件をテスト内で明示的に整え、予測失敗値と実際の失敗値を突き合わせてから GREEN 実装に進む。
 10. 教訓・MEMORY を適用する時は literal に禁じている対象だけに適用する (「exit code を信じるな」≠「ツールを使うな」)。広い禁止へ過剰一般化しない。
@@ -48,10 +48,10 @@
 
 21. push や `gh pr create` の前に `git fetch && gh pr list --state all --head <branch>` で既存 PR と merge 状況を確認する。
 22. plan-driven PR では plan doc を実装より前の最初の commit にする。**plan の task に PR merge ステップを含めない** — subagent-driven-development ではタスクレビューが完了ゲートなので、implementer が merge まで走るとレビュー指摘が常に merge 済みコードに対して出て、追随 commit が必要になる (#66 で実測)。plan は「PR 作成まで」で切り、merge はレビュー通過後にコントローラがルール 24 のチェーンで行う。
-23. CI 待ちは `gh pr checks --watch` や `until ... sleep 30` ポーリングでなく、**フォアグラウンドの `gh run watch <run-id> --interval 30`** を run ごとに実行する (run ID は `gh pr checks <PR>` の URL 末尾から取る)。この環境の Bash は sleep が無効でターン内待機できず、バックグラウンドタスクの完了通知や Monitor イベントは早発・偽発しうる (PR #111 で実行中ジョブの偽 pass イベントを実測)。**`gh run watch` は成功時に結論行を出さず、ジョブログの末尾 (brew の tap-trust 警告など) で終わることがある** — watch の出力だけで pass と判断せず、完了後に必ず `gh pr checks <PR>` で pass/fail を再確認する (PR #126 / #127 の pr-tests で 2 回とも結論行なしを実測)。
+23. CI 待ちは `gh pr checks --watch` や `until ... sleep 30` ポーリングでなく、**フォアグラウンドの `gh run watch <run-id> --interval 30`** を run ごとに実行する (run ID は `gh pr checks <PR>` の URL 末尾から取る)。この環境の Bash は sleep が無効でターン内待機できず、バックグラウンドタスクの完了通知や Monitor イベントは早発・偽発しうる (PR #111 で実行中ジョブの偽 pass イベントを実測)。**`gh run watch` は成功時に結論行を出さず、ジョブログの末尾 (brew の tap-trust 警告など) で終わることがある** — watch の出力だけで pass と判断せず、完了後に必ず `gh pr checks <PR>` で pass/fail を再確認する (PR #126 / #127 の pr-tests で 2 回とも結論行なしを実測)。**CI 設定 (workflow / Makefile) を変える PR は green check でなく当該 step のログ行で受け入れる** — `gh run view <id> --log | grep "^pr-tests	<step 名>"` で期待メッセージ (例: `✅ cocoapods … available` / `LeafTimer.app NN%`) を確認する。summary 系 step は入力欠落でも exit 0 するため、green は「何も出なかった」と区別できない (PR #144)。
 24. このリポジトリは Auto-merge 無効。merge は非同期通知を根拠にせず、必ず `gh pr checks <PR> && gh pr merge <PR> --merge` の同一チェーンで再検証をゲートにして実行する。 **checks 全 pass かつ final review 済みなら、このチェーン自体が事前承認済みの操作 — merge 前に AskUserQuestion を挟まない** (PR #134 で「確認できているなら直接マージできませんか」と押し返された)。`gh pr merge` が auto mode クラシファイアにブロックされることがあるが transient — 同一チェーンを 1 回リトライしてからユーザーに `! gh pr merge <PR> --merge` を依頼する (PR #136 で 2 回目に成功)。
 25. PR 本文にローカルパスの画像は埋め込めない。スクショは SendUserFile でユーザーに渡し、PR にはユーザーがブラウザで添付する。
-26. マネージド CI runner は CocoaPods / Bundler 等の preinstall を保証しない。CI hook の冒頭で `set -euo pipefail` 配下の明示 install を先頭に置く。
+26. マネージド CI runner は CocoaPods / Bundler 等の preinstall を保証しない。CI hook の冒頭で `set -euo pipefail` 配下の明示 install を先頭に置く。macos runner の `pod` は brew ruby の RubyGems binstub (`/opt/homebrew/lib/ruby/gems/3.x/bin/pod`) で、**binstub は常に最新 install 版を activate する** — `sudo gem install` は別 gem 環境に入り効かない (PR #144 の CI で実測: 1.17.0 のまま)。lock 版への固定は sudo なし `gem install cocoapods -v <lock版>` + **`pod _<lock版>_ install`** (RubyGems バージョンセレクタ) で行う (`app/bin/ensure-cocoapods-version.sh`)。Gemfile + `bundle exec` 化は #143。
 27. `make` の依存チェーンに Apple 同梱外の ruby gem 等を足す時は `require` を `rescue LoadError` でガードし、gem 不在でも green を維持する。
 
 ### プロジェクト固有の制約
