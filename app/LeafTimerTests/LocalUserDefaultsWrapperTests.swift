@@ -25,16 +25,16 @@ final class LocalUserDefaultsWrapperTests: XCTestCase {
     }
 
     func testIntRoundTrip() {
-        wrapper.saveData(key: "workingTime", value: 3)
-        XCTAssertEqual(wrapper.loadData(key: "workingTime") as Int, 3)
+        wrapper.saveData(key: "LocalUserDefaultsWrapperTests.int", value: 3)
+        XCTAssertEqual(wrapper.loadData(key: "LocalUserDefaultsWrapperTests.int") as Int, 3)
         // 実体の UserDefaults に書かれている (Mock でない) ことを直接確認
-        XCTAssertEqual(testDefaults.integer(forKey: "workingTime"), 3)
+        XCTAssertEqual(testDefaults.integer(forKey: "LocalUserDefaultsWrapperTests.int"), 3)
     }
 
     func testIntOverwrite() {
-        wrapper.saveData(key: "workingTime", value: 3)
-        wrapper.saveData(key: "workingTime", value: 7)
-        XCTAssertEqual(wrapper.loadData(key: "workingTime") as Int, 7)
+        wrapper.saveData(key: "LocalUserDefaultsWrapperTests.int", value: 3)
+        wrapper.saveData(key: "LocalUserDefaultsWrapperTests.int", value: 7)
+        XCTAssertEqual(wrapper.loadData(key: "LocalUserDefaultsWrapperTests.int") as Int, 7)
     }
 
     func testIntMissingKeyReturnsZero() {
@@ -42,9 +42,9 @@ final class LocalUserDefaultsWrapperTests: XCTestCase {
     }
 
     func testBoolRoundTrip() {
-        wrapper.saveData(key: "vibration", value: true)
-        XCTAssertTrue(wrapper.loadData(key: "vibration") as Bool)
-        XCTAssertTrue(testDefaults.bool(forKey: "vibration"))
+        wrapper.saveData(key: "LocalUserDefaultsWrapperTests.bool", value: true)
+        XCTAssertTrue(wrapper.loadData(key: "LocalUserDefaultsWrapperTests.bool") as Bool)
+        XCTAssertTrue(testDefaults.bool(forKey: "LocalUserDefaultsWrapperTests.bool"))
     }
 
     func testBoolMissingKeyReturnsFalse() {

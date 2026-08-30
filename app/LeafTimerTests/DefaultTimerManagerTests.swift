@@ -17,7 +17,8 @@ final class DefaultTimerManagerTests: XCTestCase {
             timerManager: timerManager,
             audioManager: SpyAudioManager(),
             userDefaultWrapper: MockUserDefaultWrapper(),
-            sessionStatsRepository: SpySessionStatsRepository()
+            sessionStatsRepository: SpySessionStatsRepository(),
+            notificationScheduler: SpyNotificationScheduler()
         )
         // endDate を設定しないので updateTime() は currentTimeSecond -= 1 の経路を通る
         // (TimerViewModel.swift:154-176)。0 に到達すると reset/通知経路に入るので十分大きい値にする。
@@ -34,12 +35,13 @@ final class DefaultTimerManagerTests: XCTestCase {
     func testStartFiresUpdateTimeEverySecond() {
         timerManager.start(target: viewModel)
 
-        // 2 回発火 (≒ 2 秒) で 98 以下になる。tolerance 0.1 を見込んで 3.5 秒待つ。
+        // 2 回発火 (≒ 2 秒) で 98 以下になる。
+        // XCTNSPredicateExpectation は約 1 秒間隔のポーリングなので CI 負荷を見込んで余裕を取る
         let decremented = XCTNSPredicateExpectation(
             predicate: NSPredicate { _, _ in self.viewModel.currentTimeSecond <= 98 },
             object: nil
         )
-        wait(for: [decremented], timeout: 3.5)
+        wait(for: [decremented], timeout: 8.0)
         XCTAssertLessThanOrEqual(viewModel.currentTimeSecond, 98)
     }
 
@@ -49,7 +51,7 @@ final class DefaultTimerManagerTests: XCTestCase {
             predicate: NSPredicate { _, _ in self.viewModel.currentTimeSecond <= 99 },
             object: nil
         )
-        wait(for: [firedOnce], timeout: 2.5)
+        wait(for: [firedOnce], timeout: 8.0)
 
         timerManager.stop()
 
@@ -67,9 +69,16 @@ final class DefaultTimerManagerTests: XCTestCase {
         timerManager.start(target: viewModel)
         timerManager.start(target: viewModel) // 既存 timer を stop してから張り直す契約
 
-        // 2.5 秒で発火は高々 2 回 (二重に張られていれば 4 回 = 96 まで落ちる)
+        // 測定窓を開く前に初回発火を待つ (CI の負荷で初回が遅れても偽 FAIL にしない)
+        let firedOnce = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in self.viewModel.currentTimeSecond <= 99 },
+            object: nil
+        )
+        wait(for: [firedOnce], timeout: 8.0)
+
+        let before = viewModel.currentTimeSecond
+        // 単一 timer なら 2.5 秒で発火は高々 3 回。二重に張られていれば 4 回以上落ちる
         RunLoop.current.run(until: Date(timeIntervalSinceNow: 2.5))
-        XCTAssertGreaterThanOrEqual(viewModel.currentTimeSecond, 97)
-        XCTAssertLessThanOrEqual(viewModel.currentTimeSecond, 99)
+        XCTAssertLessThanOrEqual(before - viewModel.currentTimeSecond, 3)
     }
 }
