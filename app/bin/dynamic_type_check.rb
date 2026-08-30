@@ -20,7 +20,22 @@ module DynamicTypeCheck
   #
   # `.font(` is deliberately not required, so `Font.system(size: 12)` is caught
   # too.
-  FIXED_FONT_SIZE = /\.system\(\s*size:\s*[0-9]/m.freeze
+  #
+  # Issue #108: two more shapes that also disable Dynamic Type —
+  #   `Font.custom("Name", fixedSize: 15)`  and  `UIFont.systemFont(ofSize: 15)`
+  #   (plus boldSystemFont / italicSystemFont / monospacedSystemFont …).
+  # Same principle: the token right after `fixedSize:` / `ofSize:` must be a
+  # digit. `Font.custom("Name", size: 15)` scales with the body text style
+  # (per Apple's docs) and stays allowed, as does
+  # `UIFont.preferredFont(forTextStyle:)`.
+  FIXED_FONT_SIZE = %r{
+    (?:
+      \.system\(\s*size:                  # .system(size: 15)
+      | \.custom\([^)]*?,\s*fixedSize:     # Font.custom("Name", fixedSize: 15) / .custom(…)
+      | \.\w*[sS]ystemFont\(\s*ofSize:     # UIFont.systemFont(ofSize: 15), boldSystemFont, …
+    )
+    \s*[0-9]
+  }mx.freeze
 
   # 1-indexed line numbers of every hard-coded font size, in source order.
   def self.violations(swift_text)

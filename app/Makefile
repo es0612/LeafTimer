@@ -16,11 +16,19 @@ install:
 update:
 	pod update
 
+# Issue #95: coverage は常に計測する。RESULT_BUNDLE を渡した時だけ .xcresult を書き出す
+# (CI が xccov で summary を作る)。xcodebuild は既存の bundle があると失敗するので事前に消す。
+#   make unit-tests RESULT_BUNDLE=$(PWD)/build/TestResults.xcresult
+RESULT_BUNDLE ?=
+
 unit-tests:
+	@if [ -n "$(RESULT_BUNDLE)" ]; then rm -rf "$(RESULT_BUNDLE)"; fi
 	@/usr/bin/time xcodebuild \
 	-workspace 'LeafTimer.xcworkspace' \
 	-scheme "LeafTimer" \
 	-destination "platform=iOS Simulator,name=$(SIMULATOR),OS=latest" \
+	-enableCodeCoverage YES \
+	$(if $(RESULT_BUNDLE),-resultBundlePath '$(RESULT_BUNDLE)') \
 	build test
 
 precheck:

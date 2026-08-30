@@ -42,6 +42,33 @@ class DynamicTypeCheckTest < Minitest::Test
     assert_equal [1], DynamicTypeCheck.violations(swift)
   end
 
+  # Issue #108: Font.custom(fixedSize:) / UIFont.systemFont も Dynamic Type を無効化する。
+  # Font.custom(_:size:) は Apple 公式ドキュメントどおり body text style に追従して
+  # スケールするので違反ではない (Font.custom(_:fixedSize:) が固定サイズの API)。
+  def test_detects_font_custom_fixed_size
+    swift = 'Text("a").font(Font.custom("Avenir", fixedSize: 15))'
+    assert_equal [1], DynamicTypeCheck.violations(swift)
+  end
+
+  def test_detects_font_custom_shorthand_fixed_size
+    swift = 'Text("a").font(.custom("Avenir", fixedSize: 15))'
+    assert_equal [1], DynamicTypeCheck.violations(swift)
+  end
+
+  def test_detects_uifont_system_font_fixed_size
+    swift = 'label.font = UIFont.systemFont(ofSize: 15)'
+    assert_equal [1], DynamicTypeCheck.violations(swift)
+  end
+
+  def test_detects_uifont_bold_system_font_multiline
+    swift = <<~SWIFT
+      label.font = UIFont.boldSystemFont(
+          ofSize: 17
+      )
+    SWIFT
+    assert_equal [1], DynamicTypeCheck.violations(swift)
+  end
+
   # --- GREEN: 検出されてはならない ------------------------------------------
 
   def test_ignores_scaled_metric_variable
@@ -66,6 +93,22 @@ class DynamicTypeCheckTest < Minitest::Test
 
   def test_returns_empty_for_source_without_font
     swift = 'struct Foo: View { var body: some View { Text("a") } }'
+    assert_empty DynamicTypeCheck.violations(swift)
+  end
+
+  # Issue #108: Font.custom(_:size:) は body text style に追従してスケールするので許可。
+  def test_ignores_font_custom_scaling_size
+    swift = 'Text("a").font(Font.custom("Avenir", size: 15))'
+    assert_empty DynamicTypeCheck.violations(swift)
+  end
+
+  def test_ignores_font_custom_relative_to
+    swift = 'Text("a").font(.custom("Avenir", size: 15, relativeTo: .body))'
+    assert_empty DynamicTypeCheck.violations(swift)
+  end
+
+  def test_ignores_uifont_preferred_font
+    swift = 'label.font = UIFont.preferredFont(forTextStyle: .body)'
     assert_empty DynamicTypeCheck.violations(swift)
   end
 end
