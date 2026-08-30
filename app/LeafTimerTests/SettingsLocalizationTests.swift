@@ -3,7 +3,7 @@ import XCTest
 @testable import LeafTimer
 
 /// Issue #59/#60 で追加したキーが ja/en 両方の Localizable.strings に存在することを検証する。
-/// パターンは StatLocalizationTests を踏襲 (テスト実行環境の言語設定に依存しない)。
+/// helper は LocalizationTestSupport を参照 (テスト実行環境の言語設定に依存しない)。
 final class SettingsLocalizationTests: XCTestCase {
 
     private static let newKeys = [
@@ -34,17 +34,6 @@ final class SettingsLocalizationTests: XCTestCase {
         "timer.a11y.settings",
         "timer.a11y.remaining_time"
     ]
-
-    /// 指定ロケールの .lproj から key を解決する（simulator の言語設定に依存しない）。
-    private func localized(_ key: String, locale: String) -> String {
-        let appBundle = Bundle(for: TimerViewModel.self)
-        guard let path = appBundle.path(forResource: locale, ofType: "lproj"),
-              let lproj = Bundle(path: path) else {
-            XCTFail("\(locale).lproj が見つからない")
-            return "<<missing>>"
-        }
-        return lproj.localizedString(forKey: key, value: "<<missing>>", table: nil)
-    }
 
     func testAllNewKeysExistInJapanese() {
         for key in Self.newKeys {

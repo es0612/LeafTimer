@@ -4,17 +4,6 @@ import XCTest
 
 final class StatLocalizationTests: XCTestCase {
 
-    /// 指定ロケールの .lproj から key を解決する（simulator の言語設定に依存しない）。
-    private func localized(_ key: String, locale: String) -> String {
-        let appBundle = Bundle(for: TimerViewModel.self)
-        guard let path = appBundle.path(forResource: locale, ofType: "lproj"),
-              let lproj = Bundle(path: path) else {
-            XCTFail("\(locale).lproj が見つからない")
-            return "<<missing>>"
-        }
-        return lproj.localizedString(forKey: key, value: "<<missing>>", table: nil)
-    }
-
     func testTodayChipJapanese() {
         XCTAssertEqual(String(format: localized("timer.stat.today", locale: "ja"), 3), "今日 3")
     }
