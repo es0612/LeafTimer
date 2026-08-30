@@ -24,6 +24,7 @@ jobs:
       - name: Ensure tools (managed runner は preinstall を保証しない)
         run: |
           which pod || brew install cocoapods
+          bash app/bin/ensure-cocoapods-version.sh
           which swiftlint || brew install swiftlint
 
       - name: Restore secret plists
@@ -51,7 +52,23 @@ jobs:
 
       - name: Run make tests
         working-directory: app
-        run: make tests
+        run: make tests RESULT_BUNDLE=$PWD/build/TestResults.xcresult
+
+      - name: "Coverage summary (Issue #95)"
+        if: success() || failure()
+        working-directory: app
+        run: |
+          if [ ! -d build/TestResults.xcresult ]; then
+            echo "::warning::TestResults.xcresult が無いため coverage summary をスキップ"
+            exit 0
+          fi
+          {
+            echo "## Code Coverage"
+            echo '```'
+            xcrun xccov view --report --only-targets build/TestResults.xcresult
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          xcrun xccov view --report --only-targets build/TestResults.xcresult | grep -E "LeafTimer\.app" || true
 
       - name: Sort gate (pbxproj が未 sort なら fail)
         run: git diff --exit-code -- app/LeafTimer.xcodeproj/project.pbxproj
