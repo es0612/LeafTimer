@@ -38,16 +38,6 @@
                ReferencedContainer = "container:LeafTimer.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3864B7E82494D82300948ACA"
-               BuildableName = "LeafTimerUITests.xctest"
-               BlueprintName = "LeafTimerUITests"
-               ReferencedContainer = "container:LeafTimer.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
