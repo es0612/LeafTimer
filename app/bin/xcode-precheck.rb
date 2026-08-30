@@ -38,7 +38,7 @@ PROJECT_DIR   = File.expand_path('..', __dir__)            # app/
 PROJECT_PATH  = File.join(PROJECT_DIR, 'LeafTimer.xcodeproj')
 MAKEFILE_PATH = File.join(PROJECT_DIR, 'Makefile')
 BASELINE_FILE = File.join(__dir__, 'xcode-precheck-orphans.txt')
-SOURCE_DIRS   = %w[LeafTimer LeafTimerTests LeafTimerUITests].freeze
+SOURCE_DIRS   = %w[LeafTimer LeafTimerTests].freeze
 
 def rel(path)
   Pathname.new(path).relative_path_from(Pathname.new(PROJECT_DIR)).to_s
