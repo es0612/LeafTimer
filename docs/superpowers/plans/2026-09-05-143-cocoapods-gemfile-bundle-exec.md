@@ -622,13 +622,16 @@ PR の pr-tests run に対して `gh run view <run-id> --log` を取り、次の
 | `Set up Ruby + Bundler (CocoaPods は Gemfile.lock 固定)` | `ruby 3.4.4` を含む行 (setup-ruby が `.ruby-version` を読んだ証拠) | Ruby 固定が効いている |
 | `Pod install (bundle exec)` | `cocoapods via bundler: 1.16.2` | Podfile.lock と同じ CocoaPods が bundle 経由で動いた |
 | `Run make tests` | `✅ cocoapods-lock-check passed (1.16.2)` | drift チェッカーが CI で live |
+| `Run make tests` | `✅ targets: no new orphan Swift files` | precheck の orphan gate (#15) が CI で live (`⚠️ targets: orphan check skipped` なら final review I-1 の回帰) |
 
 取り方:
 
 ```bash
 RUN_ID=$(gh pr checks <PR> --json name,link --jq '.[] | select(.name=="pr-tests") | .link' | sed 's#.*/runs/##; s#/job.*##')
-gh run view "$RUN_ID" --log | /usr/bin/grep -E "ruby 3\.4\.4|cocoapods via bundler: 1\.16\.2|cocoapods-lock-check passed" | head
+gh run view "$RUN_ID" --log | /usr/bin/grep -E "ruby 3\.4\.4|cocoapods via bundler: 1\.16\.2|cocoapods-lock-check passed|targets: no new orphan|targets: orphan check skipped" | head
 ```
+
+`targets: orphan check skipped` が 1 行でも出たら不合格 (final review I-1)。
 
 加えて `Sort gate` step が pass していること (`bundle exec pod install` が pbxproj を動かしていない = #141/#143 の本来の目的)。
 

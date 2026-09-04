@@ -48,6 +48,10 @@ playground.xcworkspace
 
 .build/
 
+# Bundler (Issue #143): setup-ruby の bundler-cache が app/.bundle/config と app/vendor/bundle/ を生成する
+.bundle/
+vendor/bundle/
+
 # CocoaPods
 Pods/
 *.xcworkspace

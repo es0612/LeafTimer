@@ -59,9 +59,13 @@ jobs:
           echo "cocoapods via bundler: $(bundle exec pod --version)"
           bundle exec pod install
 
+      # Issue #143 final review: bundle exec が RUBYOPT / BUNDLE_GEMFILE を子プロセスに継承させるので、
+      # make tests 内の `ruby bin/*.rb` (precheck の xcodeproj、minitest) が Gemfile.lock の gem を見る。
+      # 素の make だと setup-ruby の vendor/bundle 隔離により xcodeproj が LoadError → orphan gate が
+      # `⚠️ skipped` のまま green になる (silent 回帰)。
       - name: Run make tests
         working-directory: app
-        run: make tests RESULT_BUNDLE=$PWD/build/TestResults.xcresult
+        run: bundle exec make tests RESULT_BUNDLE=$PWD/build/TestResults.xcresult
 
       - name: "Coverage summary (Issue #95)"
         if: success() || failure()
