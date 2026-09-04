@@ -1,3 +1,6 @@
 source "https://rubygems.org"
 
-gem "fastlane"
+# Issue #143: CI (pr-tests.yml の setup-ruby) とローカル (make install) が
+# 同じ CocoaPods を使うように Bundler で固定する。バージョンは
+# Podfile.lock の `COCOAPODS:` 行と一致させる (make cocoapods-lock-check が検証)。
+gem "cocoapods", "1.16.2"
