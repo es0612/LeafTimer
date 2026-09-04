@@ -79,7 +79,7 @@ format-check:
 quality: lint format-check
 	@echo "Code quality checks completed"
 
-tests: precheck localization-check dynamic-type-check sort lint unit-tests
+tests: precheck cocoapods-lock-check localization-check dynamic-type-check sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta
@@ -98,3 +98,10 @@ dynamic-type-check:
 	@echo "Running dynamic-type-check..."
 	@ruby bin/test_dynamic_type_check.rb
 	@ruby bin/dynamic-type-check.rb
+
+# Issue #143: Gemfile.lock の cocoapods 版と Podfile.lock の COCOAPODS: 行の一致を検証する。
+# ずれると bundle exec pod install が pbxproj を別形式で再シリアライズし、CI の sort gate が偽 fail する。
+cocoapods-lock-check:
+	@echo "Running cocoapods-lock-check..."
+	@ruby bin/test_cocoapods_lock_check.rb
+	@ruby bin/cocoapods-lock-check.rb
