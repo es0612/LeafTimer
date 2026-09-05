@@ -34,6 +34,10 @@
 
 ---
 
+## 想定済みの分岐 (Task 2 Step 5 が失敗した時)
+
+Pods は 0.10.2、SPM は 0.10.3 で解決されており、これまでコンパイラがどちらのモジュールを拾っていたかは不明。Step 5 でテストのコンパイルエラー (ViewInspector API 差分) が出た場合の ruling: `cd app && bundle exec pod update ViewInspector` で Pods 側を上げる (Podfile に制約なし、`COCOAPODS:` 行は変わらないので `cocoapods-lock-check` は green のまま)。`Podfile.lock` を Task 2 の commit に含める。それでも失敗するなら BLOCKED 報告。
+
 ## 事前条件 (コントローラが Task 2 dispatch 前に確認)
 
 - [ ] `git ls-files app/LeafTimer.xcworkspace/xcshareddata/swiftpm/Package.resolved` が空 (ユーザーが `! git rm` 済み)
@@ -273,7 +277,7 @@ exit 1
 - [ ] **Step 6: CLI を本物の pbxproj で GREEN、壊した fixture で RED にする (ルール 8)**
 
 ```bash
-cd /Users/shinya/workspace/claude/LeafTimer/app && chmod +x bin/pbxproj-structure-check.rb && ruby bin/pbxproj-structure-check.rb && FX=/private/tmp/claude-501/-Users-shinya-workspace-claude-LeafTimer/c932d6f5-09e8-49c6-b657-a7691d795c50/scratchpad/pbxfix && rm -rf "$FX" && mkdir -p "$FX" && cp -R LeafTimer.xcodeproj "$FX/Broken.xcodeproj" && sed -i '' 's|3857B9B424A7725000B21CCD /\* Assets.xcassets \*/,|3857B9B424A7725000B21CCD /* Assets.xcassets */, DEADBEEFDEADBEEFDEADBEEF /* bogus */,|' "$FX/Broken.xcodeproj/project.pbxproj" && { ruby bin/pbxproj-structure-check.rb "$FX/Broken.xcodeproj" 2>&1; echo "mutated exit=$?"; }
+cd /Users/shinya/workspace/claude/LeafTimer/app && chmod +x bin/pbxproj-structure-check.rb && ruby bin/pbxproj-structure-check.rb && FX=$(mktemp -d /private/tmp/claude-501/-Users-shinya-workspace-claude-LeafTimer/c932d6f5-09e8-49c6-b657-a7691d795c50/scratchpad/pbxfix.XXXXXX) && cp -R LeafTimer.xcodeproj "$FX/Broken.xcodeproj" && sed -i '' 's|3857B9B424A7725000B21CCD /\* Assets.xcassets \*/,|3857B9B424A7725000B21CCD /* Assets.xcassets */, DEADBEEFDEADBEEFDEADBEEF /* bogus */,|' "$FX/Broken.xcodeproj/project.pbxproj" && { ruby bin/pbxproj-structure-check.rb "$FX/Broken.xcodeproj" 2>&1; echo "mutated exit=$?"; }
 ```
 
 Expected: 1 行目 `✅ pbxproj-structure-check passed (232 objects, 0 dangling, 0 orphan TargetAttributes)` (Task 2 前なので 232)。続いて Xcodeproj の `attempted to initialize an object with an unknown UUID` 警告、`❌ pbxproj-structure-check failed: 1 dangling UUID(s), 0 orphan TargetAttributes`、`   dangling: DEADBEEFDEADBEEFDEADBEEF`、`mutated exit=1`。tracked ファイルは触らない (`git status --short` に `LeafTimer.xcodeproj` が出ないこと)。
@@ -410,15 +414,15 @@ cd /Users/shinya/workspace/claude/LeafTimer/app && make pbxproj-structure-check 
 
 Expected: `✅ pbxproj-structure-check passed (229 objects, 0 dangling, 0 orphan TargetAttributes)`、`PBXPROJ_STABLE_ACROSS_ROUNDS`。`git status --short` は `M app/LeafTimer.xcodeproj/project.pbxproj` と staged `D … Package.resolved` の 2 つだけ (Podfile.lock / Pods 配下に変化なし。`?? …Package.resolved` が再生成されていないこと)。
 
-- [ ] **Step 5: fresh DerivedData で `xcodebuild test` を回し、SPM checkout が無く Pods 版だけがリンクされることを実測する** (Bash timeout 600000)
+- [ ] **Step 5: fresh DerivedData で `xcodebuild test` を回し、SPM checkout が無く Pods 版だけがリンクされることを実測する** (cold build は Firebase / GoogleMobileAds も含むため 10 分を超えうる — `run_in_background: true` で scratchpad のログにリダイレクトし、完了通知後にログを読む)
 
 ```bash
-cd /Users/shinya/workspace/claude/LeafTimer/app && DD=/private/tmp/claude-501/-Users-shinya-workspace-claude-LeafTimer/c932d6f5-09e8-49c6-b657-a7691d795c50/scratchpad/dd73 && rm -rf "$DD" && set -o pipefail && xcodebuild -workspace LeafTimer.xcworkspace -scheme LeafTimer -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" -derivedDataPath "$DD" build test 2>&1 | /usr/bin/grep -E "\*\* TEST (SUCCEEDED|FAILED) \*\*|Executed [0-9]+ tests|error:|Fetching|Resolved source packages" | tail -8; echo "--- SourcePackages ---"; ls "$DD/SourcePackages/checkouts" 2>&1; echo "--- Pods ViewInspector product ---"; ls -d "$DD"/Build/Products/Debug-iphonesimulator/ViewInspector/ViewInspector.framework 2>&1
+cd /Users/shinya/workspace/claude/LeafTimer/app && DD=$(mktemp -d /private/tmp/claude-501/-Users-shinya-workspace-claude-LeafTimer/c932d6f5-09e8-49c6-b657-a7691d795c50/scratchpad/dd73.XXXXXX) && echo "DD=$DD" && set -o pipefail && xcodebuild -workspace LeafTimer.xcworkspace -scheme LeafTimer -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" -derivedDataPath "$DD" build test 2>&1 | /usr/bin/grep -E "\*\* TEST (SUCCEEDED|FAILED) \*\*|Executed [0-9]+ tests|error:|Fetching|Resolved source packages" | tail -8; echo "--- SourcePackages ---"; ls "$DD/SourcePackages/checkouts" 2>&1; echo "--- Pods ViewInspector product ---"; ls -d "$DD"/Build/Products/Debug-iphonesimulator/ViewInspector/ViewInspector.framework 2>&1; echo "--- SPM build product (must be absent) ---"; ls -d "$DD"/Build/Products/Debug-iphonesimulator/ViewInspector.swiftmodule "$DD"/Build/Products/Debug-iphonesimulator/ViewInspector.o 2>&1
 ```
 
-Expected: `** TEST SUCCEEDED **` があり `** TEST FAILED **` / `error:` / `Fetching` / `Resolved source packages` が無い。`Executed 199 tests, with 2 tests skipped and 0 failures` (2026-09-05 時点の件数。増減は可、failures 0 が条件)。`ls "$DD/SourcePackages/checkouts"` は `No such file or directory` (SPM checkout ゼロ)、Pods 版 `ViewInspector.framework` のパスが表示される。`rm -rf "$DD"` は scratchpad 内の自分が作るディレクトリなのでルール 14 の対象外。
+Expected: `** TEST SUCCEEDED **` があり `** TEST FAILED **` / `error:` / `Fetching` / `Resolved source packages` が無い。`Executed 199 tests, with 2 tests skipped and 0 failures` (2026-09-05 時点の件数。増減は可、failures 0 が条件)。`ls "$DD/SourcePackages/checkouts"` は `No such file or directory` (SPM checkout ゼロ)、Pods 版 `ViewInspector.framework` のパスが表示される。SPM のビルド成果物 `ViewInspector.swiftmodule` / `ViewInspector.o` (既定 DerivedData には存在する) は `No such file or directory` 2 行。
 
-- [ ] **Step 6: 既定の DerivedData でも `make tests` が通る** (Bash timeout 600000)
+- [ ] **Step 6: 既定の DerivedData でも `make tests` が通る** (`run_in_background: true` + scratchpad ログ)
 
 ```bash
 cd /Users/shinya/workspace/claude/LeafTimer/app && make tests 2>&1 | /usr/bin/grep -E "\*\* TEST (SUCCEEDED|FAILED) \*\*|Executed [0-9]+ tests|✅|❌|Error 6|No rule to make" | tail -12
