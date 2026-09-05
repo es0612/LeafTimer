@@ -1,5 +1,8 @@
 # Pods/ is intentionally not committed and may be absent locally.
 # Run `make install` to fetch dependencies before the first build.
+# Issue #143: CocoaPods は app/Gemfile.lock で固定し bundle exec 経由で動かす。
+# 初回は `rbenv install $(cat .ruby-version) && bundle install` が必要 (CI は
+# .github/workflows/pr-tests.yml の setup-ruby が同じ .ruby-version / Gemfile.lock を読む)。
 
 # Simulator used by `make unit-tests`, validated by `make precheck`, and read
 # back by fastlane (app/fastlane/Fastfile). Single source of truth — Issue #80.
@@ -12,9 +15,9 @@
 SIMULATOR ?= iPhone 17
 
 install:
-	pod install
+	bundle exec pod install
 update:
-	pod update
+	bundle exec pod update
 
 # Issue #95: coverage は常に計測する。RESULT_BUNDLE を渡した時だけ .xcresult を書き出す
 # (CI が xccov で summary を作る)。xcodebuild は既存の bundle があると失敗するので事前に消す。
@@ -79,7 +82,7 @@ format-check:
 quality: lint format-check
 	@echo "Code quality checks completed"
 
-tests: precheck localization-check dynamic-type-check sort lint unit-tests
+tests: precheck cocoapods-lock-check localization-check dynamic-type-check sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta
@@ -98,3 +101,10 @@ dynamic-type-check:
 	@echo "Running dynamic-type-check..."
 	@ruby bin/test_dynamic_type_check.rb
 	@ruby bin/dynamic-type-check.rb
+
+# Issue #143: Gemfile.lock の cocoapods 版と Podfile.lock の COCOAPODS: 行の一致を検証する。
+# ずれると bundle exec pod install が pbxproj を別形式で再シリアライズし、CI の sort gate が偽 fail する。
+cocoapods-lock-check:
+	@echo "Running cocoapods-lock-check..."
+	@ruby bin/test_cocoapods_lock_check.rb
+	@ruby bin/cocoapods-lock-check.rb

@@ -21,10 +21,17 @@ jobs:
           xcodebuild -version
           xcrun simctl list devices available | grep "iPhone 17" || true
 
+      # Issue #143: Ruby は app/.ruby-version、gem は app/Gemfile.lock を setup-ruby が読む。
+      # bundler-cache: true が bundle install とキャッシュを行うので、以降は bundle exec pod で
+      # Podfile.lock と同じ CocoaPods が必ず動く (brew / RubyGems binstub のバージョンに依存しない)。
+      - name: Set up Ruby + Bundler (CocoaPods は Gemfile.lock 固定)
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: app
+          bundler-cache: true
+
       - name: Ensure tools (managed runner は preinstall を保証しない)
         run: |
-          which pod || brew install cocoapods
-          bash app/bin/ensure-cocoapods-version.sh
           which swiftlint || brew install swiftlint
 
       - name: Restore secret plists
@@ -46,15 +53,19 @@ jobs:
           key: pods-${{ runner.os }}-${{ hashFiles('app/Podfile.lock') }}
           restore-keys: pods-${{ runner.os }}-
 
-      - name: Pod install
+      - name: Pod install (bundle exec)
         working-directory: app
         run: |
-          want="$(sed -n 's/^COCOAPODS: *//p' Podfile.lock | tr -d '[:space:]')"
-          pod "_${want}_" install
+          echo "cocoapods via bundler: $(bundle exec pod --version)"
+          bundle exec pod install
 
+      # Issue #143 final review: bundle exec が RUBYOPT / BUNDLE_GEMFILE を子プロセスに継承させるので、
+      # make tests 内の `ruby bin/*.rb` (precheck の xcodeproj、minitest) が Gemfile.lock の gem を見る。
+      # 素の make だと setup-ruby の vendor/bundle 隔離により xcodeproj が LoadError → orphan gate が
+      # `⚠️ skipped` のまま green になる (silent 回帰)。
       - name: Run make tests
         working-directory: app
-        run: make tests RESULT_BUNDLE=$PWD/build/TestResults.xcresult
+        run: bundle exec make tests RESULT_BUNDLE=$PWD/build/TestResults.xcresult
 
       - name: "Coverage summary (Issue #95)"
         if: success() || failure()
