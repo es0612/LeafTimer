@@ -38,6 +38,7 @@ precheck:
 	@echo "Running xcode-precheck..."
 	@ruby bin/test_xcode_precheck.rb
 	@ruby bin/xcode-precheck.rb
+	@$(MAKE) pbxproj-structure-check
 
 sort:
 	@perl ./bin/sortXcodeProject "LeafTimer.xcodeproj/project.pbxproj"
@@ -108,3 +109,10 @@ cocoapods-lock-check:
 	@echo "Running cocoapods-lock-check..."
 	@ruby bin/test_cocoapods_lock_check.rb
 	@ruby bin/cocoapods-lock-check.rb
+
+# Issue #73 / ルール 28: pbxproj の dangling UUID と orphan TargetAttributes を検出する。
+# xcodeproj gem 経由の target / SPM 参照削除は文字列 grep で見えない残骸を残す (PR #140 で実測)。
+pbxproj-structure-check:
+	@echo "Running pbxproj-structure-check..."
+	@ruby bin/test_pbxproj_structure_check.rb
+	@ruby bin/pbxproj-structure-check.rb
