@@ -35,9 +35,12 @@ unless File.directory?(path)
   exit 1
 end
 
-# Xcodeproj discards unknown UUIDs on open (with a warning on stderr), so the
-# defined set comes from the parsed object graph while the referenced set is
-# taken from the raw text — that asymmetry is what exposes dangling refs.
+# 参照 UUID ⊆ 定義 UUID の破れは 2 クラスある。(a) 参照だけ残り定義が消えた dangling
+# 参照、(b) 定義は残るが rootObject から到達できない残骸オブジェクト (PR #140 の
+# XCBuildConfiguration)。Xcodeproj::Project.open は rootObject から辿れるオブジェクトしか
+# instantiate しないので、(a) も (b) も referenced (raw text) - defined (parsed graph) と
+# して同じ経路で表面化する。defined を raw text 側から取るように変えると (b) の検出が
+# 静かに消えるので変えないこと (Issue #73 final review M-1)。
 project = Xcodeproj::Project.open(path)
 text    = File.read(File.join(path, 'project.pbxproj'))
 
@@ -53,8 +56,8 @@ if report[:ok]
   exit 0
 end
 
-warn "❌ pbxproj-structure-check failed: #{report[:dangling].size} dangling UUID(s), #{report[:orphan_target_attrs].size} orphan TargetAttributes"
-report[:dangling].each { |u| warn "   dangling: #{u}" }
+warn "❌ pbxproj-structure-check failed: #{report[:dangling].size} dangling/unreachable UUID(s), #{report[:orphan_target_attrs].size} orphan TargetAttributes"
+report[:dangling].each { |u| warn "   dangling/unreachable: #{u}" }
 report[:orphan_target_attrs].each { |u| warn "   orphan TargetAttributes: #{u}" }
 warn '   pbxproj を手編集せず、xcodeproj gem で残骸オブジェクトを remove_from_project してから `make sort` する (ルール 28)'
 exit 1
