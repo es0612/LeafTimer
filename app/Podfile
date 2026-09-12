@@ -10,10 +10,14 @@ target 'LeafTimer' do
 
   target 'LeafTimerTests' do
     inherit! :search_paths
-    # Pods for testing
-    pod 'Quick'
-    pod 'Nimble'
-    pod 'ViewInspector'
+    # Pods for testing (Issue #149 / CLAUDE.md ルール 43)
+    # 制約を入れる理由: 引数なしの `bundle exec pod update` が major 越えまで
+    # 一気に上げうる。ViewInspector は patch 差 0.10.2 → 0.10.3 だけで
+    # ModernTimerViewSpec の accessibility テスト 2 件の結果が変わった実例が
+    # あるため (#73 / PR #150)、ViewInspector のみ patch まで固定する。
+    pod 'Quick', '~> 7.6'
+    pod 'Nimble', '~> 13.7'
+    pod 'ViewInspector', '~> 0.10.3'
   end
 
 end
