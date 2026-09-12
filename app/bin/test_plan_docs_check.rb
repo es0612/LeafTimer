@@ -79,4 +79,20 @@ class PlanDocsCheckTest < Minitest::Test
     assert_equal 3, v.size
     assert_equal %w[aa-bad.md zz-bad.md no-date.md], v.map { |x| x[:name] }
   end
+
+  # --- fix round 1 (code quality review I-1): companion suffix misattribution ---
+
+  def test_root_rejects_invalid_companion_suffix_with_companion_reason
+    # date / issue-NN / slug はすべて正しいので、reason は slug ではなく
+    # companion suffix (アンダースコアが不正) を指すべき。
+    v = violations(root: ['2026-09-12-issue-84-slug.SKILL_source.md'])
+    assert_equal 1, v.size
+    assert_includes v[0][:reason], 'companion'
+  end
+
+  def test_root_still_accepts_valid_companion_suffix
+    # SLUG_OK の追加で ROOT_NAME 自体が緩まっていないことの確認 (test_root_accepts_companion_suffix と重複だが
+    # 新しい root_reason 分岐が既存の GREEN ケースを壊していないことを明示する)。
+    assert_empty violations(root: [VALID_COMPANION])
+  end
 end

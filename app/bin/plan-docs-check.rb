@@ -21,7 +21,10 @@ REPO_ROOT = File.expand_path('../..', __dir__) # app/bin -> app -> repo root
 def md_names(dir)
   return [] unless File.directory?(dir)
 
-  Dir.children(dir).select { |n| n.end_with?('.md') && File.file?(File.join(dir, n)) }
+  # 拡張子の比較は大文字小文字を無視する: `.MD` を黙って対象外にすると
+  # 命名 checker として本末転倒 (ROOT_NAME/ARCHIVE_NAME 側は小文字 `.md` を
+  # 要求したままなので、大文字拡張子はここを通過したうえで違反として拾われる)。
+  Dir.children(dir).select { |n| n.downcase.end_with?('.md') && File.file?(File.join(dir, n)) }
 end
 
 base = ARGV[0] || File.join(REPO_ROOT, 'docs', 'superpowers')
@@ -36,6 +39,15 @@ violations = []
 
 %w[plans specs].each do |kind|
   root_dir = File.join(base, kind)
+  # plans/ specs/ 自体が無いと md_names は [] を返すだけなので、何も検出せず
+  # exit 0 になる vacuous green を hard fail で塞ぐ (dynamic-type-check.rb の
+  # SOURCE_DIR ガードと同型)。archive/ は新規チェックアウトに無くて正常なので
+  # 対象外。
+  unless File.directory?(root_dir)
+    warn "❌ plan-docs-check failed: #{root_dir} が無い"
+    exit 1
+  end
+
   root_names = md_names(root_dir)
   archive_names = md_names(File.join(root_dir, 'archive'))
   counts[kind] = { root: root_names.size, archive: archive_names.size }

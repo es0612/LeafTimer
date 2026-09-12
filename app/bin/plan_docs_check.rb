@@ -21,11 +21,20 @@ module PlanDocsCheck
     \A
     \d{4}-\d{2}-\d{2}-            # date prefix
     issue-\d+(?:-\d+)*-           # issue-NN, or issue-NN-NN... for a bundle
-    [a-z0-9]+(?:-[a-z0-9]+)*      # lowercase hyphenated slug
+    [a-z0-9]+(?:-[a-z0-9]+)*      # lowercase hyphenated slug (digits-only is
+                                  # accepted on purpose — see note below)
     (?:\.[A-Za-z][A-Za-z0-9-]*)?  # optional companion suffix, e.g. .SKILL-source
     \.md
     \z
   /x.freeze
+
+  # Note on ROOT_NAME's slug class: [a-z0-9]+ accepts a purely numeric segment,
+  # so "2026-09-12-issue-84-123.md" parses as issue 84 with slug "123". This is
+  # an accepted ambiguity, not an oversight — digits have to be legal in the
+  # slug position because the bundle form (issue-86-78-149-84-slug) already
+  # needs digits directly after "issue-", and disallowing a numeric-only slug
+  # would require distinguishing the two by context. Do not "fix" this by
+  # forbidding digit-only slugs; it would break bundle names.
 
   # Archive name: the date prefix only. History predates the strict rule and is
   # not renamed (triage decision 2026-09-12).
@@ -34,6 +43,9 @@ module PlanDocsCheck
   # Sub-patterns used to tell the caller which part of the name is wrong.
   DATE_PREFIX = /\A\d{4}-\d{2}-\d{2}-/.freeze
   ISSUE_PREFIX = /\A\d{4}-\d{2}-\d{2}-issue-\d+(?:-\d+)*-/.freeze
+  # date + issue-NN + slug までが正しいか (companion suffix の形は問わない)。
+  # root_reason がどの構成要素を指して失敗を報告するかを分けるためだけに使う。
+  SLUG_OK = /\A\d{4}-\d{2}-\d{2}-issue-\d+(?:-\d+)*-[a-z0-9]+(?:-[a-z0-9]+)*(?:\..*)?\.md\z/.freeze
 
   # [{name:, scope: :root|:archive, reason:}] — empty when everything conforms.
   # Root violations come first, each group sorted by name so output is stable.
@@ -52,12 +64,14 @@ module PlanDocsCheck
     list
   end
 
-  # Which part of a root name failed. Ordered widest-first so the message points
-  # at the outermost problem rather than a downstream symptom.
+  # Which of the four components (date / issue-NN / slug / companion suffix)
+  # failed. Ordered widest-first so the message points at the outermost
+  # problem rather than a downstream symptom.
   def self.root_reason(name)
     return '日付プレフィックス YYYY-MM-DD- で始まっていない' unless DATE_PREFIX.match?(name)
     return 'issue-NN が無い (稼働中の plan/spec は対応 issue 番号を名前に持つ)' unless ISSUE_PREFIX.match?(name)
+    return 'slug が小文字英数とハイフンのみになっていない' unless SLUG_OK.match?(name)
 
-    'slug が小文字英数とハイフンのみになっていない'
+    'companion suffix が英字始まりの英数ハイフンになっていない (例: .SKILL-source)'
   end
 end
