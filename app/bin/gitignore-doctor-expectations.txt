@@ -17,6 +17,8 @@ keep:   app/LeafTimer.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
 # --- #9: plan docs must NOT be swallowed by an unanchored 'plans' (DIR) ---
 keep:   docs/superpowers/plans/
+keep:   docs/superpowers/plans/archive/
+keep:   docs/superpowers/specs/archive/
 
 # --- paths that genuinely must stay ignored (DIRs → trailing slash) ---
 ignore: app/Pods/

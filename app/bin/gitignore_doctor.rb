@@ -4,7 +4,7 @@
 # (see test_gitignore_doctor.rb). The CLI glue lives in bin/gitignore-doctor.rb.
 #
 # Oracle: `git check-ignore --no-index -v -- <path>` OUTPUT (not exit code).
-# See docs/superpowers/specs/2026-06-01-gitignore-doctor-design.md and MEMORY
+# See docs/superpowers/specs/archive/2026-06-01-gitignore-doctor-design.md and MEMORY
 # feedback_gitignore_check_ignore_semantics.md for why exit code is unusable.
 module GitignoreDoctor
   EXPECTATION_LINE = /\A(keep|ignore):\s*(.+)\z/.freeze

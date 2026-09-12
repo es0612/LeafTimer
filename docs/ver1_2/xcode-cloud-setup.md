@@ -1,6 +1,6 @@
 # Xcode Cloud TestFlight 配信セットアップガイド
 
-> 関連: Issue #13 / spec `docs/superpowers/specs/2026-05-23-xcode-cloud-migration-design.md` / `app/ci_scripts/ci_post_clone.sh`
+> 関連: Issue #13 / spec `docs/superpowers/specs/archive/2026-05-23-xcode-cloud-migration-design.md` / `app/ci_scripts/ci_post_clone.sh`
 
 LeafTimer の TestFlight 配信を **Xcode Cloud** で自動化するための初回セットアップ手順。コードに含まれない Apple Developer / App Store Connect 側の UI 操作をまとめる。
 
@@ -141,5 +141,5 @@ bundle exec fastlane beta
 
 - [Apple: Configuring Xcode Cloud Workflows](https://developer.apple.com/documentation/xcode/configuring-the-build-environment-of-an-xcode-cloud-workflow)
 - [Apple: Custom Build Scripts in Xcode Cloud](https://developer.apple.com/documentation/xcode/writing-custom-build-scripts)
-- spec: `docs/superpowers/specs/2026-05-23-xcode-cloud-migration-design.md`
+- spec: `docs/superpowers/specs/archive/2026-05-23-xcode-cloud-migration-design.md`
 - 関連 PR: #24 (Issue #13 Part A, AdMob 切替)

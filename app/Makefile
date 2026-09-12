@@ -83,7 +83,7 @@ format-check:
 quality: lint format-check
 	@echo "Code quality checks completed"
 
-tests: precheck cocoapods-lock-check localization-check dynamic-type-check sort lint unit-tests
+tests: precheck cocoapods-lock-check localization-check dynamic-type-check plan-docs-check sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta
@@ -116,3 +116,11 @@ pbxproj-structure-check:
 	@echo "Running pbxproj-structure-check..."
 	@ruby bin/test_pbxproj_structure_check.rb
 	@ruby bin/pbxproj-structure-check.rb
+
+# Issue #84 / ルール 44: docs/superpowers/{plans,specs} の命名規則を検証する。
+# 直下 = 稼働中なので YYYY-MM-DD-issue-NN[-NN…]-slug.md を厳格に要求し、
+# archive/ = merge 済みの歴史なので日付プレフィックスのみを要求する。
+plan-docs-check:
+	@echo "Running plan-docs-check..."
+	@ruby bin/test_plan_docs_check.rb
+	@ruby bin/plan-docs-check.rb
