@@ -10,7 +10,7 @@
 
 - セッション開始時に issue から作業を選ぶ時は `daily-issue-triage` skill を使う。
 - 機能・修正は brainstorming → writing-plans → subagent-driven-development (または executing-plans) → finishing-a-development-branch の流れ。
-- plan は `docs/superpowers/plans/YYYY-MM-DD-<feature>.md` に保存し、ブランチ作成直後・実装より前の最初の commit にする。spec は `docs/superpowers/specs/`。
+- plan は `docs/superpowers/plans/YYYY-MM-DD-issue-NN[-NN…]-slug.md` (ルール 44) に保存し、ブランチ作成直後・実装より前の最初の commit にする。spec も同じ命名で `docs/superpowers/specs/` に保存する。**`writing-plans` / `brainstorming` skill boilerplate は旧形式 (`YYYY-MM-DD-<feature>.md` / `YYYY-MM-DD-<topic>-design.md`) のパスを出す** — `plan-docs-check` (`make tests` 内、ルール 44) はこれを red にするので、skill が作った直後に厳格な命名へリネームしてから最初の commit にする。
 - 旧 Kiro スタイル SDD (.kiro/) と Serena MCP (.serena/) は 2026-08-15 に廃止した (#81)。経緯と各ルールの事故詳細は `docs/claude-lessons-archive.md` を参照。
 
 ## 常時ルール
@@ -74,7 +74,7 @@
 40. スキル化候補はまず「機械的 (script で検証可能) か判断的か」を見極め、機械的かつプロジェクト固有なら doc スキルでなく repo 内スクリプト + make ターゲットにする。
 41. コードフェンス (バッククォート 3 連) を含むファイル全文を plan 内のフェンスに埋め込まない (serialization が壊れる)。companion ファイルに分離してパス参照する。 **長い plan を Write すると末尾が silent に切れることがある** (PR #146 の plan は Task 3 途中で切れ、追記時に閉じフェンスが 1 行欠落)。plan の commit 前に `/usr/bin/grep -c '^```' <plan>` が偶数であることを確認する。
 42. レイアウト変更後のスクショで「既存デザインか回帰か」に迷ったら、`docs/ver1_2/screen/` の旧ストア掲載スクショ (6.7インチ/iPad 別) と突き合わせて判定する (#64 で実証。ユーザー確認を挟まず即断できる)。
-43. テストは **新規は XCTest**、View 構造の検証は **ViewInspector** で書く (#78)。Quick/Nimble (`*Spec.swift` 8 本) は**新規追加禁止・既存は据え置き**で、一括移行はしない。`app/Podfile` のテスト用 pod は `~>` で制約する (#149): Quick `~> 7.6` / Nimble `~> 13.7` / **ViewInspector は `~> 0.10.3` と patch まで固定** (0.10.2 → 0.10.3 の patch 差だけで `ModernTimerViewSpec` の accessibility テスト 2 件の結果が変わった実例があるため — PR #150)。
-44. plan / spec のファイル名は `YYYY-MM-DD-issue-NN[-NN…]-slug.md` (slug は小文字英数とハイフン。companion は `….SKILL-source.md` のように suffix を足す)。**`plans/` `specs/` 直下は稼働中のものだけ** — plan の最終タスクで `git mv` して `plans/archive/` へ移してから `gh pr create` する (#84。「merge 後に別 commit で片付ける」設計にすると 34 件溜まった実績がある)。`archive/` 配下は旧規則の歴史なのでリネームせず、日付プレフィックスのみを要求する。`make plan-docs-check` (tests チェーン内) がこの命名を検証する。
+43. テストは **新規は XCTest**、View 構造の検証は **ViewInspector** で書く (#78)。Quick/Nimble (`*Spec.swift` 8 本、うち Quick/Nimble は 7 本、`OnboardingViewSpec` は既に XCTest) は**新規追加禁止・既存は据え置き**で、一括移行はしない。`app/Podfile` のテスト用 pod は `~>` で制約する (#149): Quick `~> 7.6` / Nimble `~> 13.7` / **ViewInspector は `~> 0.10.3`** (#150 で 0.10.2 → 0.10.3 の patch 差だけで `ModernTimerViewSpec` の accessibility テスト 2 件の結果が変わった実例があるため、Quick/Nimble より下限を厳しくしてある)。**注意: `~>` は `>= 0.10.3, < 0.11.0` を意味し patch 更新は素通りする** — 実際の固定は `Podfile.lock` が担っており、`bundle exec pod update ViewInspector` を明示的に叩かない限り上がらない。patch まで完全に固定したい場合は別途 strict pin (`'0.10.3'`) の issue で検討する。
+44. plan / spec のファイル名は `YYYY-MM-DD-issue-NN[-NN…]-slug.md` (slug は小文字英数とハイフン。companion は `….SKILL-source.md` のように suffix を足す)。**`plans/` `specs/` 直下は「plan を書いてから `gh pr create` するまで」の一時置き場**で、plan の最終タスクで `git mv` して `archive/` へ移してから `gh pr create` する (#84。「merge 後に別 commit で片付ける」設計にすると 34 件溜まった実績がある)。**`archive/` は「PR 作成済み」を意味する** — merge 済みの歴史だけでなく、PR 作成後 merge 前の in-flight な plan もここに同居する。実際に稼働中かどうかはファイルの場所ではなく branch/PR の状態で判断する。旧規則で書かれた歴史はリネームせず、日付プレフィックスのみを要求する。`make plan-docs-check` (tests チェーン内) がこの命名を検証する。
 
 各ルールの事故経緯・実測データ・Issue 番号付きの詳細は `docs/claude-lessons-archive.md` を参照。

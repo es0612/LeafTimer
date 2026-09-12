@@ -80,7 +80,7 @@ struct HistoryView: View {
             // 過去 7 日グラフは 7 列 × 日付ラベルの密集レイアウトのため、
             // AX5 まで拡大すると折り返しで count と日付が判別不能になる (Issue #58 Task 7 実測)。
             // このサブツリーのみ Dynamic Type の拡大上限をかける (上の統計行は AX5 まで拡大可)。
-            // 上限値は実測で決定 (docs/superpowers/specs/2026-08-13-dynamic-type-design.md 参照)。
+            // 上限値は実測で決定 (docs/superpowers/specs/archive/2026-08-13-dynamic-type-design.md 参照)。
             .dynamicTypeSize(...DynamicTypeSize.accessibility3)
         }
     }
