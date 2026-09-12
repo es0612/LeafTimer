@@ -75,5 +75,6 @@
 41. コードフェンス (バッククォート 3 連) を含むファイル全文を plan 内のフェンスに埋め込まない (serialization が壊れる)。companion ファイルに分離してパス参照する。 **長い plan を Write すると末尾が silent に切れることがある** (PR #146 の plan は Task 3 途中で切れ、追記時に閉じフェンスが 1 行欠落)。plan の commit 前に `/usr/bin/grep -c '^```' <plan>` が偶数であることを確認する。
 42. レイアウト変更後のスクショで「既存デザインか回帰か」に迷ったら、`docs/ver1_2/screen/` の旧ストア掲載スクショ (6.7インチ/iPad 別) と突き合わせて判定する (#64 で実証。ユーザー確認を挟まず即断できる)。
 43. テストは **新規は XCTest**、View 構造の検証は **ViewInspector** で書く (#78)。Quick/Nimble (`*Spec.swift` 8 本) は**新規追加禁止・既存は据え置き**で、一括移行はしない。`app/Podfile` のテスト用 pod は `~>` で制約する (#149): Quick `~> 7.6` / Nimble `~> 13.7` / **ViewInspector は `~> 0.10.3` と patch まで固定** (0.10.2 → 0.10.3 の patch 差だけで `ModernTimerViewSpec` の accessibility テスト 2 件の結果が変わった実例があるため — PR #150)。
+44. plan / spec のファイル名は `YYYY-MM-DD-issue-NN[-NN…]-slug.md` (slug は小文字英数とハイフン。companion は `….SKILL-source.md` のように suffix を足す)。**`plans/` `specs/` 直下は稼働中のものだけ** — plan の最終タスクで `git mv` して `plans/archive/` へ移してから `gh pr create` する (#84。「merge 後に別 commit で片付ける」設計にすると 34 件溜まった実績がある)。`archive/` 配下は旧規則の歴史なのでリネームせず、日付プレフィックスのみを要求する。`make plan-docs-check` (tests チェーン内) がこの命名を検証する。
 
 各ルールの事故経緯・実測データ・Issue 番号付きの詳細は `docs/claude-lessons-archive.md` を参照。

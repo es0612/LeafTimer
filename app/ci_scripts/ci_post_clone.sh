@@ -3,7 +3,7 @@
 # Secrets (Keys.plist / GoogleService-Info.plist) を base64 Env Var から復元し、
 # CocoaPods 依存を取得する。
 #
-# 設計: docs/superpowers/specs/2026-05-23-xcode-cloud-migration-design.md
+# 設計: docs/superpowers/specs/archive/2026-05-23-xcode-cloud-migration-design.md
 # 必要な Env Var: KEYS_PLIST_BASE64, GOOGLE_SERVICE_INFO_PLIST_BASE64
 # (App Store Connect の Workflow Environment Variables に Secret 区分で登録)
 set -euo pipefail
