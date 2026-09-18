@@ -111,7 +111,7 @@ DEPENDENCIES:
   - Google-Mobile-Ads-SDK (~> 11.0)
   - Nimble (~> 13.7)
   - Quick (~> 7.6)
-  - ViewInspector (~> 0.10.3)
+  - ViewInspector (= 0.10.3)
 
 SPEC REPOS:
   trunk:
@@ -156,6 +156,6 @@ SPEC CHECKSUMS:
   Quick: b8bec97cd4b9f21da0472d45580f763b801fc353
   ViewInspector: 41ca945fbd364118b48113a8cf2b9fb528f581e0
 
-PODFILE CHECKSUM: fb1cabd3c24e97f9698a4e3c704b9cdf03bfeead
+PODFILE CHECKSUM: 2b82eee80ed7ce7490a294146ceb8398c0bfa8dc
 
 COCOAPODS: 1.16.2

@@ -4,3 +4,11 @@ source "https://rubygems.org"
 # 同じ CocoaPods を使うように Bundler で固定する。バージョンは
 # Podfile.lock の `COCOAPODS:` 行と一致させる (make cocoapods-lock-check が検証)。
 gem "cocoapods", "1.16.2"
+
+# Issue #154: bin/test_*.rb (7 本) は素の `require 'minitest/autorun'` を使うが、
+# minitest は cocoapods-core → activesupport の transitive 依存としてのみ
+# lock に入っていた。CocoaPods が activesupport を落とすと 7 本の checker の
+# unit test が全部 LoadError で壊れるため、直接の依存として宣言する。
+# `rescue LoadError` ガードは足さない — ガード付きの minitest はテストを黙って
+# スキップし、ルール 27 が警告する silent green の罠そのものになる。
+gem "minitest", "~> 5.27"
