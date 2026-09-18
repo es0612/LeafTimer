@@ -19,24 +19,29 @@
 - `grep` でファイル不在・参照ゼロを主張する検証は `/usr/bin/grep` を使う (ハーネスの `grep` は ripgrep 実装で `.gitignore` を尊重する — ルール 4)。
 - このリポジトリの default branch は **master**。作業ブランチは `feature/152-153-154-155-checker-hardening-bundle` (作成済み)。
 - **PR merge はこの plan に含めない** (ルール 22)。plan は「PR 作成まで」で切る。
-- 破壊的操作 (`rm` / `git reset` / 既存ファイルの丸ごと上書き) は行わない (ルール 14)。
+- `rm` / `git reset` / tracked ファイルの手作業での上書きは行わない (ルール 14)。mutation testing と fixture 検証は **scratchpad にコピーを作って行い、リポジトリのファイルは触らない**。`bundle install` / `bundle exec pod install` による lock ファイルの再生成はツールによる正規の更新なのでこの禁止に含まれない。
+- scratchpad は `/private/tmp/claude-501/-Users-shinya-workspace-claude-LeafTimer/5dd13b61-ad71-49d9-9d59-76fd71088059/scratchpad`。以下 `$SP` と書く。`/tmp` は使わない。
 
 ## 事前に実測済みの数値 (ルール 7)
 
-実装者はこの数値を成否判定に使う。食い違ったら止めて報告すること。
+実装者はこの数値を成否判定に使う。食い違ったら止めて報告すること。すべて本 plan に載せたテストコードを逐語で使って実測した値。
 
 | 検証 | 実測値 |
 | --- | --- |
-| Task 1 の新規テストを現行実装に当てたとき | `7 runs, 9 assertions, 3 failures, 4 errors` (7 件すべて RED) |
-| Task 1 実装後の新規テスト | `7 runs, 19 assertions, 0 failures, 0 errors` |
-| Task 1 実装後の既存テスト | `13 runs, 34 assertions, 0 failures, 0 errors` (件数・assertion 数とも現行と不変) |
+| Task 1 のテストを**現行実装**に当てたとき (RED) | `20 runs, 44 assertions, 3 failures, 4 errors, 0 skips` |
+| Task 1 実装後 (GREEN) | `20 runs, 54 assertions, 0 failures, 0 errors, 0 skips` |
 | mutation M1: `STALE_DAYS` 14 → 9999 | `1 failures` |
 | mutation M2: `STALE_DAYS` 14 → 0 | `2 failures` |
 | mutation M3: `ISSUE_PREFIX` を lookahead から末尾ハイフン要求に戻す | `1 failures` |
 | mutation M4: `return REASON_EXT unless EXT_OK.match?(name)` の 2 行を削除 | `2 failures` |
+| Task 2 の `Gemfile.lock` の差分 | **1 行だけ** (`DEPENDENCIES` に `  minitest (~> 5.27)` が増える)。`BUNDLED WITH` と PLATFORMS は不変 |
 | Task 2 後の `gitignore-doctor` | `✅ gitignore-doctor: 7 expectation(s) satisfied` (現在は 6) |
 
-**注意 (vacuous 検証の罠):** `bin/gitignore-doctor.rb` は `FIXTURE_FILE` をハードコードしており **ARGV を読まない**。別ファイルを引数に渡しても必ず repo の `bin/gitignore-doctor-expectations.txt` を読むので、「引数で fixture を差し替えて確認した」は検証になっていない。実ファイルを編集してから `make gitignore-check` で確認すること。
+**注意 1 (vacuous 検証の罠):** `bin/gitignore-doctor.rb` は `FIXTURE_FILE` をハードコードしており **ARGV を読まない**。別ファイルを引数に渡しても必ず repo の `bin/gitignore-doctor-expectations.txt` を読むので、「引数で fixture を差し替えて確認した」は検証になっていない。実ファイルを編集してから `make gitignore-check` で確認すること。
+
+**注意 2 (bundler のバージョン):** `app/` では rbenv 経由で ruby 3.4.4 / bundler 2.6.7 が使われる (`app/.ruby-version`)。system ruby の bundler 2.1.4 で `bundle lock` を走らせると `PLATFORMS` の文字列が `aarch64-linux-gnu` → `aarch64-linux` のように書き換わり、意図しない 8 行のノイズが出る。必ず `app/` を cwd にして実行し、`bundle --version` が `2.6.7` であることを確認すること。
+
+**注意 3 (`make tests` のチェーン):** `app/Makefile:86` の `tests` は `precheck cocoapods-lock-check localization-check dynamic-type-check plan-docs-check sort lint unit-tests`。**`gitignore-check` はこのチェーンに入っていない**ので、`make tests` の出力に gitignore の ✅ 行を期待してはいけない。Task 2 / Task 4 で明示的に `make gitignore-check` を叩く。
 
 ---
 
@@ -116,7 +121,9 @@
 
 Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -5`
 
-Expected: 既存 13 件は通り、新規 7 件が落ちる。実測済みの内訳は新規分だけで `3 failures, 4 errors` (`stale` 未定義の `NoMethodError` が 4 件、reason 文字列の不一致が 3 件)。合計は `20 runs, 3 failures, 4 errors`。
+Expected: `20 runs, 44 assertions, 3 failures, 4 errors, 0 skips`
+
+内訳は既存 13 件が全部通り、新規 7 件が落ちる (`stale` 未定義の `NoMethodError` が 4 件、reason 文字列の不一致が 3 件)。
 
 **この数値と違ったら止めて報告すること** (別の原因で赤くなっている可能性がある)。
 
@@ -218,44 +225,50 @@ require 'date'
 
 Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -3`
 
-Expected: `20 runs, 53 assertions, 0 failures, 0 errors, 0 skips`
+Expected: `20 runs, 54 assertions, 0 failures, 0 errors, 0 skips`
 
-(既存 13 runs / 34 assertions + 新規 7 runs / 19 assertions。既存分の件数が変わっていたら `violations` のシグネチャを壊している。)
+(既存 13 件の assertion 数が減っていたら `violations` のシグネチャを壊している。)
 
 - [ ] **Step 5: mutation で「壊すと赤くなる」ことを実証する (ルール 8)**
 
-4 つの mutation を 1 つずつ入れてテストを走らせ、毎回元に戻す。各 mutation の期待 failure 数は実測済み。
+**リポジトリのファイルは一切触らない。** scratchpad にコピーを作り、そこを壊してテストを走らせる。`test_plan_docs_check.rb` の `require_relative 'plan_docs_check'` は同じディレクトリを見るので、コピー同士が組になる。
 
 ```bash
-cd /Users/shinya/workspace/claude/LeafTimer/app
-cp bin/plan_docs_check.rb /tmp/plan_docs_check.good.rb
+SP=/private/tmp/claude-501/-Users-shinya-workspace-claude-LeafTimer/5dd13b61-ad71-49d9-9d59-76fd71088059/scratchpad
+mkdir -p "$SP/mutate"
+cp /Users/shinya/workspace/claude/LeafTimer/app/bin/plan_docs_check.rb "$SP/mutate/good.rb"
+cp /Users/shinya/workspace/claude/LeafTimer/app/bin/test_plan_docs_check.rb "$SP/mutate/test_plan_docs_check.rb"
 
-# M1: 閾値を実質無限大に → 滞留を一切検出しなくなる (期待 1 failures)
-sed -i '' 's/STALE_DAYS = 14/STALE_DAYS = 9999/' bin/plan_docs_check.rb
-bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -1
-cp /tmp/plan_docs_check.good.rb bin/plan_docs_check.rb
+mutate() {  # $1 = sed 式, $2 = ラベル
+  cp "$SP/mutate/good.rb" "$SP/mutate/plan_docs_check.rb"
+  sed -i '' "$1" "$SP/mutate/plan_docs_check.rb"
+  printf '%s: ' "$2"
+  (cd /Users/shinya/workspace/claude/LeafTimer/app && bundle exec ruby "$SP/mutate/test_plan_docs_check.rb" 2>&1 | tail -1)
+}
 
-# M2: 閾値を 0 に → 新しい plan まで滞留扱いになる (期待 2 failures)
-sed -i '' 's/STALE_DAYS = 14/STALE_DAYS = 0/' bin/plan_docs_check.rb
-bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -1
-cp /tmp/plan_docs_check.good.rb bin/plan_docs_check.rb
-
-# M4: 拡張子分岐を削除 (root_reason と archive_reason の 2 行) (期待 2 failures)
-sed -i '' '/return REASON_EXT unless EXT_OK.match?(name)/d' bin/plan_docs_check.rb
-bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -1
-cp /tmp/plan_docs_check.good.rb bin/plan_docs_check.rb
+mutate 's/STALE_DAYS = 14/STALE_DAYS = 9999/'                        'M1 閾値9999 (期待 1 failures)'
+mutate 's/STALE_DAYS = 14/STALE_DAYS = 0/'                           'M2 閾値0 (期待 2 failures)'
+mutate '/return REASON_EXT unless EXT_OK.match?(name)/d'             'M4 拡張子分岐削除 (期待 2 failures)'
 ```
 
-M3 (`ISSUE_PREFIX` を lookahead から末尾ハイフン要求に戻す、期待 `1 failures`) は sed で正規表現を書き換えるとエスケープが壊れやすいので、エディタで該当行を次に置き換えてテストし、元に戻す:
+M3 (`ISSUE_PREFIX` の lookahead を末尾ハイフン要求に戻す、期待 `1 failures`) は sed のエスケープが壊れやすいので python で置換する。
 
-```ruby
-  ISSUE_PREFIX = /\A\d{4}-\d{2}-\d{2}-issue-\d+(?:-\d+)*-/.freeze
+```bash
+cp "$SP/mutate/good.rb" "$SP/mutate/plan_docs_check.rb"
+python3 - "$SP" <<'PY'
+import sys
+p = f"{sys.argv[1]}/mutate/plan_docs_check.rb"
+s = open(p).read()
+s = s.replace(r'issue-\d+(?:-\d+)*(?=[-.])/', r'issue-\d+(?:-\d+)*-/')
+open(p, 'w').write(s)
+PY
+(cd /Users/shinya/workspace/claude/LeafTimer/app && bundle exec ruby "$SP/mutate/test_plan_docs_check.rb" 2>&1 | tail -1)
 ```
 
-最後に元に戻っていることを確認する:
+最後にリポジトリ側が無傷であることを確認する:
 
-Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && git diff --stat bin/plan_docs_check.rb && bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -1`
-Expected: `20 runs, 53 assertions, 0 failures, 0 errors, 0 skips`
+Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && git diff --stat bin/plan_docs_check.rb bin/test_plan_docs_check.rb && bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -1`
+Expected: Step 3 / Step 1 の変更だけが差分に出る。テストは `20 runs, 54 assertions, 0 failures, 0 errors, 0 skips`
 
 - [ ] **Step 6: CLI を滞留検出に配線し、失敗メッセージに issue 誘導を足す**
 
@@ -299,13 +312,14 @@ Expected: `✅ plan-docs-check passed (root: plans 1 / specs 1, archive: plans 3
 正常系の緑だけでは vacuously green なので、一時ディレクトリで古い日付の plan を置いて赤を実証する。
 
 ```bash
-cd /Users/shinya/workspace/claude/LeafTimer/app
-FIX=$(mktemp -d)
+SP=/private/tmp/claude-501/-Users-shinya-workspace-claude-LeafTimer/5dd13b61-ad71-49d9-9d59-76fd71088059/scratchpad
+FIX="$SP/stale-fixture"
 mkdir -p "$FIX/plans/archive" "$FIX/specs/archive"
 touch "$FIX/plans/2020-01-01-issue-84-ancient-plan.md"
-bundle exec ruby bin/plan-docs-check.rb "$FIX"; echo "exit=$?"
-rm -rf "$FIX"
+cd /Users/shinya/workspace/claude/LeafTimer/app && bundle exec ruby bin/plan-docs-check.rb "$FIX"; echo "exit=$?"
 ```
+
+(fixture は scratchpad に残しておいてよい。セッション固有の領域なのでリポジトリを汚さない。)
 
 Expected: `❌ plan-docs-check failed: 1 件` と `docs/superpowers/plans/2020-01-01-issue-84-ancient-plan.md: 作成から NNNN 日経過している …`、`exit=1`
 
@@ -365,17 +379,25 @@ gem "minitest", "~> 5.27"
 
 - [ ] **Step 2: bundle install して lock を更新し、解決バージョンが変わらないことを確認する**
 
-Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && bundle install 2>&1 | tail -3 && git diff app/Gemfile.lock`
+Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && bundle --version && bundle install 2>&1 | tail -3 && git diff Gemfile.lock`
 
-Expected: `Gemfile.lock` の差分は `DEPENDENCIES` セクションへの `minitest (~> 5.27)` の 1 行追加のみ。`minitest (5.27.0)` の解決バージョンは変わらない (`~> 5.27` = `>= 5.27, < 6.0` で、activesupport の `>= 5.1, < 6` と両立する)。
+Expected: `Bundler version 2.6.7` が出たうえで、`Gemfile.lock` の差分が**次の 1 行だけ**であること (scratchpad で実測済み)。
 
-**バージョンが 5.27.0 から動いていたら止めて報告すること。**
+```diff
+ DEPENDENCIES
+   cocoapods (= 1.16.2)
++  minitest (~> 5.27)
+```
+
+`minitest (5.27.0)` の解決バージョンは変わらない (`~> 5.27` = `>= 5.27, < 6.0` で、activesupport の `>= 5.1, < 6` と両立する)。`BUNDLED WITH` と `PLATFORMS` も不変。
+
+**バージョンが 5.27.0 から動いていたら、あるいは `PLATFORMS` に差分が出たら止めて報告すること。** `PLATFORMS` が書き換わるのは古い bundler (system ruby の 2.1.4) で走った場合で、その差分を commit してはいけない。
 
 - [ ] **Step 3: minitest が直接依存として届いていることを確認する**
 
 Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && /usr/bin/grep -A3 "^DEPENDENCIES" Gemfile.lock && bundle exec ruby bin/test_plan_docs_check.rb 2>&1 | tail -1`
 
-Expected: `DEPENDENCIES` に `cocoapods (= 1.16.2)` と `minitest (~> 5.27)` が並ぶ。テストは `20 runs, 53 assertions, 0 failures, 0 errors, 0 skips`。
+Expected: `DEPENDENCIES` に `cocoapods (= 1.16.2)` と `minitest (~> 5.27)` が並ぶ。テストは `20 runs, 54 assertions, 0 failures, 0 errors, 0 skips`。
 
 - [ ] **Step 4: gitignore expectations に specs/ を足す**
 
@@ -557,7 +579,15 @@ Run (Bash timeout は `600000`):
 cd /Users/shinya/workspace/claude/LeafTimer/app && make tests 2>&1 | tail -40
 ```
 
-Expected: `** TEST SUCCEEDED **` が出力に含まれ、`** TEST FAILED **` / `Error 6x` / `No rule to make target` が含まれないこと。あわせて precheck 側の ✅ 行 (`plan-docs-check passed` / `gitignore-doctor: 7 expectation(s) satisfied` / `lock-check passed`) が出ていること、`⚠️ skipped` が出ていないこと (ルール 27)。
+Expected: `** TEST SUCCEEDED **` が出力に含まれ、`** TEST FAILED **` / `Error 6x` / `No rule to make target` が含まれないこと。あわせてチェーン内の ✅ 行 (`plan-docs-check passed` / `lock-check passed`) が出ていること、`⚠️ skipped` が出ていないこと (ルール 27)。
+
+**`gitignore-check` は `tests` チェーンに入っていない** (`app/Makefile:86`) ので、この出力に gitignore の行は出ない。次の Step で別途叩く。
+
+- [ ] **Step 1b: gitignore-check を単体で通す**
+
+Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && make gitignore-check 2>&1 | tail -2`
+
+Expected: `✅ gitignore-doctor: 7 expectation(s) satisfied`
 
 `Mach error -308 (ipc/mig) server died` / `Lost connection to testmanagerd` 系の FAIL は Simulator インフラ起因の偽 FAIL。コード原因と診断する前に次を実行して 1 回リトライすること (ルール 1):
 
@@ -645,7 +675,7 @@ ViewInspector のみ `'0.10.3'` に strict pin し、Quick / Nimble は `~>` 据
 
 ## 検証
 
-- `bundle exec ruby bin/test_plan_docs_check.rb` → `20 runs, 53 assertions, 0 failures, 0 errors`
+- `bundle exec ruby bin/test_plan_docs_check.rb` → `20 runs, 54 assertions, 0 failures, 0 errors`
 - mutation (ルール 8): 閾値 14→9999 で 1 件、14→0 で 2 件、`ISSUE_PREFIX` を戻すと 1 件、拡張子分岐の削除で 2 件が fail することを実証
 - 古い日付の fixture で CLI が `exit=1` になることを確認 (滞留検出の正方向)
 - `make gitignore-check` → `7 expectation(s) satisfied`
