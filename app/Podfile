@@ -11,17 +11,22 @@ target 'LeafTimer' do
   target 'LeafTimerTests' do
     inherit! :search_paths
     # Pods for testing (Issue #149 / CLAUDE.md ルール 43)
-    # 制約を入れる理由: 引数なしの `bundle exec pod update` が major 越えまで
-    # 一気に上げうる。ViewInspector は patch 差 0.10.2 → 0.10.3 だけで
-    # ModernTimerViewSpec の accessibility テスト 2 件の結果が変わった実例が
-    # あるため (#73 / PR #150)、ViewInspector のみ下限を 0.10.3 まで引き上げる。
-    # 注意: `~> 0.10.3` は `>= 0.10.3, < 0.11.0` を意味し、0.10.4 以降の patch は
-    # 素通りする (patch を完全に固定するものではない) — 実際の固定は
-    # Podfile.lock が担っており、`bundle exec pod update` を明示的に叩かない
-    # 限り上がらない。
+    # Quick / Nimble は optimistic 制約 (`~> 7.6` = `>= 7.6, < 8.0`) で major 越え
+    # だけを止める。patch は Podfile.lock が実質のピンとして押さえている。
+    #
+    # ViewInspector だけは strict pin にしてある (#152)。0.10.2 → 0.10.3 の patch
+    # 差だけで ModernTimerViewSpec の accessibility テスト 2 件の結果が反転した
+    # 実例があるため (#73 / PR #150)、アップグレードを必ず明示的な Podfile 編集に
+    # する。
+    #
+    # 注意: lock は万能ではない。引数なしの `bundle exec pod update` と
+    # Podfile.lock の喪失は lock を無視して解決し直す
+    # (cocoapods-1.16.2/lib/cocoapods/installer/analyzer.rb:934-947 の
+    # `update_mode == :all` / `!lockfile` 分岐)。更新は必ず pod を名指しした
+    # `bundle exec pod update <pod>` で行う。
     pod 'Quick', '~> 7.6'
     pod 'Nimble', '~> 13.7'
-    pod 'ViewInspector', '~> 0.10.3'
+    pod 'ViewInspector', '0.10.3'
   end
 
 end

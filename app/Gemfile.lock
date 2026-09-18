@@ -129,6 +129,7 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods (= 1.16.2)
+  minitest (~> 5.27)
 
 BUNDLED WITH
    2.6.7
