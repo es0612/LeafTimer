@@ -147,4 +147,19 @@ class PlanDocsCheckTest < Minitest::Test
     # 命名違反は violations が既に報告しているので、stale は二重計上しない。
     assert_empty PlanDocsCheck.stale(root_names: ['2020-01-01-no-issue.md'], today: STALE_TODAY)
   end
+
+  # --- fix round 1 F-1: 桁数は正しいが実在しない日付 (2026-09-31 等) ---
+  # ROOT_NAME / DATE_PREFIX は \d{4}-\d{2}-\d{2}- の桁数しか見ないので、
+  # 実在性チェックが無いと stale の Date.parse が例外を投げてしまう。
+
+  def test_root_invalid_calendar_date_reports_violation_not_exception
+    v = violations(root: ['2026-09-31-issue-84-x.md'])
+    assert_equal 1, v.size
+    assert_equal :root, v[0][:scope]
+    assert_includes v[0][:reason], '実在しない'
+  end
+
+  def test_stale_skips_invalid_calendar_date_without_raising
+    assert_empty PlanDocsCheck.stale(root_names: ['2026-09-31-issue-84-x.md'], today: STALE_TODAY)
+  end
 end

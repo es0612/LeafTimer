@@ -49,11 +49,13 @@ module PlanDocsCheck
   STALE_DAYS = 14
 
   # Sub-patterns used to tell the caller which part of the name is wrong.
-  # 判定順は外側から: 拡張子 → 日付 → issue-NN → slug → companion suffix (#155)。
+  # 判定順は外側から: 拡張子 → 日付 (桁数) → 日付 (実在性) → issue-NN → slug →
+  # companion suffix (#155 / fix round 1 F-1)。
   # ROOT_NAME / ARCHIVE_NAME の `\.md` は case-sensitive なので、拡張子だけが
-  # 大文字の入力は「その手前の構成要素が違う」ように見えてしまう。拡張子を
-  # 最初に判定することで 3 ケース (root の .MD / archive の .MD / slug 欠落) が
-  # 同時に解消する。
+  # 大文字の入力は「その手前の構成要素が違う」ように見えてしまう。拡張子の
+  # 先出しで root の .MD / archive の .MD の 2 ケースを、ISSUE_PREFIX の
+  # lookahead 化 (下記) で slug 欠落の 1 ケースを解消する (拡張子の判定順そのもの
+  # は slug 欠落の解消とは無関係)。
   EXT_OK = /\.md\z/.freeze
   DATE_PREFIX = /\A\d{4}-\d{2}-\d{2}-/.freeze
   # issue-NN / issue-NN-NN... の直後が「-」か「.」であることだけを見る。
@@ -73,7 +75,7 @@ module PlanDocsCheck
   def self.violations(root_names:, archive_names:)
     list = []
     root_names.sort.each do |name|
-      next if ROOT_NAME.match?(name)
+      next if ROOT_NAME.match?(name) && valid_date?(name)
 
       list << { name: name, scope: :root, reason: root_reason(name) }
     end
@@ -91,6 +93,7 @@ module PlanDocsCheck
   def self.root_reason(name)
     return REASON_EXT unless EXT_OK.match?(name)
     return '日付プレフィックス YYYY-MM-DD- で始まっていない' unless DATE_PREFIX.match?(name)
+    return '日付プレフィックスが実在しない日付になっている (例: 2026-09-31)' unless valid_date?(name)
     return 'issue-NN が無い (稼働中の plan/spec は対応 issue 番号を名前に持つ)' unless ISSUE_PREFIX.match?(name)
     return 'slug が無いか、小文字英数とハイフンのみになっていない' unless SLUG_OK.match?(name)
 
@@ -103,6 +106,18 @@ module PlanDocsCheck
     '日付プレフィックス YYYY-MM-DD- で始まっていない'
   end
 
+  # 日付プレフィックスの桁数は合っていても実在しない日付 (2026-09-31 /
+  # 2026-13-45 等) になっていないか。ROOT_NAME / DATE_PREFIX は `\d{4}-\d{2}-\d{2}-`
+  # の桁数しか見ないので、ここでの検証が無いと stale の Date.parse が例外を
+  # 投げてしまう (fix round 1 F-1)。violations 側で実在性を判定することで、
+  # stale に渡る時点では Date.parse が必ず成功することを保証する。
+  def self.valid_date?(name)
+    Date.parse(name[0, 10])
+    true
+  rescue Date::Error
+    false
+  end
+
   # 直下に STALE_DAYS より長く置かれている plan/spec (#153)。
   # today は呼び出し側が渡す (純粋関数の中で Date.today を呼ぶとテストが実行日に
   # 依存する)。判定は mtime でなくファイル名の日付プレフィックスに対して行う —
@@ -112,6 +127,7 @@ module PlanDocsCheck
   def self.stale(root_names:, today:, threshold_days: STALE_DAYS)
     root_names.sort.filter_map do |name|
       next unless ROOT_NAME.match?(name)
+      next unless valid_date?(name)
 
       age = (today - Date.parse(name[0, 10])).to_i
       next if age <= threshold_days
