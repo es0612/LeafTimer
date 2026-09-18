@@ -14,6 +14,7 @@
 #
 # Exit code 0 = すべて規則どおり、1 = 違反あり or ディレクトリが無い。
 
+require 'date'
 require_relative 'plan_docs_check'
 
 REPO_ROOT = File.expand_path('../..', __dir__) # app/bin -> app -> repo root
@@ -33,6 +34,9 @@ unless File.directory?(base)
   warn "❌ plan-docs-check failed: #{base} が無い"
   exit 1
 end
+
+# 実行日は 1 回だけ取って全 kind で共有する (日付をまたいだ実行でも判定がぶれない)。
+today = Date.today
 
 counts = {}
 violations = []
@@ -54,6 +58,9 @@ violations = []
   PlanDocsCheck.violations(root_names: root_names, archive_names: archive_names).each do |v|
     violations << v.merge(kind: kind)
   end
+  PlanDocsCheck.stale(root_names: root_names, today: today).each do |v|
+    violations << v.merge(kind: kind)
+  end
 end
 
 if violations.empty?
@@ -69,4 +76,5 @@ violations.each do |v|
   warn "   docs/superpowers/#{v[:kind]}#{sub}/#{v[:name]}: #{v[:reason]}"
 end
 warn '   直し方: 稼働中は YYYY-MM-DD-issue-NN[-NN…]-slug.md。merge 前に archive/ へ git mv する (CLAUDE.md ルール 44)'
+warn '   issue 未起票なら先に gh issue create — 厳格名は保存前に issue 番号を要求する (CLAUDE.md ルール 44)'
 exit 1
