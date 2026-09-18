@@ -109,8 +109,12 @@ module PlanDocsCheck
   # 日付プレフィックスの桁数は合っていても実在しない日付 (2026-09-31 /
   # 2026-13-45 等) になっていないか。ROOT_NAME / DATE_PREFIX は `\d{4}-\d{2}-\d{2}-`
   # の桁数しか見ないので、ここでの検証が無いと stale の Date.parse が例外を
-  # 投げてしまう (fix round 1 F-1)。violations 側で実在性を判定することで、
-  # stale に渡る時点では Date.parse が必ず成功することを保証する。
+  # 投げてしまう (fix round 1 F-1)。
+  #
+  # violations 側は実在しない日付を「違反」として報告するが、CLI は同じ
+  # root_names を stale にも渡すため入力は絞られない (fix round 2 N-1)。stale 側の
+  # `next unless valid_date?(name)` は冗長な二重防壁ではなく、これが無いと
+  # Date.parse が例外を投げる (mutation M6 で実証)。
   def self.valid_date?(name)
     Date.parse(name[0, 10])
     true

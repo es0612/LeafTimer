@@ -64,7 +64,7 @@ def self.stale(root_names:, today:, threshold_days: STALE_DAYS)
 判定は **ファイル名の日付プレフィックス**に対して行う。mtime を使わないのは、`git checkout` / fresh clone で mtime がチェックアウト時刻になり、滞留を検出できなくなるため。
 
 - 対象は `plans/` `specs/` の**直下のみ**。`archive/` は歴史なので古くて当然
-- 命名違反と滞留違反は二重計上しない。命名が `ROOT_NAME` に適合したファイルだけを滞留判定にかける。ただし `ROOT_NAME` は日付部分の桁数しか見ず実在性 (2026-09-31 等) までは検証しないため、日付の実在性は `violations` 側 (`PlanDocsCheck.valid_date?`) で判定する。これにより `stale` に届く時点では `Date.parse` が必ず成功することが保証され、`stale` は全域関数になる (fix round 1 F-1: 当初この括弧内は「日付プレフィックスが壊れていれば、そもそも `Date.parse` できない」としていたが誤りで、桁数だけ合って実在しない日付は `Date.parse` が例外を投げるまで気づけなかった)
+- 命名違反と滞留違反は二重計上しない。命名が `ROOT_NAME` に適合したファイルだけを滞留判定にかける。ただし `ROOT_NAME` は日付部分の桁数しか見ず実在性 (2026-09-31 等) までは検証しないため、日付の実在性は `violations` 側 (`PlanDocsCheck.valid_date?`) でも判定し、実在しない日付を違反として報告する (fix round 1 F-1: 当初この括弧内は「日付プレフィックスが壊れていれば、そもそも `Date.parse` できない」としていたが誤りで、桁数だけ合って実在しない日付は `Date.parse` が例外を投げるまで気づけなかった)。**ただし `violations` を通すことは `stale` の入力を絞る効果を持たない** — `bin/plan-docs-check.rb` は同じ未フィルタの `root_names` を `violations` と `stale` の両方に渡すため。`stale` が全域関数であることを保証しているのは `stale` 自身の `next unless valid_date?(name)` というガードであり (fix round 2 N-1)、これは「violations が実在性を判定しているから冗長」な二重防壁ではない
 - 閾値 `STALE_DAYS = 14`。`today - date > 14` で違反 (14 日ちょうどは許容)
 - reason: `作成から NN 日経過している (PR 作成前に archive/ へ git mv する — CLAUDE.md ルール 44)`
 
