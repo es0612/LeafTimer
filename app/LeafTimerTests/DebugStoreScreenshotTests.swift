@@ -66,6 +66,20 @@ final class DebugStoreScreenshotTests: XCTestCase {
         XCTAssertFalse(testDefaults.bool(forKey: UserDefaultItem.hasSeenOnboarding.rawValue))
     }
 
+    func testSeedSetsWorkingTimeTo25Minutes() {
+        DebugStoreScreenshot.seedIfRequested(
+            arguments: [DebugStoreScreenshot.seedArgument], defaults: testDefaults, today: today
+        )
+
+        let index = testDefaults.integer(forKey: UserDefaultItem.workingTime.rawValue)
+        XCTAssertEqual(ItemValue.workingTimeList[index], 25 * 60)
+    }
+
+    func testHideAdsFlagReadsLaunchArgument() {
+        XCTAssertTrue(DebugStoreScreenshot.isHideAdsRequested(arguments: ["LeafTimer", "-HideAds"]))
+        XCTAssertFalse(DebugStoreScreenshot.isHideAdsRequested(arguments: ["LeafTimer"]))
+    }
+
     func testAutoStartFlagReadsLaunchArgument() {
         XCTAssertTrue(DebugStoreScreenshot.isAutoStartRequested(arguments: ["LeafTimer", "-AutoStart"]))
         XCTAssertFalse(DebugStoreScreenshot.isAutoStartRequested(arguments: ["LeafTimer"]))

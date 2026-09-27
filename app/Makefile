@@ -128,6 +128,7 @@ plan-docs-check:
 # Issue #161: App Store 用スクショ (ja/en × iPhone 6.9" / iPad 13" × 5 画面) を
 # 撮影 → 合成 → 寸法検証する。数分かかり Simulator を使うので tests チェーンには入れない。
 # 入力ディレクトリ store-screenshots/ と同名なので .PHONY が無いと make が「最新」扱いで何もしない。
+# ✅ が保証するのは寸法とファイルの組だけ。画面の中身は撮影直後の生存確認と人の目視で担保する。
 .PHONY: store-screenshots store-screenshots-check-test
 store-screenshots:
 	@ruby bin/store-screenshots.rb

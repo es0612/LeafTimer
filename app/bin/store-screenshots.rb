@@ -30,6 +30,16 @@ def run!(*cmd)
   out
 end
 
+# 撮影直後にアプリが生きているか。launchctl list の行は `<PID>\t<status>\tUIKitApplication:<bundle>[…]`
+# (2026-09-27 実測)。落ちたアプリは行が消えるか PID 欄が `-` になるので、PID が数値の行を探す。
+# checker (store-screenshots-check) は寸法と枚数しか見ないため、画面の中身の最低限の担保はここで行う。
+def app_running?(udid)
+  run!('xcrun', 'simctl', 'spawn', udid, 'launchctl', 'list').lines.any? do |line|
+    pid, _status, label = line.split("\t")
+    label.to_s.start_with?("UIKitApplication:#{BUNDLE_ID}[") && pid.to_s.match?(/\A\d+\z/)
+  end
+end
+
 def latest_ios_runtime
   runtimes = JSON.parse(run!('xcrun', 'simctl', 'list', 'runtimes', 'available', '-j'))['runtimes']
   ios = runtimes.select { |r| r['identifier'].include?('SimRuntime.iOS-') }
@@ -87,6 +97,7 @@ config.fetch('devices').each do |device, spec|
            '-AppleLanguages', "(#{locale})", '-AppleLocale', locale)
       sleep LAUNCH_WAIT_SECONDS
       run!('xcrun', 'simctl', 'io', udid, 'screenshot', raw)
+      abort "❌ #{relative}: app is not running after launch (crashed?) — the screenshot would show the wrong screen" unless app_running?(udid)
 
       width, height = spec.fetch('size')
       run!(COMPOSE_BIN, raw, final, width.to_s, height.to_s, locale, *screen.fetch('copy').fetch(locale))

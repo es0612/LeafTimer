@@ -22,7 +22,7 @@
     },
     {
       "id": "04-settings",
-      "args": ["-SeedSampleStats", "-InitialScreen=settings"],
+      "args": ["-SeedSampleStats", "-InitialScreen=settings", "-HideAds"],
       "copy": { "ja": ["好みの時間・音で、", "最適な環境を"], "en": ["Your time, your sound,", "your focus zone"] }
     },
     {
