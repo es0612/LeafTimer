@@ -1,6 +1,6 @@
 # LeafTimer v1.5 リリースノート
 
-- 対象: MARKETING_VERSION 1.5 (公開中は 1.4)
+- 対象: MARKETING_VERSION 1.5 (2026-09-28 配信開始、build 34)
 - 入力元: PR #35 (2026-05-26) 以降の merged PR のうちユーザーに見える変更
 - `asc-submission-prep` skill が「What's New」節を ASC の「このバージョンの最新情報」に使う
 
@@ -29,3 +29,30 @@
 - Improved layouts on iPhone SE and iPad
 - Fixed an issue where music from other apps stopped when the timer started
 - Fixed an issue where the history sometimes reset to 0
+
+## 振り返り (2026-09-28)
+
+期間: 2026-05-26 (#35 で MARKETING_VERSION を 1.5 に上げた日) 〜 2026-09-28 (App Store で配信開始)。この間に merge した PR は #34〜#167 の 64 件。
+
+### 事実
+
+- 約 124 日・64 PR で 1 リリース。内訳は、振り返りを CLAUDE.md に追記する PR が 19 件 (30%)、ユーザーに見える機能追加 12 件、バグ修正 10 件、残りは CI・テスト基盤・checker
+- CLAUDE.md の大きさ: 34.3KB → #111 で 11.5KB に圧縮 (2026-08-15) → 29.8KB (2026-09-27)。6 週間で圧縮前の 87% まで戻った
+- 同じ話題の修正が 3 回ずつ続いた: CocoaPods の版固定 (#144 → #146 → #150)、checker の堅牢化 (#156 → #158 → #162)
+- 申請は fastlane 経路 (#52) をやめ、Chrome 経路 (#165、`asc-submission-prep` skill) で通した。2026-09-27 に提出し、2026-09-28 04:09 JST に配信開始
+- 配信後、ja の iPhone スクショが JP の Web ストアで v1.2 の旧画像のまま表示されていた。差し替えたのは 6.9" 枠だけで、旧 6.5" 枠の画像が残っていたため (#169)
+
+### 解釈
+
+- PR ごとの振り返りループは回っている。一方で、学びの受け皿が「CLAUDE.md に 1 行足す」しかないため、圧縮しても太り直す
+- 1 リリースが大きすぎた。ストアの枠の棚卸しのように、リリースの時にしか通らない手順が 4 か月ぶりだったため、抜けに気づいたのが配信後になった
+
+### 次サイクルへのアクション
+
+| 学び | 行き先 | 状態 |
+| --- | --- | --- |
+| CLAUDE.md が再び太った | #171 (サイズ上限を make ターゲットで守る) | idea |
+| 旧サイズの枠を棚卸ししていなかった / 配信後のストア表示を確かめる手段が無かった | `asc-submission-prep` skill (4b-6 と Common Mistakes に追加) | done |
+| ja の旧スクショが表示されている | #169 (priority:high に変更) | in-progress |
+| `v1.5` の git tag が無い | build 34 の commit を Xcode Cloud で確認してから tag を打つ | in-progress |
+| リリースが大きすぎる | 物差しとして記録: バージョンを上げてから配信までの日数と PR 数 (今回 124 日・64 PR)。次の振り返りで比べる | done |
