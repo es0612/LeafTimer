@@ -54,5 +54,5 @@
 | CLAUDE.md が再び太った | #171 (サイズ上限を make ターゲットで守る) | idea |
 | 旧サイズの枠を棚卸ししていなかった / 配信後のストア表示を確かめる手段が無かった | `asc-submission-prep` skill (4b-6 と Common Mistakes に追加) | done |
 | ja の旧スクショが表示されている | #169 (priority:high)。配信中バージョンのスクショ枠は読み取り専用なので、次のバージョンを作った時に旧 6.5" / 5.5" 枠を削除する | idea |
-| `v1.5` の git tag が無い | build 37 (2026-09-27 13:32 JST 作成) の commit に tag を打つ。作成時刻から #167 の merge commit `cdaa1af` と推定 | in-progress |
+| `v1.5` の git tag が無い | build 37 (2026-09-27 13:32 JST 作成) の commit に tag を打つ。作成時刻から #167 の merge commit `cdaa1af` と推定 | done |
 | リリースが大きすぎる | 物差しとして記録: バージョンを上げてから配信までの日数と PR 数 (今回 124 日・64 PR)。次の振り返りで比べる | done |
