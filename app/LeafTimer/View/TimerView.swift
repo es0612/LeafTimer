@@ -49,6 +49,8 @@ struct TimerView: View {
             NavigationStack {
                 HistoryView(viewModel: timerViewModel.historyViewModel)
             }
+        case "onboarding":
+            OnboardingView {}
         case "timePreview":
             TimerPreviewSheet(
                 workingTime: ItemValue.workingTimeList[settingViewModel.workingTime],
@@ -157,6 +159,12 @@ struct TimerView: View {
                         if settingViewModel.shouldShowOnboarding() {
                             showOnboarding = true
                         }
+#if DEBUG
+                        // Issue #161: ストア用スクショの実行中画面 (simctl に tap が無いため)
+                        if DebugStoreScreenshot.isAutoStartRequested(), !timerViewModel.executeState {
+                            timerViewModel.onPressedTimerButton()
+                        }
+#endif
                     }
                     .fullScreenCover(isPresented: $showOnboarding) {
                         OnboardingView {
