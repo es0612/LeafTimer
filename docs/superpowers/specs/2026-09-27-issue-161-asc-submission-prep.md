@@ -67,9 +67,9 @@ make store-screenshots   (= capture → compose → check)
 
 - 専用 Simulator を `xcrun simctl create` で作り、UDID で扱う (同名機種の曖昧マッチと他セッションの Booted 機を避ける — ルール 30)。機種: `iPhone 17 Pro Max` (1320×2868 を期待)、`iPad Pro 13-inch (M5)` (2064×2752 を期待)。実寸は plan で実測する。
 - 状態: `xcrun simctl status_bar override` で時刻 9:41・電池満タン・電波最大に固定。`hasSeenOnboarding=true`、ATT は `applesimutils` で事前付与 (ルール 32)。ロケールは `-AppleLanguages (ja|en)`。
-- 画面 (5 枚): ①起動 (splash) ②待機中タイマー ③実行中・大きな木 ④履歴 (streak / 過去 7 日) ⑤設定。既存の `-InitialScreen=` / `-LeafPattern=` を使う。
+- 画面 (5 枚): ①待機中タイマー ②実行中・大きな木 ③履歴 (streak / 過去 7 日) ④設定 ⑤オンボーディング (v1.5 の新機能)。既存の `-InitialScreen=` / `-LeafPattern=` を使う。
 - 既存フックで足りない状態は DEBUG 限定の起動引数を足す (候補: 実行中状態、履歴のサンプルデータ、広告非表示)。**要否は plan 作成時に実機スクショで確定する** (実測前に足さない)。
-- ①起動画面は LaunchScreen の表示時間内に撮る必要がある。撮れなければアプリアイコン + 名称のみの合成画像に差し替える (plan で判断)。
+- 起動画面 (splash) は採用しない: plan 作成時の実測で、起動 4 秒後に撮れたのは 1 回だけで再現しなかった (LaunchScreen の表示時間に依存)。旧ストアの 1 枚目 (起動画面) のコピー「集中習慣を育てよう」はオンボーディング画面に付け替える。
 
 **合成 (compose)**
 
