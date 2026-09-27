@@ -60,6 +60,7 @@
 		82FD28D32A5791F39BF7AE3B /* DefaultTimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C9DA0155B11DA56E6D4288 /* DefaultTimerManagerTests.swift */; };
 		8392A17E863974733BD6E906 /* NotificationChainBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BDEDDD0D57A60FDCBCF4F /* NotificationChainBuilderTests.swift */; };
 		84666D3C498EACFC6A3B255B /* StoreKitReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */; };
+		84701434A5AC71D9271820D2 /* DebugStoreScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26906FD1FBF54E2B9DBCFD0D /* DebugStoreScreenshot.swift */; };
 		8750244ABE17AE5577DB761E /* SessionStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */; };
 		87B3FCB54C2563308FDDE9C4 /* AdaptiveLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */; };
 		8BA106ABCE3F785BD2F48DF9 /* MockReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8CE2A71E448553A13E434F /* MockReviewRequester.swift */; };
@@ -95,6 +96,7 @@
 		E5EE5B694F71609B83B26C7E /* ModernTimerViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */; };
 		F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */; };
 		FC0EFE04C6A0827F8110890E /* AdsBootstrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */; };
+		FF6B3A32F30034B86B7EB847 /* DebugStoreScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590C93D92F2E7D14E26F34BB /* DebugStoreScreenshotTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +122,7 @@
 		211BDEDDD0D57A60FDCBCF4F /* NotificationChainBuilderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationChainBuilderTests.swift; path = LeafTimerTests/NotificationChainBuilderTests.swift; sourceTree = SOURCE_ROOT; };
 		21C8396935CA4E06685E4C74 /* PhaseReconciler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PhaseReconciler.swift; path = LeafTimer/Components/PhaseReconciler.swift; sourceTree = SOURCE_ROOT; };
 		23BBF65B0E0977372AEB15F2 /* SessionStatsMigrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsMigrationTests.swift; path = LeafTimerTests/SessionStatsMigrationTests.swift; sourceTree = SOURCE_ROOT; };
+		26906FD1FBF54E2B9DBCFD0D /* DebugStoreScreenshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DebugStoreScreenshot.swift; path = LeafTimer/Components/DebugStoreScreenshot.swift; sourceTree = SOURCE_ROOT; };
 		2AFDEFDC3D18E25A6C17C7FA /* OnboardingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = LeafTimer/View/OnboardingView.swift; sourceTree = SOURCE_ROOT; };
 		2FBD29EC8547FD3C8868C106 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		33AD9A46E6707A632F42258D /* ReviewRequestPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicy.swift; path = LeafTimer/Components/ReviewRequestPolicy.swift; sourceTree = SOURCE_ROOT; };
@@ -163,6 +166,7 @@
 		543E641FEA3219B656FB2E36 /* CircleButtonRatioTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CircleButtonRatioTests.swift; path = LeafTimerTests/CircleButtonRatioTests.swift; sourceTree = SOURCE_ROOT; };
 		58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetSettingsSection.swift; sourceTree = "<group>"; };
 		58244CEA56B1DE0F984F683A /* Pods-LeafTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeafTimerTests.release.xcconfig"; path = "Target Support Files/Pods-LeafTimerTests/Pods-LeafTimerTests.release.xcconfig"; sourceTree = "<group>"; };
+		590C93D92F2E7D14E26F34BB /* DebugStoreScreenshotTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DebugStoreScreenshotTests.swift; path = LeafTimerTests/DebugStoreScreenshotTests.swift; sourceTree = SOURCE_ROOT; };
 		5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsLogicTests.swift; path = LeafTimerTests/SessionStatsLogicTests.swift; sourceTree = SOURCE_ROOT; };
 		5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpySessionStatsRepository.swift; path = LeafTimerTests/SpySessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
 		64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdaptiveLayoutTests.swift; path = LeafTimerTests/AdaptiveLayoutTests.swift; sourceTree = SOURCE_ROOT; };
@@ -247,6 +251,7 @@
 				778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */,
 				2FBD29EC8547FD3C8868C106 /* AppLogger.swift */,
 				93FFE81324FF1BE500AA1BD1 /* DateManager.swift */,
+				26906FD1FBF54E2B9DBCFD0D /* DebugStoreScreenshot.swift */,
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
 				19D8E028689D26973B9FDB51 /* DefaultNotificationScheduler.swift */,
 				3856FB8424AC1FE0007F40E5 /* DefaultTimerManager.swift */,
@@ -369,6 +374,7 @@
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				543E641FEA3219B656FB2E36 /* CircleButtonRatioTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
+				590C93D92F2E7D14E26F34BB /* DebugStoreScreenshotTests.swift */,
 				B7C9DA0155B11DA56E6D4288 /* DefaultTimerManagerTests.swift */,
 				E176D57E6ED7830F284CC7F0 /* GIFPlayerViewTests.swift */,
 				70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */,
@@ -660,6 +666,7 @@
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
 				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
 				93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */,
+				84701434A5AC71D9271820D2 /* DebugStoreScreenshot.swift in Sources */,
 				3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */,
 				E46EDAD3AE69466C5964C174 /* DefaultNotificationScheduler.swift in Sources */,
 				3856FB8524AC1FE0007F40E5 /* DefaultTimerManager.swift in Sources */,
@@ -700,6 +707,7 @@
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				0A48268940D40F73F0B14574 /* CircleButtonRatioTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
+				FF6B3A32F30034B86B7EB847 /* DebugStoreScreenshotTests.swift in Sources */,
 				82FD28D32A5791F39BF7AE3B /* DefaultTimerManagerTests.swift in Sources */,
 				DFA99213C93B4A65B8D89363 /* GIFPlayerViewTests.swift in Sources */,
 				CF50496645D51CA09C4F1D85 /* HistoryViewModelTests.swift in Sources */,

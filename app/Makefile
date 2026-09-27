@@ -83,7 +83,7 @@ format-check:
 quality: lint format-check
 	@echo "Code quality checks completed"
 
-tests: precheck cocoapods-lock-check localization-check dynamic-type-check plan-docs-check gitignore-check sort lint unit-tests
+tests: precheck cocoapods-lock-check localization-check dynamic-type-check plan-docs-check gitignore-check store-screenshots-check-test sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta
@@ -124,3 +124,17 @@ plan-docs-check:
 	@echo "Running plan-docs-check..."
 	@ruby bin/test_plan_docs_check.rb
 	@ruby bin/plan-docs-check.rb
+
+# Issue #161: App Store 用スクショ (ja/en × iPhone 6.9" / iPad 13" × 5 画面) を
+# 撮影 → 合成 → 寸法検証する。数分かかり Simulator を使うので tests チェーンには入れない。
+# 入力ディレクトリ store-screenshots/ と同名なので .PHONY が無いと make が「最新」扱いで何もしない。
+# ✅ が保証するのは寸法とファイルの組だけ。画面の中身は撮影直後の生存確認と人の目視で担保する。
+.PHONY: store-screenshots store-screenshots-check-test
+store-screenshots:
+	@ruby bin/store-screenshots.rb
+	@ruby bin/store-screenshots-check.rb
+
+# checker 自体の unit test は数十 ms なので tests チェーンで常時回す (#159 の教訓)。
+store-screenshots-check-test:
+	@echo "Running store-screenshots-check unit tests..."
+	@ruby bin/test_store_screenshots_check.rb

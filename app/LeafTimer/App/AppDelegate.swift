@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // GADMobileAds の start は UMP 同意 + ATT 完了後に AdsBootstrapper が行う (#57)
 
         window = UIWindow()
+#if DEBUG
+        // Issue #161: ストア用スクショ撮影のサンプルデータ (起動引数がある時だけ)
+        DebugStoreScreenshot.seedIfRequested()
+#endif
 
         // Issue #70: 同一の UserDefaults.standard を見るラッパーを VM ごとに
         // 別インスタンス生成していたため 1 つに集約する (振る舞いは不変)。

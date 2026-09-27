@@ -5,6 +5,20 @@ struct AdsView: View {
     @ObservedObject private var adsBootstrapper = AdsBootstrapper.shared
 
     var body: some View {
+#if DEBUG
+        // Issue #161: ストア用スクショにテスト広告を写さない
+        if DebugStoreScreenshot.isHideAdsRequested() {
+            Color.clear
+        } else {
+            banner
+        }
+#else
+        banner
+#endif
+    }
+
+    @ViewBuilder
+    private var banner: some View {
         if adsBootstrapper.isAdsStarted {
             AdsBannerView()
         } else {
