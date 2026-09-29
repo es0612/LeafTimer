@@ -67,3 +67,47 @@ CLAUDE.md ルール 23 の旧内容「`until gh pr checks <PR> --json name,bucke
 - 確実に動いたのはフォアグラウンドの `gh run watch <run-id> --interval 30` (ツール内部で待機するため shell の sleep 無効化の影響を受けない)。
 
 この経緯からルール 23/24 を改訂した (docs/retro-2026-08-15-ci-wait ブランチ)。
+
+## 2026-09-29 追記: #171 で CLAUDE.md から退避したルール全文
+
+CLAUDE.md を 18,000B 以下に圧縮した時 (#171)、以下のルールは「何をするか」だけに縮めるか、プロジェクト skill (`.claude/skills/leaftimer-simulator-verification` / `leaftimer-xcode-deps`) へ移した。事故の経緯・PR 番号・実測値を含む圧縮前の全文をここに残す。
+
+### ルール 12
+
+Simulator で UI 要素の有無を観測する前に、その View の live 参照元を grep して「どの画面に遷移すれば見えるか」を確定させる。
+
+### ルール 26
+
+マネージド CI runner は CocoaPods / Bundler 等の preinstall を保証しない。CI hook の冒頭で `set -euo pipefail` 配下の明示 install を先頭に置く。**CocoaPods は `app/Gemfile.lock` で固定し常に `bundle exec pod …` で動かす** (#143。Ruby は `app/.ruby-version`、CI は `ruby/setup-ruby@v1` の `working-directory: app` + `bundler-cache: true` が両方を読む)。素の `pod` / `gem install cocoapods` / `pod _<ver>_` に戻さない — macos runner の `pod` は brew ruby の RubyGems binstub で**常に最新 install 版を activate する**ため lock 版へ downgrade できない (PR #144 で実測)。Gemfile.lock と Podfile.lock の `COCOAPODS:` 行の一致は `make cocoapods-lock-check` (tests チェーン内) が守る。Xcode Cloud の `ci_post_clone.sh` は master 限定トリガーで PR 検証できないため #143 のフォローアップ (未着手)。
+
+### ルール 27
+
+`make` の依存チェーンに Apple 同梱外の ruby gem 等を足す時は `require` を `rescue LoadError` でガードし、gem 不在でも green を維持する。 **ただしガードは CI で silent green を生みうる** — `ruby/setup-ruby@v1` の `bundler-cache: true` は gem を `app/vendor/bundle` (deployment mode) に隔離し自身の Ruby を PATH 先頭に置くため、後続 step の素の `ruby bin/*.rb` は lock の gem を `require` できず、ガードが黙って skip する (PR #146 final review I-1: orphan gate が `⚠️ skipped` のまま green)。CI では `bundle exec make tests` のように **make ごと bundle exec で包み**、ガード付き checker の ✅ 行を受け入れ基準に入れる。
+
+### ルール 28
+
+新規 Swift ファイルの pbxproj 配線は手編集せず **`make add-file FILE=<project相対パス> TARGET=app|test`** を使う (#130 で整備。sort + precheck まで自動実行、idempotent)。TARGET は必須 — app/test の取り違えは「テストが本番バイナリに入る」事故になる。配線 (pbxproj 差分) を**そのファイルを追加する commit 自体に含める** (pbxproj の children 未ソート対策。「最終 commit 前」に後送りすると task review で指摘され fix round が 1 つ増える — PR #115 で実測) / `make precheck` で orphan (target 未 attach) を検出。orphan の扱いは liveness grep でなく「放棄→削除 / 配線忘れ→attach」の意図判断で決める (材料は git log の最終更新時期 + live 等価実装の有無)。意図的な orphan は `ruby bin/xcode-precheck.rb --update-baseline` で baseline に追加。**`make add-file` は未配線 .swift が複数並存する状態で `&&` 連結できない** — 1 回目の内部 precheck が 2 つ目を orphan 判定して exit 2 で止まる。1 ファイルずつ実行する (PR #137 で実測)。**target 削除も手編集せず xcodeproj gem の one-off で行う**が、`target.remove_from_project` は `XCBuildConfiguration` と `TargetAttributes` (UUID キーで target 名の文字列を含まない) を連鎖削除しない — 受け入れは文字列 grep でなく構造検査 (`TargetAttributes.keys - targets.map(&:uuid) == []`、参照 UUID ⊆ 定義 UUID) で行い、`pod install && make sort` を 2 回回して pbxproj が安定することを確認する (PR #140 で実測: grep は `remaining refs: 0` を返したが残骸 2 種あり)。 **この構造検査は `make pbxproj-structure-check` (precheck 内、#73 で repo 化) が行う** — SPM 参照の除去も同じ gem の one-off (`frameworks_build_phase.remove_build_file` → `package_product_dependencies.delete` + `remove_from_project` → `root_object.package_references.delete` + `remove_from_project`) で行い、検証は fresh な `-derivedDataPath` で `xcodebuild test` を回して `SourcePackages/checkouts` が生成されないことを実測する (既定 DerivedData の stale な SPM 成果物がリンク切れを隠す — #73)。
+
+### ルール 29
+
+`app/.gitignore` の `*.xcworkspace` は `xcshareddata/swiftpm/Package.resolved` を巻き込む。SPM 依存の追加・更新時は `git status` に `Package.resolved` が出るか確認し、出なければ `git add -f` するか `.gitignore` に `!**/Package.resolved` を足す。
+
+### ルール 30
+
+ビルド成果物 (`.app`) を `find app/build` で探さない (古い残骸を掴み silent に誤検証する)。`xcodebuild -workspace LeafTimer.xcworkspace -scheme LeafTimer -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" -showBuildSettings 2>/dev/null | grep -m1 BUILT_PRODUCTS_DIR | sed 's/.*= //'` で実パスを取得する。同名 Simulator が複数世代ある機種 (iPhone SE 等) では `name=...,OS=latest` は曖昧マッチで exit 70 になる — `xcrun simctl list devices available` で UDID を引き、`-destination "platform=iOS Simulator,id=<UDID>"` で指定する (#113 で実測)。
+
+### ルール 31
+
+トップ画面 (`TimerView`) の背景は work/break × light/dark の 4 状態 (`TimerViewModel+extensions.swift` の `getBackgroundColor`)。overlay UI はハードコード色でなく `.ultraThinMaterial` + semantic color を使い、Simulator で 4 状態 (×ロケール) を目視検証する (`xcrun simctl ui <SIM> appearance light|dark` + `-AppleLanguages`)。
+
+### ルール 32
+
+Dynamic Type 検証は `xcrun simctl ui booted content_size <値>` (標準域 `extra-small`〜`extra-extra-extra-large`、拡張域 `accessibility-medium`〜`accessibility-extra-extra-extra-large` = AX5)。install 直後の初回起動は onboarding の fullScreenCover が最前面に出るため、他画面を撮る前に `xcrun simctl spawn booted defaults write jp.ema.LeafTimer hasSeenOnboarding -bool true` を打つ。onboarding 自体を撮る時は `defaults delete` を使う (`simctl uninstall` は ATT までリセットされるので不可)。tap でしか到達できない画面は起動引数 `-InitialScreen=settings` / `history` / `timePreview` で直接開ける (`TimerView.swift` の DEBUG フック)。葉パターンは `-LeafPattern=small|mid|big` で強制できる (#64)。fresh Simulator では初回起動時に **ATT ダイアログ**が最前面に出て simctl では tap も TCC.db 直書きもできない — `applesimutils --byId <UDID> --bundle jp.ema.LeafTimer --setPermissions "userTracking=YES" --restartSB` で事前付与してから起動する (brew 導入済み。再導入時は `brew trust wix/brew` が必要)。設定画面下部はスクロール手段が無く未検証 (#109)。simctl に tap は無いが、**`cliclick c:<x>,<y>` (brew 導入済み) で Simulator ウィンドウ座標を直接クリックすれば in-app の tap を自動化できる** (osascript の System Events click は -25204 で不可)。座標は `osascript -e 'tell application "System Events" to tell process "Simulator" to get {position, size} of front window'` からデバイス座標比で換算する (#54 で START tap を実証。cliclick drag による #109 のスクロールは未検証)。通知バナーの実測撮影は配送後約 10 秒で消えるため fire 時刻 +2 秒に照準した background sleep → screenshot で行う。アプリ復帰直後のスクショは遷移アニメ中の旧フレームを掴む (今日カウントの誤読を #54 で実測) — 数秒後の 2 枚目で確定判定する。アニメの静止/再生判定は 1〜2 秒間隔のスクショ複数枚の md5 比較で行い、必ず「静止=全一致」と「再生=不一致」の両方向を実証する (#62 で Reduce Motion 静止化を実証。片方向だけでは検出手法自体の故障と区別できない)。 **スクショの目視は縮小した一覧画像で済ませず、1 枚ずつ原寸で下端まで見る** — PR #165 で設定画面下端の AdMob テスト広告 ("Test mode" バナー) を一覧だけ見て「広告なし」と誤報告し、final review に指摘された。
+
+### ルール 42
+
+レイアウト変更後のスクショで「既存デザインか回帰か」に迷ったら、`docs/ver1_2/screen/` の旧ストア掲載スクショ (6.7インチ/iPad 別) と突き合わせて判定する (#64 で実証。ユーザー確認を挟まず即断できる)。
+
+### ルール 43
+
+テストは **新規は XCTest**、View 構造の検証は **ViewInspector** で書く (#78)。Quick/Nimble (`*Spec.swift` 8 本、うち Quick/Nimble は 7 本、`OnboardingViewSpec` は既に XCTest) は**新規追加禁止・既存は据え置き**で、一括移行はしない。`app/Podfile` のテスト用 pod の制約は 2 段構えにしてある (#149 / #152): Quick `~> 7.6` / Nimble `~> 13.7` は optimistic 制約で major 越えだけを止め、**ViewInspector は strict pin `'0.10.3'`** — #150 で 0.10.2 → 0.10.3 の patch 差だけで `ModernTimerViewSpec` の accessibility テスト 2 件の結果が変わったため、patch も含めてアップグレードを明示的な Podfile 編集にしている。**`~>` は patch を固定しない** (`~> 7.6` = `>= 7.6, < 8.0`) ので、Quick/Nimble の patch を止めているのは `Podfile.lock` だけ。その lock も万能ではなく、**引数なしの `bundle exec pod update` と `Podfile.lock` の喪失は lock を無視して解決し直す** (`cocoapods-1.16.2/lib/cocoapods/installer/analyzer.rb:934-947` の `update_mode == :all` / `!lockfile` 分岐) — 更新は必ず pod を名指しした `bundle exec pod update <pod>` で行う。
