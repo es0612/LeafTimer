@@ -67,3 +67,103 @@ CLAUDE.md ルール 23 の旧内容「`until gh pr checks <PR> --json name,bucke
 - 確実に動いたのはフォアグラウンドの `gh run watch <run-id> --interval 30` (ツール内部で待機するため shell の sleep 無効化の影響を受けない)。
 
 この経緯からルール 23/24 を改訂した (docs/retro-2026-08-15-ci-wait ブランチ)。
+
+## 2026-09-29 追記: #171 で CLAUDE.md から退避したルール全文
+
+CLAUDE.md を 18,000B 以下に圧縮した時 (#171)、以下のルールは「何をするか」だけに縮めるか、プロジェクト skill (`.claude/skills/leaftimer-simulator-verification` / `leaftimer-xcode-deps`) へ移した。事故の経緯・PR 番号・実測値を含む圧縮前の全文をここに残す。
+
+### ルール 12
+
+Simulator で UI 要素の有無を観測する前に、その View の live 参照元を grep して「どの画面に遷移すれば見えるか」を確定させる。
+
+### ルール 26
+
+マネージド CI runner は CocoaPods / Bundler 等の preinstall を保証しない。CI hook の冒頭で `set -euo pipefail` 配下の明示 install を先頭に置く。**CocoaPods は `app/Gemfile.lock` で固定し常に `bundle exec pod …` で動かす** (#143。Ruby は `app/.ruby-version`、CI は `ruby/setup-ruby@v1` の `working-directory: app` + `bundler-cache: true` が両方を読む)。素の `pod` / `gem install cocoapods` / `pod _<ver>_` に戻さない — macos runner の `pod` は brew ruby の RubyGems binstub で**常に最新 install 版を activate する**ため lock 版へ downgrade できない (PR #144 で実測)。Gemfile.lock と Podfile.lock の `COCOAPODS:` 行の一致は `make cocoapods-lock-check` (tests チェーン内) が守る。Xcode Cloud の `ci_post_clone.sh` は master 限定トリガーで PR 検証できないため #143 のフォローアップ (未着手)。
+
+### ルール 27
+
+`make` の依存チェーンに Apple 同梱外の ruby gem 等を足す時は `require` を `rescue LoadError` でガードし、gem 不在でも green を維持する。 **ただしガードは CI で silent green を生みうる** — `ruby/setup-ruby@v1` の `bundler-cache: true` は gem を `app/vendor/bundle` (deployment mode) に隔離し自身の Ruby を PATH 先頭に置くため、後続 step の素の `ruby bin/*.rb` は lock の gem を `require` できず、ガードが黙って skip する (PR #146 final review I-1: orphan gate が `⚠️ skipped` のまま green)。CI では `bundle exec make tests` のように **make ごと bundle exec で包み**、ガード付き checker の ✅ 行を受け入れ基準に入れる。
+
+### ルール 28
+
+新規 Swift ファイルの pbxproj 配線は手編集せず **`make add-file FILE=<project相対パス> TARGET=app|test`** を使う (#130 で整備。sort + precheck まで自動実行、idempotent)。TARGET は必須 — app/test の取り違えは「テストが本番バイナリに入る」事故になる。配線 (pbxproj 差分) を**そのファイルを追加する commit 自体に含める** (pbxproj の children 未ソート対策。「最終 commit 前」に後送りすると task review で指摘され fix round が 1 つ増える — PR #115 で実測) / `make precheck` で orphan (target 未 attach) を検出。orphan の扱いは liveness grep でなく「放棄→削除 / 配線忘れ→attach」の意図判断で決める (材料は git log の最終更新時期 + live 等価実装の有無)。意図的な orphan は `ruby bin/xcode-precheck.rb --update-baseline` で baseline に追加。**`make add-file` は未配線 .swift が複数並存する状態で `&&` 連結できない** — 1 回目の内部 precheck が 2 つ目を orphan 判定して exit 2 で止まる。1 ファイルずつ実行する (PR #137 で実測)。**target 削除も手編集せず xcodeproj gem の one-off で行う**が、`target.remove_from_project` は `XCBuildConfiguration` と `TargetAttributes` (UUID キーで target 名の文字列を含まない) を連鎖削除しない — 受け入れは文字列 grep でなく構造検査 (`TargetAttributes.keys - targets.map(&:uuid) == []`、参照 UUID ⊆ 定義 UUID) で行い、`pod install && make sort` を 2 回回して pbxproj が安定することを確認する (PR #140 で実測: grep は `remaining refs: 0` を返したが残骸 2 種あり)。 **この構造検査は `make pbxproj-structure-check` (precheck 内、#73 で repo 化) が行う** — SPM 参照の除去も同じ gem の one-off (`frameworks_build_phase.remove_build_file` → `package_product_dependencies.delete` + `remove_from_project` → `root_object.package_references.delete` + `remove_from_project`) で行い、検証は fresh な `-derivedDataPath` で `xcodebuild test` を回して `SourcePackages/checkouts` が生成されないことを実測する (既定 DerivedData の stale な SPM 成果物がリンク切れを隠す — #73)。
+
+### ルール 29
+
+`app/.gitignore` の `*.xcworkspace` は `xcshareddata/swiftpm/Package.resolved` を巻き込む。SPM 依存の追加・更新時は `git status` に `Package.resolved` が出るか確認し、出なければ `git add -f` するか `.gitignore` に `!**/Package.resolved` を足す。
+
+### ルール 30
+
+ビルド成果物 (`.app`) を `find app/build` で探さない (古い残骸を掴み silent に誤検証する)。`xcodebuild -workspace LeafTimer.xcworkspace -scheme LeafTimer -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" -showBuildSettings 2>/dev/null | grep -m1 BUILT_PRODUCTS_DIR | sed 's/.*= //'` で実パスを取得する。同名 Simulator が複数世代ある機種 (iPhone SE 等) では `name=...,OS=latest` は曖昧マッチで exit 70 になる — `xcrun simctl list devices available` で UDID を引き、`-destination "platform=iOS Simulator,id=<UDID>"` で指定する (#113 で実測)。
+
+### ルール 31
+
+トップ画面 (`TimerView`) の背景は work/break × light/dark の 4 状態 (`TimerViewModel+extensions.swift` の `getBackgroundColor`)。overlay UI はハードコード色でなく `.ultraThinMaterial` + semantic color を使い、Simulator で 4 状態 (×ロケール) を目視検証する (`xcrun simctl ui <SIM> appearance light|dark` + `-AppleLanguages`)。
+
+### ルール 32
+
+Dynamic Type 検証は `xcrun simctl ui booted content_size <値>` (標準域 `extra-small`〜`extra-extra-extra-large`、拡張域 `accessibility-medium`〜`accessibility-extra-extra-extra-large` = AX5)。install 直後の初回起動は onboarding の fullScreenCover が最前面に出るため、他画面を撮る前に `xcrun simctl spawn booted defaults write jp.ema.LeafTimer hasSeenOnboarding -bool true` を打つ。onboarding 自体を撮る時は `defaults delete` を使う (`simctl uninstall` は ATT までリセットされるので不可)。tap でしか到達できない画面は起動引数 `-InitialScreen=settings` / `history` / `timePreview` で直接開ける (`TimerView.swift` の DEBUG フック)。葉パターンは `-LeafPattern=small|mid|big` で強制できる (#64)。fresh Simulator では初回起動時に **ATT ダイアログ**が最前面に出て simctl では tap も TCC.db 直書きもできない — `applesimutils --byId <UDID> --bundle jp.ema.LeafTimer --setPermissions "userTracking=YES" --restartSB` で事前付与してから起動する (brew 導入済み。再導入時は `brew trust wix/brew` が必要)。設定画面下部はスクロール手段が無く未検証 (#109)。simctl に tap は無いが、**`cliclick c:<x>,<y>` (brew 導入済み) で Simulator ウィンドウ座標を直接クリックすれば in-app の tap を自動化できる** (osascript の System Events click は -25204 で不可)。座標は `osascript -e 'tell application "System Events" to tell process "Simulator" to get {position, size} of front window'` からデバイス座標比で換算する (#54 で START tap を実証。cliclick drag による #109 のスクロールは未検証)。通知バナーの実測撮影は配送後約 10 秒で消えるため fire 時刻 +2 秒に照準した background sleep → screenshot で行う。アプリ復帰直後のスクショは遷移アニメ中の旧フレームを掴む (今日カウントの誤読を #54 で実測) — 数秒後の 2 枚目で確定判定する。アニメの静止/再生判定は 1〜2 秒間隔のスクショ複数枚の md5 比較で行い、必ず「静止=全一致」と「再生=不一致」の両方向を実証する (#62 で Reduce Motion 静止化を実証。片方向だけでは検出手法自体の故障と区別できない)。 **スクショの目視は縮小した一覧画像で済ませず、1 枚ずつ原寸で下端まで見る** — PR #165 で設定画面下端の AdMob テスト広告 ("Test mode" バナー) を一覧だけ見て「広告なし」と誤報告し、final review に指摘された。
+
+### ルール 42
+
+レイアウト変更後のスクショで「既存デザインか回帰か」に迷ったら、`docs/ver1_2/screen/` の旧ストア掲載スクショ (6.7インチ/iPad 別) と突き合わせて判定する (#64 で実証。ユーザー確認を挟まず即断できる)。
+
+### ルール 43
+
+テストは **新規は XCTest**、View 構造の検証は **ViewInspector** で書く (#78)。Quick/Nimble (`*Spec.swift` 8 本、うち Quick/Nimble は 7 本、`OnboardingViewSpec` は既に XCTest) は**新規追加禁止・既存は据え置き**で、一括移行はしない。`app/Podfile` のテスト用 pod の制約は 2 段構えにしてある (#149 / #152): Quick `~> 7.6` / Nimble `~> 13.7` は optimistic 制約で major 越えだけを止め、**ViewInspector は strict pin `'0.10.3'`** — #150 で 0.10.2 → 0.10.3 の patch 差だけで `ModernTimerViewSpec` の accessibility テスト 2 件の結果が変わったため、patch も含めてアップグレードを明示的な Podfile 編集にしている。**`~>` は patch を固定しない** (`~> 7.6` = `>= 7.6, < 8.0`) ので、Quick/Nimble の patch を止めているのは `Podfile.lock` だけ。その lock も万能ではなく、**引数なしの `bundle exec pod update` と `Podfile.lock` の喪失は lock を無視して解決し直す** (`cocoapods-1.16.2/lib/cocoapods/installer/analyzer.rb:934-947` の `update_mode == :all` / `!lockfile` 分岐) — 更新は必ず pod を名指しした `bundle exec pod update <pod>` で行う。
+
+### ルール 1
+
+ビルド/テスト系コマンドは毎回同一コマンド内で `cd /Users/shinya/workspace/claude/LeafTimer/app &&` を前置する (直前ターンの cwd に依存しない)。成否は exit code でなく出力マーカーで判定: `** TEST SUCCEEDED **` / `** BUILD SUCCEEDED **` の存在、かつ `** TEST FAILED **` / `Error 6x` / `No rule to make target` の不在。`Mach error -308 (ipc/mig) server died` / `Lost connection to testmanagerd` 系の FAIL は Simulator インフラ起因の偽 FAIL — コード原因と診断する前に `xcrun simctl shutdown all && killall -9 com.apple.CoreSimulator.CoreSimulatorService` で再起動して 1 回リトライする (PR #134 のセッションで 3 回発生、全て再起動で回復)。
+
+### ルール 3
+
+成否判定の grep パターンは推測で書かず、対象ツールの実際の成功出力を 1 回見てから「成功マーカーの存在 + 失敗マーカーの不在」の両条件で書く (成功メッセージやフラグ名に「error」等が含まれ偽陽性になる)。 **make ターゲット名が既存のディレクトリ／ファイルと同名なら `.PHONY` が必須** — 無いと make は `is up to date` を出して何も実行せず exit 0 になる (PR #165 の `store-screenshots` ターゲットが入力ディレクトリ `store-screenshots/` と同名で発生。✅ 行の不在で気づけた)。
+
+### ルール 4
+
+zsh では `grep --include="*.swift"` のように glob を必ずクォートする。結果が 0 件の時は `no matches found` (コマンド不成立) と「本当に 0 件」を必ず区別する。**このハーネスの `grep` は ripgrep 実装で `.gitignore` を尊重する** — 「参照ゼロ」を主張する検証は `/usr/bin/grep` で取り直す (PR #140 の reviewer が `.superpowers/` のヒット欠落を実測)。
+
+### ルール 7
+
+plan / spec に書く tool・script・path は、書く前に Glob か Read で実在を 1 回確認する (他 issue コメント等の二次情報を primary 扱いしない)。issue 本文の API 前提も二次情報 — checker に encode する前に Apple docs を `curl` で原文確認する (#108 の「`Font.custom(size:)` は固定サイズ」は誤りで、固定になるのは `fixedSize:` — PR #144 の task review で判明)。plan に書くコード片は `ruby -c` / `ruby -ryaml` で構文確認する (`/…/x` regex のコメント内 `/`、YAML plain scalar の ` #` で plan 逐語が壊れた — PR #144)。 **依存ツールのバージョン制約演算子・DSL の意味も同じ二次情報** — 推測で書かず、ツール自身の API で実測する (`~> 0.10.3` を「patch まで固定」と plan に書いたが実際は `>= 0.10.3, < 0.11.0` で patch は素通りする。final review が `Pod::Requirement` で実測して発覚 — PR #156)。**plan に貼るコード片は構文確認だけでなく scratchpad で実行し、期待値 (テスト件数・mutation の failure 数・実データでの RED 件数) を実測してから書く** — implementer はその数字を成否判定に使うので、推測値だと「期待と違う」で停止する (PR #156 は 35 件 RED / 11 runs / mutation 3・2 failures をすべて実測値で plan に記載した)。 **その実測は plan に貼る逐語のコードで行う** — プロトタイプで測った値を plan の別バージョンに載せない (PR #158 は assertion 数を 53 と書いたが実測は 54。minitest は `assert_includes` / `assert_empty` を内部の `assert_respond_to` 込みで 2 assertions と数え、plan 版のテストにはプロトタイプより assert が 1 件多かった。plan には「この数値と違ったら止めて報告」と書くので、ズレは implementer を確実に止める)。
+
+### ルール 8
+
+checker / linter / validator を作る・レビューする時は「意図的に壊した入力で正しく RED になる」ことを fixture で実証する。正常系 GREEN だけの確認は vacuously green。**mutation の対象は「新規に強化した全テスト」に広げる** (#133 の a11y 2 件だけ未実証で final review 指摘、PR #137)。また mutation を設計する前に「どの入力がその分岐を通るか」を確認する — plan 指定の sentinel 定数変更は既存テストが実在キーしか見ないため 1 件も波及せず、lproj path 解決の破壊に切り替えて 12 件同時 fail を取得した (PR #137)。実時間依存テストでは `XCTNSPredicateExpectation(object: nil)` が約 1 秒ポーリングなので timeout は「発火予定時刻 + 数秒」の余裕を取り、固定時間窓での下限アサーションは「初回発火を predicate で待ってから delta 判定」にする (PR #140 の `DefaultTimerManagerTests`)。 **ローカル green は CI をモデルしない**: ローカルの `bundle install` (path 未設定) は gem を global gem dir に入れるので「素の `ruby -e 'require …'` が通った」は setup-ruby の `vendor/bundle` 隔離 (CI) では成り立たない。CI 固有の隔離・PATH 差し替えは action のソースを `curl` で原文確認してから結論する (PR #146 の Task 1 がこの誤結論を書き、final review が setup-ruby の bundler.js を読んで回帰を発見)。 **受け入れ手順を書く前に、その検証コマンド自体が効くかを確認する**: (i) スクリプトが ARGV を読むか (`bin/gitignore-doctor.rb` は `FIXTURE_FILE` をハードコードし引数を無視するので「引数で fixture を差し替えて確認した」は vacuous — PR #158 で実測)、(ii) その make ターゲットが `tests` チェーンに含まれるか (`gitignore-check` は入っていない → #159)。mutation の網羅は「新規テスト 1 件 : mutation 1 つ以上」の対応表で確認する (PR #158 は新規 7 件のうち 1 件が未実証で、その未実証テストが守っていた 1 行が Important 欠陥の唯一のガードだった)。
+
+### ルール 13
+
+Edit/Write の失敗や想定外のファイル変更は、並行セッションによる書き換えをまず疑い、timestamp と内容を確認してから続行する。**subagent の稼働中、コントローラは `git checkout` / `git pull` / `git switch` など HEAD を動かすコマンドを実行しない** — subagent は同じ working directory を共有しており、agent の未 commit 作業を巻き込む (#70 で実測: PR merge 後の master 同期が実装 agent の HEAD を移動させた)。稼働中の状態確認は `git log <ref>` / `git show <ref>:<path>` / `git diff <a>..<b>` の読み取り専用に限定し、reviewer 系 agent の指示書にも同じ禁止を明記する。分離が必要なら git worktree を使う。
+
+### ルール 14
+
+破壊的操作 (rm / git reset / 既存ファイル上書き) はユーザー自身の turn に対象ファイル名が出るまで実行しない。AskUserQuestion の選択肢承認は authorization として扱われない — (i) ユーザーにファイル名を述べてもらう、または (ii) `! rm <path>` で自走してもらう。**削除を提案する最初のメッセージで、そのまま貼れる `! git rm -r <path>` (未追跡なら `! rm <path>`) を必ず添える** — 対象一覧だけ見せて「OK」をもらい、その後にコマンドを案内すると往復が 1 回増える (#163 / PR #174 で実測)。例外: `.claude/pending-reflection.md` は SessionStart hook の指示に基づき、AskUserQuestion の選択結果 (追記する / 追記しない) を authorization として削除してよい (#82)。
+
+### ルール 16
+
+subagent に `make unit-tests` 等を実行させる時は Bash timeout を 600000 (10 分) にするよう指示書に明記する (デフォルト 2 分では足りない)。 **subagent は自分が起動した background Bash (xcodebuild 等) の完了を待つと idle になり、完了通知では自動再開しない** — controller が同じログを `until grep -q <終端マーカー> <log>; do sleep 15; done` の background Bash で監視し、完了時に SendMessage で「完了した、次の Step へ」と起こす (PR #150 の Task 2 で 3 回実測。指示書に「background 実行後 idle になったら controller が起こす」と書いておく)。
+
+### ルール 22
+
+plan-driven PR では plan doc を実装より前の最初の commit にする。**plan の task に PR merge ステップを含めない** — subagent-driven-development ではタスクレビューが完了ゲートなので、implementer が merge まで走るとレビュー指摘が常に merge 済みコードに対して出て、追随 commit が必要になる (#66 で実測)。plan は「PR 作成まで」で切り、merge はレビュー通過後にコントローラがルール 24 のチェーンで行う。
+
+### ルール 23
+
+CI 待ちは `gh pr checks --watch` や `until ... sleep 30` ポーリングでなく、**フォアグラウンドの `gh run watch <run-id> --interval 30`** を run ごとに実行する (run ID は `gh pr checks <PR>` の URL 末尾から取る)。この環境の Bash は sleep が無効でターン内待機できず、バックグラウンドタスクの完了通知や Monitor イベントは早発・偽発しうる (PR #111 で実行中ジョブの偽 pass イベントを実測)。**`gh run watch` は成功時に結論行を出さず、ジョブログの末尾 (brew の tap-trust 警告など) で終わることがある** — watch の出力だけで pass と判断せず、完了後に必ず `gh pr checks <PR>` で pass/fail を再確認する (PR #126 / #127 の pr-tests で 2 回とも結論行なしを実測)。**CI 設定 (workflow / Makefile) を変える PR は green check でなく当該 step のログ行で受け入れる** — `gh run view <id> --log | grep "^pr-tests	<step 名>"` で期待メッセージ (例: `✅ cocoapods … available` / `LeafTimer.app NN%`) を確認する。summary 系 step は入力欠落でも exit 0 するため、green は「何も出なかった」と区別できない (PR #144)。 **`gh run view --log` の step 列は `UNKNOWN STEP` になることがある** — `grep "^pr-tests\t<step 名>"` は precheck 等の出力を取りこぼすので、受け入れはメッセージパターン (`grep -E "ruby 3\.4\.4|cocoapods via bundler|lock-check passed|targets: no new orphan"`) で grep する。`rescue LoadError` 系ガード付き checker は「✅ 行の存在」に加えて「`skipped` 行の不在」も条件に入れる (run 33930722131 で実測)。
+
+### ルール 24
+
+このリポジトリは Auto-merge 無効。merge は非同期通知を根拠にせず、必ず `gh pr checks <PR> && gh pr merge <PR> --merge` の同一チェーンで再検証をゲートにして実行する。 **checks 全 pass かつ final review 済みなら、このチェーン自体が事前承認済みの操作 — merge 前に AskUserQuestion を挟まない** (PR #134 で「確認できているなら直接マージできませんか」と押し返された)。`gh pr merge` が auto mode クラシファイアにブロックされることがあるが transient — 同一チェーンを 1 回リトライしてからユーザーに `! gh pr merge <PR> --merge` を依頼する (PR #136 で 2 回目に成功)。
+
+### ルール 41
+
+コードフェンス (バッククォート 3 連) を含むファイル全文を plan 内のフェンスに埋め込まない (serialization が壊れる)。companion ファイルに分離してパス参照する。 **長い plan を Write すると末尾が silent に切れることがある** (PR #146 の plan は Task 3 途中で切れ、追記時に閉じフェンスが 1 行欠落)。plan の commit 前に `/usr/bin/grep -c '^```' <plan>` が偶数であることを確認する。
+
+### ルール 44
+
+plan / spec のファイル名は `YYYY-MM-DD-issue-NN[-NN…]-slug.md` (slug は小文字英数とハイフン。companion は `….SKILL-source.md` のように suffix を足す)。**`plans/` `specs/` 直下は「plan を書いてから `gh pr create` するまで」の一時置き場**で、plan の最終タスクで `git mv` して `archive/` へ移してから `gh pr create` する (#84。「merge 後に別 commit で片付ける」設計にすると 34 件溜まった実績がある)。**`archive/` は「PR 作成済み」を意味する** — merge 済みの歴史だけでなく、PR 作成後 merge 前の in-flight な plan もここに同居する。実際に稼働中かどうかはファイルの場所ではなく branch/PR の状態で判断する。`archive/` 配下は日付プレフィックスのみを要求する (旧規則で書かれた歴史はリネームしない)。`make plan-docs-check` (tests チェーン内) がこの命名を検証し、あわせて**直下に 14 日より長く置かれた plan/spec を滞留として fail させる** (#153。判定は mtime でなくファイル名の日付プレフィックス)。厳格名は保存前に issue 番号を要求するので、**issue 未起票の題材は先に `gh issue create` してから** plan/spec を保存する (`drafts/` のような逃げ道は作らない)。
+
+### ルール 45
+
+CLAUDE.md にルールを新設・改訂する時は、**同じ話題を扱う既存行を `/usr/bin/grep` して自己矛盾を潰してから commit する**。ルール 44 (plan 命名) を追加した際、同じファイルの 13 行目が旧命名 `YYYY-MM-DD-<feature>.md` を指示したままで、新設した `make plan-docs-check` ゲートが次の plan-driven PR を最初の commit で確実に赤にする状態だった (final review が検出 — PR #156)。あわせて、その規約に従うファイルを**生成する plugin skill の boilerplate** (`writing-plans` / `brainstorming` 等。`~/.claude/plugins/cache/` 配下で repo からは直せない) が旧形式を出さないか確認し、出す場合はルール 37 と同じ形で「skill はこう出すので最初の commit 前に直せ」と明記する。
