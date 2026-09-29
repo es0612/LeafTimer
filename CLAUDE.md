@@ -76,6 +76,6 @@
 42. レイアウト変更が既存デザインか回帰か迷ったら `docs/ver1_2/screen/` の旧ストアスクショと突き合わせる → skill `leaftimer-simulator-verification`。
 43. テストは新規は XCTest、View 構造は ViewInspector。Quick/Nimble は新規追加禁止・既存は据え置き。Podfile の制約と `pod update` の注意 → skill `leaftimer-xcode-deps`。
 44. plan / spec のファイル名は `YYYY-MM-DD-issue-NN[-NN…]-slug.md` (slug は小文字英数とハイフン。companion は `….SKILL-source.md` のように suffix を足す)。**`plans/` `specs/` 直下は「plan を書いてから `gh pr create` するまで」の一時置き場**で、plan の最終タスクで `git mv` して `archive/` へ移してから `gh pr create` する。`archive/` は「PR 作成済み」を意味し、稼働中かはファイルの場所でなく branch/PR の状態で判断する (`archive/` は日付プレフィックスのみ要求)。`make plan-docs-check` (tests チェーン内) が命名と、直下に 14 日より長く置かれた滞留 (ファイル名の日付で判定) を fail させる。issue 未起票の題材は先に `gh issue create` してから保存する。
-45. CLAUDE.md にルールを新設・改訂する時は、**同じ話題を扱う既存行を `/usr/bin/grep` して自己矛盾を潰してから commit する**。その規約に従うファイルを生成する plugin skill の boilerplate (`writing-plans` / `brainstorming` 等。repo からは直せない) が旧形式を出さないかも確認し、出す場合はルール 37 と同じ形で「skill はこう出すので最初の commit 前に直せ」と明記する。
+45. CLAUDE.md にルールを新設・改訂する時は、**同じ話題を扱う既存行を `/usr/bin/grep` して自己矛盾を潰してから commit する**。その規約に従うファイルを生成する plugin skill の boilerplate (`writing-plans` / `brainstorming` 等。repo からは直せない) が旧形式を出さないかも確認し、出す場合はルール 37 と同じ形で「skill はこう出すので最初の commit 前に直せ」と明記する。**CLAUDE.md は 18,000B 上限** (`make claude-md-size-check`、tests チェーン内)。超えたら事故の経緯は `docs/claude-lessons-archive.md` へ、作業時だけ要る手順は `.claude/skills/` へ移す。
 
 各ルールの事故経緯・実測データ・Issue 番号付きの詳細は `docs/claude-lessons-archive.md` を参照。

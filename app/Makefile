@@ -83,7 +83,7 @@ format-check:
 quality: lint format-check
 	@echo "Code quality checks completed"
 
-tests: precheck cocoapods-lock-check localization-check dynamic-type-check plan-docs-check gitignore-check store-screenshots-check-test sort lint unit-tests
+tests: precheck cocoapods-lock-check localization-check dynamic-type-check plan-docs-check claude-md-size-check gitignore-check store-screenshots-check-test sort lint unit-tests
 
 beta:
 	@/usr/bin/time fastlane beta
