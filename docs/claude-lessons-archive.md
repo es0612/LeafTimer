@@ -72,6 +72,8 @@ CLAUDE.md ルール 23 の旧内容「`until gh pr checks <PR> --json name,bucke
 
 CLAUDE.md を 18,000B 以下に圧縮した時 (#171)、以下のルールは「何をするか」だけに縮めるか、プロジェクト skill (`.claude/skills/leaftimer-simulator-verification` / `leaftimer-xcode-deps`) へ移した。事故の経緯・PR 番号・実測値を含む圧縮前の全文をここに残す。
 
+次に圧縮する時の注意: 全文をここへ逐語で退避しても「CLAUDE.md に行動指示が残っている」ことの証明にはならない。#171 では検証スクリプトで全文の退避を確認したが、ルール 7 / 8 / 44 の命令文 3 件 (「この数値と違ったら止めて報告」「新規・強化したテスト」「`drafts/` 等の逃げ道は作らない」) が CLAUDE.md からも skill からも消え、final review で見つかった。圧縮後はルールごとに、命令文 (〜する / 〜しない) が CLAUDE.md か skill に残っているかを確認する。
+
 ### ルール 12
 
 Simulator で UI 要素の有無を観測する前に、その View の live 参照元を grep して「どの画面に遷移すれば見えるか」を確定させる。
