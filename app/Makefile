@@ -125,6 +125,13 @@ plan-docs-check:
 	@ruby bin/test_plan_docs_check.rb
 	@ruby bin/plan-docs-check.rb
 
+# Issue #171: repo 直下の CLAUDE.md が 18,000B を超えたら fail させる。
+# 「学び → CLAUDE.md に 1 行足す」だけだと #111 の圧縮後 6 週間で 30KB に戻ったため。
+claude-md-size-check:
+	@echo "Running claude-md-size-check..."
+	@ruby bin/test_claude_md_size_check.rb
+	@ruby bin/claude-md-size-check.rb
+
 # Issue #161: App Store 用スクショ (ja/en × iPhone 6.9" / iPad 13" × 5 画面) を
 # 撮影 → 合成 → 寸法検証する。数分かかり Simulator を使うので tests チェーンには入れない。
 # 入力ディレクトリ store-screenshots/ と同名なので .PHONY が無いと make が「最新」扱いで何もしない。
