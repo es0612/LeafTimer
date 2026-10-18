@@ -193,3 +193,9 @@
 - [ ] **Step 3: push 前の確認 (ルール 21)** — `git fetch && gh pr list --state all --head feature/181-dark-launch-named-colors`。Expected: 既存 PR なし。`git diff --stat master..HEAD` で無関係なファイルが混ざっていないこと。
 
 - [ ] **Step 4: push と PR 作成** — `git push -u origin feature/181-dark-launch-named-colors` → `gh pr create --base master`。本文: 概要 (#93 / #63、Refs #181、Closes #93 #63)、物差しの結果 (6 枚の pixdiff 結果と各マスク、assetutil の結果、起動画面スクショの有無)、mutation の結果、未実測の項目。スクショは PR に埋め込まず SendUserFile でユーザーに渡す (ルール 25)。
+
+## 実装時の変更 (2026-10-18、実装後に追記)
+
+- **輪 8 色の色空間**: 旧 `getColor1()`〜`getColor4()` の `Color(.init(red:…))` は `CGColor(red:…)` = Generic RGB に解決されていた。「srgb で元の値」では輪が暗くなる (初回比較でボタン 450×450 が DIFF 153308) ため、colorset には Generic RGB の元の値を sRGB に換算した値 (小数 6 桁) を書き、テストは Generic RGB 空間で元の直書き値と比べる。上の表の「srgb / 元の値」は輪については当てはまらない。値を「元の値」に戻すと `AppColorAssetTests` が落ちる。
+- **見た目不変の判定**: GIF 矩形のマスクではなく、Reduce Motion (`com.apple.Accessibility ReduceMotionEnabled`) で葉の GIF を止め、6 枚とも**全画面で DIFF 0** を合格条件にした (on: DIFF 0 / off: DIFF 11274 で両方向を実証)。
+- **起動画面の確認**: `simctl uninstall` では Simulator の起動画面キャッシュが消えなかったため、未使用の新規 Simulator で確認した。

@@ -2,7 +2,7 @@
 
 - Issue: #181 (v1.6 リリース) / #93 / #63
 - 日付: 2026-10-18
-- 状態: 設計承認待ち
+- 状態: 実装済み (PR 作成時に archive)
 
 ## 意図
 
@@ -83,3 +83,9 @@ v1.5 (2026-09-27 公開) 以降、ユーザー向けのコード変更が 0 件�
 - Swift ファイルの追加は `make add-file` (ルール 28)。
 - 新規テストは XCTest (ルール 43)。
 - 起動画面のキャッシュ: 検証は毎回 uninstall から行う。
+
+## 実装時の変更 (2026-10-18、実装後に追記)
+
+- **輪 8 色の色空間**: 旧 `getColor1()`〜`getColor4()` の `Color(.init(red:…))` は `CGColor(red:…)` = Generic RGB に解決されていた。「srgb で元の値」では輪が暗くなる (初回比較でボタン 450×450 が DIFF 153308) ため、colorset には Generic RGB の元の値を sRGB に換算した値 (小数 6 桁) を書き、テストは Generic RGB 空間で元の直書き値と比べる。上の表の「srgb / 元の値」は輪については当てはまらない。値を「元の値」に戻すと `AppColorAssetTests` が落ちる。
+- **見た目不変の判定**: GIF 矩形のマスクではなく、Reduce Motion (`com.apple.Accessibility ReduceMotionEnabled`) で葉の GIF を止め、6 枚とも**全画面で DIFF 0** を合格条件にした (on: DIFF 0 / off: DIFF 11274 で両方向を実証)。
+- **起動画面の確認**: `simctl uninstall` では Simulator の起動画面キャッシュが消えなかったため、未使用の新規 Simulator で確認した。
