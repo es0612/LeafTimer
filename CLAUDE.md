@@ -36,7 +36,7 @@
 
 ### 破壊的操作・agent dispatch
 
-14. 破壊的操作 (rm / git reset / 既存ファイル上書き) はユーザー自身の turn に対象ファイル名が出るまで実行しない。AskUserQuestion の選択肢承認は authorization として扱われない — ユーザーにファイル名を述べてもらうか、`! rm <path>` で自走してもらう。**削除を提案する最初のメッセージで、そのまま貼れる `! git rm -r <path>` (未追跡なら `! rm <path>`) を必ず添える**。例外: `.claude/pending-reflection.md` は SessionStart hook の指示に基づき、AskUserQuestion の選択結果 (追記する / 追記しない) を authorization として削除してよい。
+14. 破壊的操作 (rm / git reset / 既存ファイル上書き) はユーザー自身の turn に対象ファイル名が出るまで実行しない。AskUserQuestion の選択肢承認は authorization として扱われない — ユーザーにファイル名を述べてもらうか、`! rm <path>` で自走してもらう。**削除を提案する最初のメッセージで、そのまま貼れる `! git rm -r <path>` (未追跡なら `! rm <path>`) を必ず添え、「許可」「削除して」だけでは実行できないことと、ファイル名入りの依頼文 (「<path> を削除して」) も並べる** (#181 で承認に 3 往復かかった)。例外: `.claude/pending-reflection.md` は SessionStart hook の指示に基づき、AskUserQuestion の選択結果 (追記する / 追記しない) を authorization として削除してよい。
 15. 全ての agent dispatch (implementer / reviewer / fixer 問わず) の指示書に「最終報告の全文を SendMessage で main へ送信してから idle になる」を明記する。reviewer にはさらに「まず `<workspace>/task-N-review.md` に全文を書き、その後 SendMessage」の二重化を指示する (メッセージ単独では idle 時に本文がロストする)。
 16. subagent に `make unit-tests` 等を実行させる時は Bash timeout を 600000 (10 分) にするよう指示書に明記する。**subagent は自分が起動した background Bash の完了を待つと idle になり、完了通知では自動再開しない** — controller が同じログを `until grep -q <終端マーカー> <log>; do sleep 15; done` の background Bash で監視し、完了時に SendMessage で起こす (指示書にもそう書いておく)。
 17. subagent の DONE 報告は毎回 `git log --oneline` / `git status --short` / 成果物 mtime で実地確認する。食い違っても即「虚偽」と断じない — mtime とプロセス生存を先に確認し、生きていれば当該 agent に完遂させる (二重 dispatch は silent failure を生む)。
