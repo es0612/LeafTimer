@@ -16,6 +16,7 @@
 		23B54FA3468C5D513D72FD66 /* SettingsLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037C3033F9AEAEA675BC6C68 /* SettingsLocalizationTests.swift */; };
 		27AC7EA43074765A7875051B /* KeyManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F499F2971862F940DBB1C9A1 /* KeyManagerSpec.swift */; };
 		280A1ACF1D8FE77F8846CD2D /* PhaseReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BFDDB48A2F26F01F43D02 /* PhaseReconcilerTests.swift */; };
+		2A612620C263D450421FB5E9 /* AppColorAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871026F448E8A6BBA6728E81 /* AppColorAssetTests.swift */; };
 		2E2CB3CE983BECF622864400 /* Pods_LeafTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17C7491631569CCC5150105 /* Pods_LeafTimer.framework */; };
 		2FB91AC254201D5F19E31B12 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7357CD442DB907774538B896 /* HistoryViewModel.swift */; };
 		31F87DA529F509E1D44B65FB /* TimerLayoutMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */; };
@@ -55,6 +56,7 @@
 		5FB2C60994CAB86106615387 /* SpySessionStatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */; };
 		64681B733CC451A46991AD6A /* LocalizationTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC44EBCDB10A5A75ACC99A37 /* LocalizationTestSupport.swift */; };
 		669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */; };
+		6A36EA51A58AAAAA8EDAC83A /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7503E9E6CE84FD81C67E11C5 /* AppColor.swift */; };
 		6E53F451AEEC9A8E3F11DB73 /* TimerViewModelAccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A26D8BCAD28F9B1BFECC1 /* TimerViewModelAccessibilityTests.swift */; };
 		805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */; };
 		82FD28D32A5791F39BF7AE3B /* DefaultTimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C9DA0155B11DA56E6D4288 /* DefaultTimerManagerTests.swift */; };
@@ -176,9 +178,11 @@
 		70A6985F541ACE9813FDE40C /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModelTests.swift; path = LeafTimerTests/HistoryViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		727BFDDB48A2F26F01F43D02 /* PhaseReconcilerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PhaseReconcilerTests.swift; path = LeafTimerTests/PhaseReconcilerTests.swift; sourceTree = SOURCE_ROOT; };
 		7357CD442DB907774538B896 /* HistoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoryViewModel.swift; path = LeafTimer/ViewModel/HistoryViewModel.swift; sourceTree = SOURCE_ROOT; };
+		7503E9E6CE84FD81C67E11C5 /* AppColor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppColor.swift; path = LeafTimer/Components/AppColor.swift; sourceTree = SOURCE_ROOT; };
 		778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdsConsentServices.swift; path = LeafTimer/Components/AdsConsentServices.swift; sourceTree = SOURCE_ROOT; };
 		7DAD93010F495D56669DB0F5 /* OnboardingLocalizationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingLocalizationTests.swift; path = LeafTimerTests/OnboardingLocalizationTests.swift; sourceTree = SOURCE_ROOT; };
 		7FBD5086205B41F0F0930480 /* OnboardingGateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingGateTests.swift; path = LeafTimerTests/OnboardingGateTests.swift; sourceTree = SOURCE_ROOT; };
+		871026F448E8A6BBA6728E81 /* AppColorAssetTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppColorAssetTests.swift; path = LeafTimerTests/AppColorAssetTests.swift; sourceTree = SOURCE_ROOT; };
 		8EF39A1AA793079782933CD2 /* SpyNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpyNotificationScheduler.swift; path = LeafTimerTests/SpyNotificationScheduler.swift; sourceTree = SOURCE_ROOT; };
 		8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimerLayoutMetrics.swift; path = LeafTimer/View/TimerLayoutMetrics.swift; sourceTree = SOURCE_ROOT; };
 		93FFE81224FE3E8E00AA1BD1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 			children = (
 				99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */,
 				778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */,
+				7503E9E6CE84FD81C67E11C5 /* AppColor.swift */,
 				2FBD29EC8547FD3C8868C106 /* AppLogger.swift */,
 				93FFE81324FF1BE500AA1BD1 /* DateManager.swift */,
 				26906FD1FBF54E2B9DBCFD0D /* DebugStoreScreenshot.swift */,
@@ -371,6 +376,7 @@
 			children = (
 				64AE4C2BB7AD83317CA6AA51 /* AdaptiveLayoutTests.swift */,
 				12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */,
+				871026F448E8A6BBA6728E81 /* AppColorAssetTests.swift */,
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				543E641FEA3219B656FB2E36 /* CircleButtonRatioTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
@@ -661,6 +667,7 @@
 				FC0EFE04C6A0827F8110890E /* AdsBootstrapper.swift in Sources */,
 				363E8C15E0B07F563138BE48 /* AdsConsentServices.swift in Sources */,
 				38C95EF325D7270D00D80736 /* AdsView.swift in Sources */,
+				6A36EA51A58AAAAA8EDAC83A /* AppColor.swift in Sources */,
 				3864B7CC2494D81D00948ACA /* AppDelegate.swift in Sources */,
 				9077CDE9322D05874B4A23FE /* AppLogger.swift in Sources */,
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
@@ -704,6 +711,7 @@
 			files = (
 				87B3FCB54C2563308FDDE9C4 /* AdaptiveLayoutTests.swift in Sources */,
 				08FF107914E06D3B1DB6BA0A /* AdsBootstrapperTests.swift in Sources */,
+				2A612620C263D450421FB5E9 /* AppColorAssetTests.swift in Sources */,
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				0A48268940D40F73F0B14574 /* CircleButtonRatioTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,

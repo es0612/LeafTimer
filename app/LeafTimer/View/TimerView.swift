@@ -7,7 +7,6 @@ struct TimerView: View {
     var timerViewModel: TimerViewModel
     @ObservedObject
     var settingViewModel: SettingViewModel
-    @Environment(\.colorScheme) var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showOnboarding = false
 
@@ -74,7 +73,7 @@ struct TimerView: View {
             GeometryReader { geometry in
                 let metrics = TimerLayoutMetrics(contentSize: geometry.size)
                 ZStack {
-                    timerViewModel.getBackgroundColor(colorScheme: colorScheme)
+                    timerViewModel.getBackgroundColor()
                         .ignoresSafeArea(.all)
 
                     leafLayer(metrics: metrics)

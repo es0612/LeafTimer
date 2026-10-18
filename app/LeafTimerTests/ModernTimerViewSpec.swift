@@ -148,13 +148,13 @@ class ModernTimerViewSpec: QuickSpec {
                 }
 
                 it("changes background color based on mode") {
-                    let backgroundColor = timerViewModel.getBackgroundColor(colorScheme: .light)
+                    let backgroundColor = timerViewModel.getBackgroundColor()
                     expect(backgroundColor) != nil
                 }
 
                 it("shows different GIF for break mode") {
                     timerViewModel.breakState = true
-                    let backgroundColor = timerViewModel.getBackgroundColor(colorScheme: .light)
+                    let backgroundColor = timerViewModel.getBackgroundColor()
                     expect(backgroundColor) != nil
                 }
             }

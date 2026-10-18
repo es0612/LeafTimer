@@ -66,92 +66,31 @@ extension TimerViewModel {
         return formatter.string(from: TimeInterval(currentTimeSecond)) ?? getDisplayedTime()
     }
 
-    func getBackgroundColor(colorScheme: ColorScheme) -> LinearGradient {
-        if breakState {
-            if colorScheme == .dark {
-                // Dark mode: Dark blue gradient for break time
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: [
-                            Color(.displayP3, red: 0.18, green: 0.20, blue: 0.24),
-                            Color(.displayP3, red: 0.25, green: 0.30, blue: 0.36),
-                        ]
-                    ),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            } else {
-                // Light mode: Light blue gradient for break time
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: [
-                            Color(.displayP3, red: 0.94, green: 0.96, blue: 0.98),
-                            Color(.displayP3, red: 0.77, green: 0.80, blue: 0.88),
-                        ]
-                    ),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            }
+    // Issue #63: 色の値は App/Assets.xcassets の named color (light/dark の対) に持たせる。
+    // named color が環境の colorScheme で解決されるため、ここでは work/break だけで分岐する。
+    func getBackgroundColor() -> LinearGradient {
+        let colors: [Color] = if breakState {
+            [AppColor.breakGradientTop.color, AppColor.breakGradientBottom.color]
         } else {
-            if colorScheme == .dark {
-                // Dark mode: Dark green gradient for work time
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: [
-                            Color(.displayP3, red: 0.18, green: 0.22, blue: 0.18),
-                            Color(.displayP3, red: 0.25, green: 0.30, blue: 0.23),
-                        ]
-                    ),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            } else {
-                // Light mode: Light green gradient for work time
-                LinearGradient(
-                    gradient: Gradient(
-                        colors: [
-                            Color(.displayP3, red: 0.95, green: 0.98, blue: 0.95),
-                            Color(.displayP3, red: 0.87, green: 0.91, blue: 0.85),
-                        ]
-                    ),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            }
+            [AppColor.workGradientTop.color, AppColor.workGradientBottom.color]
         }
+        return LinearGradient(gradient: Gradient(colors: colors), startPoint: .top, endPoint: .bottom)
     }
 
     func getColor1() -> Color {
-        if breakState {
-            Color(.init(red: 0.35, green: 0.38, blue: 0.46, alpha: 1))
-        } else {
-            Color(.init(red: 0.35, green: 0.47, blue: 0.35, alpha: 1))
-        }
+        breakState ? AppColor.breakRing1.color : AppColor.workRing1.color
     }
 
     func getColor2() -> Color {
-        if breakState {
-            Color(.init(red: 0.52, green: 0.66, blue: 0.73, alpha: 1))
-        } else {
-            Color(.init(red: 0.57, green: 0.73, blue: 0.52, alpha: 1))
-        }
+        breakState ? AppColor.breakRing2.color : AppColor.workRing2.color
     }
 
     func getColor3() -> Color {
-        if breakState {
-            Color(.init(red: 0.41, green: 0.57, blue: 0.71, alpha: 1))
-        } else {
-            Color(.init(red: 0.49, green: 0.71, blue: 0.41, alpha: 1))
-        }
+        breakState ? AppColor.breakRing3.color : AppColor.workRing3.color
     }
 
     func getColor4() -> Color {
-        if breakState {
-            Color(.init(red: 0.29, green: 0.45, blue: 0.67, alpha: 1))
-        } else {
-            Color(.init(red: 0.35, green: 0.68, blue: 0.29, alpha: 1))
-        }
+        breakState ? AppColor.breakRing4.color : AppColor.workRing4.color
     }
 
     func getLeafPattern() -> LeafPattern {

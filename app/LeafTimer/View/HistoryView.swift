@@ -98,9 +98,8 @@ struct HistoryView: View {
         if count == 0 {
             return Color.gray.opacity(colorScheme == .dark ? 0.4 : 0.3)
         }
-        return colorScheme == .dark
-            ? Color(red: 0.62, green: 0.76, blue: 0.62)  // ダークモード: 明度↑で対比確保
-            : Color(red: 0.42, green: 0.56, blue: 0.42)  // ライトモード: 既存 LeafTimer 緑
+        // Issue #63: light は既存 LeafTimer 緑、dark は明度↑で対比確保 (値は HistoryBar.colorset)
+        return AppColor.historyBar.color
     }
 
     private func shortLabel(date: String) -> String {
