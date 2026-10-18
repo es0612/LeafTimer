@@ -29,7 +29,7 @@ CLAUDE.md ルール 12 / 30 / 31 / 32 / 42 の実体。汎用手順は global sk
 
 - Dynamic Type: `xcrun simctl ui booted content_size <値>`。標準域 `extra-small`〜`extra-extra-extra-large`、拡張域 `accessibility-medium`〜`accessibility-extra-extra-extra-large` (= AX5)。
 - onboarding: install 直後の初回起動は onboarding の fullScreenCover が最前面に出る。他画面を撮る前に `xcrun simctl spawn booted defaults write jp.ema.LeafTimer hasSeenOnboarding -bool true`。onboarding 自体を撮る時は `defaults delete` を使う (`simctl uninstall` は ATT までリセットされるので不可)。
-- 画面を直接開く: 起動引数 `-InitialScreen=settings` / `history` / `timePreview` (`TimerView.swift` の DEBUG フック)。葉パターンは `-LeafPattern=small|mid|big` で強制できる。
+- 画面を直接開く: 起動引数 `-InitialScreen=settings` / `history` / `timePreview` (`TimerView.swift` の DEBUG フック)。葉パターンは `-LeafPattern=small|mid|big` で強制できる。 break 状態の背景は `-BreakState` で開ける (#63)。
 - ATT: fresh Simulator では初回起動時に ATT ダイアログが最前面に出て、simctl では tap も TCC.db 直書きもできない。起動前に `applesimutils --byId <UDID> --bundle jp.ema.LeafTimer --setPermissions "userTracking=YES" --restartSB` で付与する (brew 導入済み。再導入時は `brew trust wix/brew` が必要)。
 - 設定画面下部はスクロール手段が無く未検証 (#109)。
 
@@ -42,6 +42,8 @@ CLAUDE.md ルール 12 / 30 / 31 / 32 / 42 の実体。汎用手順は global sk
 
 - 通知バナーは配送後約 10 秒で消える。fire 時刻 +2 秒に照準した background sleep → screenshot で撮る。
 - アプリ復帰直後のスクショは遷移アニメ中の旧フレームを掴む。数秒後の 2 枚目で確定判定する。
+- 見た目不変をピクセル差分で確かめる時は、起動前に `xcrun simctl spawn <UDID> defaults write com.apple.Accessibility ReduceMotionEnabled -bool true` で葉の GIF を止める。同一ビルド 2 回撮影で全画面 DIFF 0 になる (2026-10-18 #63、off では葉の領域だけ DIFF が出る)。
+- 起動画面 (LaunchScreen) は `simctl uninstall` してもキャッシュが残り旧画像が出る。アセット変更後の起動画面は未使用の新規 Simulator (`simctl create`) で撮る (2026-10-18 #93)。
 - アニメの静止/再生判定は 1〜2 秒間隔のスクショ複数枚の md5 比較で行い、「静止 = 全一致」と「再生 = 不一致」の両方向を必ず実証する (片方向だけでは検出手法自体の故障と区別できない)。
 - スクショの目視は縮小した一覧画像で済ませず、1 枚ずつ原寸で下端まで見る (設定画面下端の AdMob テスト広告を見落とした実績がある)。
 

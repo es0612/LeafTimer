@@ -7,7 +7,6 @@ struct TimerView: View {
     var timerViewModel: TimerViewModel
     @ObservedObject
     var settingViewModel: SettingViewModel
-    @Environment(\.colorScheme) var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showOnboarding = false
 
@@ -74,7 +73,7 @@ struct TimerView: View {
             GeometryReader { geometry in
                 let metrics = TimerLayoutMetrics(contentSize: geometry.size)
                 ZStack {
-                    timerViewModel.getBackgroundColor(colorScheme: colorScheme)
+                    timerViewModel.getBackgroundColor()
                         .ignoresSafeArea(.all)
 
                     leafLayer(metrics: metrics)
@@ -160,6 +159,10 @@ struct TimerView: View {
                             showOnboarding = true
                         }
 #if DEBUG
+                        // Issue #63: 背景色の前後比較用に break 状態で開く (readData/openScreen の後に置いて上書きを避ける)
+                        if DebugStoreScreenshot.isBreakStateRequested() {
+                            timerViewModel.breakState = true
+                        }
                         // Issue #161: ストア用スクショの実行中画面 (simctl に tap が無いため)
                         if DebugStoreScreenshot.isAutoStartRequested(), !timerViewModel.executeState {
                             timerViewModel.onPressedTimerButton()
