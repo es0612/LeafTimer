@@ -9,6 +9,8 @@ enum DebugStoreScreenshot {
     static let seedArgument = "-SeedSampleStats"
     static let autoStartArgument = "-AutoStart"
     static let hideAdsArgument = "-HideAds"
+    /// Issue #63: 背景色の前後比較 (named color 化) で break 状態を撮るため。
+    static let breakStateArgument = "-BreakState"
 
     /// 過去 7 日 (today を含む) の件数と、見栄えのする streak / 累計の固定値。
     static func sampleStats(today: Date, calendar: Calendar = Calendar(identifier: .gregorian)) -> SessionStats {
@@ -58,6 +60,10 @@ enum DebugStoreScreenshot {
 
     static func isAutoStartRequested(arguments: [String] = ProcessInfo.processInfo.arguments) -> Bool {
         arguments.contains(autoStartArgument)
+    }
+
+    static func isBreakStateRequested(arguments: [String] = ProcessInfo.processInfo.arguments) -> Bool {
+        arguments.contains(breakStateArgument)
     }
 }
 #endif

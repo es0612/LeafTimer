@@ -160,6 +160,10 @@ struct TimerView: View {
                             showOnboarding = true
                         }
 #if DEBUG
+                        // Issue #63: 背景色の前後比較用に break 状態で開く (readData/openScreen の後に置いて上書きを避ける)
+                        if DebugStoreScreenshot.isBreakStateRequested() {
+                            timerViewModel.breakState = true
+                        }
                         // Issue #161: ストア用スクショの実行中画面 (simctl に tap が無いため)
                         if DebugStoreScreenshot.isAutoStartRequested(), !timerViewModel.executeState {
                             timerViewModel.onPressedTimerButton()

@@ -84,4 +84,10 @@ final class DebugStoreScreenshotTests: XCTestCase {
         XCTAssertTrue(DebugStoreScreenshot.isAutoStartRequested(arguments: ["LeafTimer", "-AutoStart"]))
         XCTAssertFalse(DebugStoreScreenshot.isAutoStartRequested(arguments: ["LeafTimer"]))
     }
+
+    /// Issue #63: 背景色の前後比較で break 状態を撮るための起動引数。
+    func testBreakStateRequestedOnlyWithArgument() {
+        XCTAssertTrue(DebugStoreScreenshot.isBreakStateRequested(arguments: ["LeafTimer", "-BreakState"]))
+        XCTAssertFalse(DebugStoreScreenshot.isBreakStateRequested(arguments: ["LeafTimer", "-AutoStart"]))
+    }
 }
