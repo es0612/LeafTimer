@@ -28,7 +28,8 @@ CLAUDE.md ルール 12 / 30 / 31 / 32 / 42 の実体。汎用手順は global sk
 ## 画面の準備 (ルール 32)
 
 - Dynamic Type: `xcrun simctl ui booted content_size <値>`。標準域 `extra-small`〜`extra-extra-extra-large`、拡張域 `accessibility-medium`〜`accessibility-extra-extra-extra-large` (= AX5)。
-- onboarding: install 直後の初回起動は onboarding の fullScreenCover が最前面に出る。他画面を撮る前に `xcrun simctl spawn booted defaults write jp.ema.LeafTimer hasSeenOnboarding -bool true`。onboarding 自体を撮る時は `defaults delete` を使う (`simctl uninstall` は ATT までリセットされるので不可)。
+- onboarding: install 直後の初回起動は onboarding の fullScreenCover が最前面に出る。他画面を撮る時は、起動引数 `-hasSeenOnboarding YES` を `simctl launch` に渡すのが確実 (引数ドメインが最優先。永続しないので、次に引数なしで起動すると onboarding が戻る)。onboarding 自体は引数なしの fresh install で撮る。
+- `xcrun simctl spawn <UDID> defaults write jp.ema.LeafTimer <key> …` が書くのはアプリのコンテナではなく、device 側の `data/Library/Preferences/jp.ema.LeafTimer.plist`。アプリからは **コンテナに同じキーが無い時だけ** 読める。コンテナに値があればそちらが勝つので、一度アプリが書いたキーは spawn で上書きできない (2026-10-24 #168 で実測: 書く前の初回起動では効き、seed 後の false 書き込みは効かない)。コンテナの plist の直書きは cfprefsd に戻される。
 - 画面を直接開く: 起動引数 `-InitialScreen=settings` / `history` / `timePreview` (`TimerView.swift` の DEBUG フック)。葉パターンは `-LeafPattern=small|mid|big` で強制できる。 break 状態の背景は `-BreakState` で開ける (#63)。
 - ATT: fresh Simulator では初回起動時に ATT ダイアログが最前面に出て、simctl では tap も TCC.db 直書きもできない。起動前に `applesimutils --byId <UDID> --bundle jp.ema.LeafTimer --setPermissions "userTracking=YES" --restartSB` で付与する (brew 導入済み。再導入時は `brew trust wix/brew` が必要)。
 - 設定画面下部はスクロール手段が無く未検証 (#109)。
