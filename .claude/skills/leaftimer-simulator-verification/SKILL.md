@@ -28,7 +28,8 @@ CLAUDE.md ルール 12 / 30 / 31 / 32 / 42 の実体。汎用手順は global sk
 ## 画面の準備 (ルール 32)
 
 - Dynamic Type: `xcrun simctl ui booted content_size <値>`。標準域 `extra-small`〜`extra-extra-extra-large`、拡張域 `accessibility-medium`〜`accessibility-extra-extra-extra-large` (= AX5)。
-- onboarding: install 直後の初回起動は onboarding の fullScreenCover が最前面に出る。他画面を撮る前に `xcrun simctl spawn booted defaults write jp.ema.LeafTimer hasSeenOnboarding -bool true`。onboarding 自体を撮る時は `defaults delete` を使う (`simctl uninstall` は ATT までリセットされるので不可)。
+- onboarding: install 直後の初回起動は onboarding の fullScreenCover が最前面に出る。他画面を撮る時は、起動引数 `-hasSeenOnboarding YES` を `simctl launch` に渡すのが確実 (引数ドメインが最優先。永続しないので、次に引数なしで起動すると onboarding が戻る)。onboarding 自体は引数なしの fresh install で撮る。
+- `xcrun simctl spawn <UDID> defaults write jp.ema.LeafTimer <key> …` が書くのはアプリのコンテナではなく、device 側の `data/Library/Preferences/jp.ema.LeafTimer.plist`。アプリからは **コンテナに同じキーが無い時だけ** 読める。コンテナに値があればそちらが勝つので、一度アプリが書いたキーは spawn で上書きできない (2026-10-24 #168 で実測: 書く前の初回起動では効き、seed 後の false 書き込みは効かない)。コンテナの plist の直書きは cfprefsd に戻される。
 - 画面を直接開く: 起動引数 `-InitialScreen=settings` / `history` / `timePreview` (`TimerView.swift` の DEBUG フック)。葉パターンは `-LeafPattern=small|mid|big` で強制できる。 break 状態の背景は `-BreakState` で開ける (#63)。
 - ATT: fresh Simulator では初回起動時に ATT ダイアログが最前面に出て、simctl では tap も TCC.db 直書きもできない。起動前に `applesimutils --byId <UDID> --bundle jp.ema.LeafTimer --setPermissions "userTracking=YES" --restartSB` で付与する (brew 導入済み。再導入時は `brew trust wix/brew` が必要)。
 - 設定画面下部はスクロール手段が無く未検証 (#109)。
@@ -43,6 +44,7 @@ CLAUDE.md ルール 12 / 30 / 31 / 32 / 42 の実体。汎用手順は global sk
 - 通知バナーは配送後約 10 秒で消える。fire 時刻 +2 秒に照準した background sleep → screenshot で撮る。
 - アプリ復帰直後のスクショは遷移アニメ中の旧フレームを掴む。数秒後の 2 枚目で確定判定する。
 - 見た目不変をピクセル差分で確かめる時は、起動前に `xcrun simctl spawn <UDID> defaults write com.apple.Accessibility ReduceMotionEnabled -bool true` で葉の GIF を止める。同一ビルド 2 回撮影で全画面 DIFF 0 になる (2026-10-18 #63、off では葉の領域だけ DIFF が出る)。
+- 色・スタイルの集約など見た目不変のリファクタは、変更前後で同じ操作のスクショを全テーマ状態 (work/break/履歴 × light/dark) で撮り、全画面 DIFF 0 で受け入れる。差分が出たら、まず旧コードの色空間 (Generic RGB と sRGB) を疑い、次に換算後の小数の丸め桁を疑う (#63 では 4 桁で 1 階調ずれ、6 桁にして DIFF 0)。比較コマンドが効いているかは、設定を戻して DIFF が出ることで逆方向も確かめる。
 - 起動画面 (LaunchScreen) は `simctl uninstall` してもキャッシュが残り旧画像が出る。アセット変更後の起動画面は未使用の新規 Simulator (`simctl create`) で撮る (2026-10-18 #93)。
 - アニメの静止/再生判定は 1〜2 秒間隔のスクショ複数枚の md5 比較で行い、「静止 = 全一致」と「再生 = 不一致」の両方向を必ず実証する (片方向だけでは検出手法自体の故障と区別できない)。
 - スクショの目視は縮小した一覧画像で済ませず、1 枚ずつ原寸で下端まで見る (設定画面下端の AdMob テスト広告を見落とした実績がある)。

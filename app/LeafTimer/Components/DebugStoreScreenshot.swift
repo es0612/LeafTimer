@@ -3,8 +3,9 @@ import Foundation
 
 /// Issue #161: ストア用スクショ撮影 (`make store-screenshots`) の起動引数フック。
 /// simctl には tap も app コンテナの UserDefaults への確実な書き込み手段も無い
-/// (`simctl spawn defaults write` はコンテナ外に書き、plist 直書きは cfprefsd に
-/// 戻される — 2026-09-27 実測) ため、撮影用の状態はアプリ自身に作らせる。
+/// (`simctl spawn defaults write` はコンテナ外の device 側 plist に書き、アプリからは
+/// コンテナに同じキーが無い時だけ読める。plist 直書きは cfprefsd に戻される —
+/// 2026-09-27 / 10-24 #168 実測) ため、撮影用の状態はアプリ自身に作らせる。
 enum DebugStoreScreenshot {
     static let seedArgument = "-SeedSampleStats"
     static let autoStartArgument = "-AutoStart"
