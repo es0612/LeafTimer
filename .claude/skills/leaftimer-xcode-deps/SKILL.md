@@ -13,7 +13,7 @@ CLAUDE.md ルール 26 / 27 / 28 / 29 / 43 の実体。各項目の事故経緯�
 - CocoaPods は `app/Gemfile.lock` で固定し、常に `bundle exec pod …` で動かす。Ruby は `app/.ruby-version`。CI は `ruby/setup-ruby@v1` の `working-directory: app` + `bundler-cache: true` が両方を読む。
 - 素の `pod` / `gem install cocoapods` / `pod _<ver>_` に戻さない。macos runner の `pod` は brew ruby の RubyGems binstub で常に最新 install 版を activate するため、lock 版へ downgrade できない。
 - Gemfile.lock と Podfile.lock の `COCOAPODS:` 行の一致は `make cocoapods-lock-check` (tests チェーン内) が守る。
-- Xcode Cloud の `ci_post_clone.sh` は master 限定トリガーで PR 検証できない。bundle exec 化は #147 (未着手)。
+- Xcode Cloud の `ci_post_clone.sh` は master 限定トリガーで PR 検証できない。#147 で brew の `ruby@3.4` (keg-only、PATH 先頭) + `bundle exec pod install` に移した (Xcode Cloud には brew の cocoapods 1.17.0 が preinstall 済みで、素の `pod` は lock の 1.16.2 とずれていた。build 45 のログで確認)。受け入れは merge 後の Xcode Cloud ログの `cocoapods via bundler: 1.16.2` 行で見る。
 
 ## make に ruby checker を足す時 (ルール 27)
 
