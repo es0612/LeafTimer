@@ -208,7 +208,10 @@ struct TimerView: View {
         case .mid: "leaf2"
         case .big: "leaf3"
         }
+        // Issue #190: GIFView は作成後に gifName が変わっても GIF を読み直さない。
+        // 名前を id にして、パターンが変わるたびに作り直させる
         return GIFView(gifName: gifName)
+            .id(gifName)
             .frame(
                 width: metrics.leafSize(for: pattern),
                 height: metrics.leafSize(for: pattern),
