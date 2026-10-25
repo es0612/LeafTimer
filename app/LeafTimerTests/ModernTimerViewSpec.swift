@@ -169,6 +169,7 @@ class ModernTimerViewSpec: QuickSpec {
                     // Issue #64: navigationStack 直下に GeometryReader を挿入し、葉の VStack を
                     // leafLayer(metrics:) (GIFView を直接返す @ViewBuilder) に置き換えたため、
                     // ZStack の子は [背景, leafLayer, 主要コンテンツ VStack] の順で index 2 になった。
+                    // Issue #188: 葉を START ボタンの background に移したので [背景, VStack] の index 1 になった。
                     let vStack = try timerView.body.inspect()
                         .navigationStack()
                         .geometryReader()
