@@ -4,13 +4,16 @@ import CoreGraphics
 /// View から分離し、SE / iPad の各サイズをユニットテスト可能にする。
 struct TimerLayoutMetrics: Equatable {
     /// iPhone 17 で GeometryReader が返す content 高さの近似。ここで scale = 1.0 になり
-    /// 現行の固定値 (90/200/350pt) が維持される。
+    /// leafSize の基準値 (90/140/290pt) がそのまま使われる。
     static let referenceContentHeight: CGFloat = 760
     /// iPhone 17 の画面幅。Issue #114: iPad Split View の細長ウィンドウ (幅 320pt ×
     /// 高さ ~1000pt) で高さ比だけだと big 葉が横にはみ出すため、幅比との min を取る。
     static let referenceContentWidth: CGFloat = 390
     /// 下限は SE 系の視認性、上限は iPad でのバルーン化防止。
     static let scaleRange: ClosedRange<CGFloat> = 0.55...1.35
+
+    /// Issue #188: 葉を START ボタンに重ねる深さの、ボタン直径に対する比率 (直径 150pt で 20pt)。
+    static let leafOverlapRatio: CGFloat = 20.0 / 150.0
 
     let scale: CGFloat
 
@@ -25,22 +28,21 @@ struct TimerLayoutMetrics: Equatable {
     func leafSize(for pattern: LeafPattern) -> CGFloat {
         switch pattern {
         case .small: 90 * scale
-        case .mid: 200 * scale
-        case .big: 350 * scale
+        case .mid: 140 * scale
+        case .big: 290 * scale
         }
     }
 
-    func leafBottomPadding(for pattern: LeafPattern) -> CGFloat {
-        switch pattern {
-        case .small: 105 * scale
-        case .mid: 150 * scale
-        case .big: 300 * scale
-        }
+    /// Issue #188: 葉の frame の上端をボタンの上端に合わせたあと、y 方向に動かす量。
+    /// 葉の下端がボタン上端から `buttonDiameter * leafOverlapRatio` だけ下に来る。
+    /// 直径は Dynamic Type で変わる (CircleButton.resolvedDiameter) ので、重なりも追従する。
+    func leafOffsetY(for pattern: LeafPattern, buttonDiameter: CGFloat) -> CGFloat {
+        buttonDiameter * Self.leafOverlapRatio - leafSize(for: pattern)
     }
 
     func leafLeadingPadding(for pattern: LeafPattern) -> CGFloat {
         switch pattern {
-        case .mid: 11 * scale
+        case .mid: 8 * scale
         default: 0
         }
     }

@@ -76,8 +76,6 @@ struct TimerView: View {
                     timerViewModel.getBackgroundColor()
                         .ignoresSafeArea(.all)
 
-                    leafLayer(metrics: metrics)
-
                     VStack {
                         Text(timerViewModel.getDisplayedTime())
                             .font(.system(size: min(timerFontSize, 110), weight: .bold, design: .monospaced))
@@ -89,12 +87,23 @@ struct TimerView: View {
                             .accessibilityLabel(NSLocalizedString("timer.a11y.remaining_time", comment: "Remaining time label"))
                             .accessibilityValue(timerViewModel.getAccessibilityTimeValue())
                             .accessibilityAddTraits(.updatesFrequently)
+                            // Issue #188: 葉は後ろの Button の background にあり、そのままだと
+                            // 木が数字の手前に描かれる。従来どおり数字を木より手前に出す
+                            .zIndex(1)
 
                         Button(action: didTapTimerButton) {
                             CircleButton(viewModel: timerViewModel)
                                 .shadow(color: .gray, radius: 1, x: 1, y: 2)
                         }
                         .buttonStyle(.plain)
+                        // Issue #188: 葉を画面中央基準でなくボタンの上端に固定する。Dynamic Type で
+                        // ボタンだけが大きくなって動き、葉が埋もれていたため
+                        .background(alignment: .top) {
+                            GeometryReader { proxy in
+                                leafLayer(metrics: metrics, buttonDiameter: proxy.size.height)
+                                    .frame(width: proxy.size.width)
+                            }
+                        }
                         // Issue #61: 最頻操作の開始/停止に押下手応えを付ける。
                         // executeState はタップ以外で変化しないため誤発火しない。
                         // vibration 設定 (フェーズ終了バイブ用) とは意図的に非連動
@@ -182,7 +191,8 @@ struct TimerView: View {
     }
 
     /// Issue #64: 葉の固定 frame/padding を TimerLayoutMetrics の比率値に置き換えた層。
-    private func leafLayer(metrics: TimerLayoutMetrics) -> some View {
+    /// Issue #188: START ボタンの background に置き、葉の下端をボタン上端に重ねる。
+    private func leafLayer(metrics: TimerLayoutMetrics, buttonDiameter: CGFloat) -> some View {
         // Issue #70: 3 分岐すべてが非 nil を返すため Optional は実質デッドだった。
         // 誤読を招くので非 Optional に落とす (振る舞い不変)。
         let pattern: LeafPattern = {
@@ -206,7 +216,11 @@ struct TimerView: View {
             )
             .padding(.leading, metrics.leafLeadingPadding(for: pattern))
             .padding(.trailing, metrics.leafTrailingPadding(for: pattern))
-            .padding(.bottom, metrics.leafBottomPadding(for: pattern))
+            .offset(y: metrics.leafOffsetY(for: pattern, buttonDiameter: buttonDiameter))
+            // 葉の frame はボタンより大きく上端で重なるので、タップをボタンに通し、
+            // 飾りとして VoiceOver の対象からも外す
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
     }
 
     // MARK: - Private methods

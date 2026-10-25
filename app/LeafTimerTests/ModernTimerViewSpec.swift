@@ -89,7 +89,7 @@ class ModernTimerViewSpec: QuickSpec {
                         .navigationStack()
                         .geometryReader()
                         .zStack()
-                        .vStack(2)
+                        .vStack(1)
                         .toolbar()
 
                     let resetIcon = try toolbar.item(0).find(ViewType.Image.self).actualImage().name()
@@ -102,7 +102,7 @@ class ModernTimerViewSpec: QuickSpec {
                         .navigationStack()
                         .geometryReader()
                         .zStack()
-                        .vStack(2)
+                        .vStack(1)
                         .toolbar()
 
                     let settingsItem = try toolbar.item(2)
@@ -169,11 +169,12 @@ class ModernTimerViewSpec: QuickSpec {
                     // Issue #64: navigationStack 直下に GeometryReader を挿入し、葉の VStack を
                     // leafLayer(metrics:) (GIFView を直接返す @ViewBuilder) に置き換えたため、
                     // ZStack の子は [背景, leafLayer, 主要コンテンツ VStack] の順で index 2 になった。
+                    // Issue #188: 葉を START ボタンの background に移したので [背景, VStack] の index 1 になった。
                     let vStack = try timerView.body.inspect()
                         .navigationStack()
                         .geometryReader()
                         .zStack()
-                        .vStack(2)
+                        .vStack(1)
 
                     expect(vStack) != nil
                 }

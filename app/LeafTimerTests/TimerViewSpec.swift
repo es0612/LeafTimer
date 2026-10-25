@@ -48,7 +48,7 @@ class TimerViewSpec: QuickSpec {
             // アイコンまで検証する。item(3) が無いことも確認して増減を検出する。
             it("displayed navigation bar button item") {
                 let toolbar = try timerView.body.inspect().navigationStack()
-                    .geometryReader().zStack().vStack(2).toolbar()
+                    .geometryReader().zStack().vStack(1).toolbar()
 
                 let icons = try (0..<3).map { index in
                     try toolbar.item(index).find(ViewType.Image.self).actualImage().name()
