@@ -56,7 +56,9 @@ jobs:
       - name: Pod install (bundle exec)
         working-directory: app
         run: |
-          echo "cocoapods via bundler: $(bundle exec pod --version)"
+          # Issue #187: $(...) を echo に埋め込むと bash -e でも失敗が素通りするので、先に変数へ入れる。
+          POD_VERSION="$(bundle exec pod --version)"
+          echo "cocoapods via bundler: ${POD_VERSION}"
           bundle exec pod install
 
       # Issue #143 final review: bundle exec が RUBYOPT / BUNDLE_GEMFILE を子プロセスに継承させるので、
