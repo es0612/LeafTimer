@@ -89,7 +89,7 @@ class ModernTimerViewSpec: QuickSpec {
                         .navigationStack()
                         .geometryReader()
                         .zStack()
-                        .vStack(2)
+                        .vStack(1)
                         .toolbar()
 
                     let resetIcon = try toolbar.item(0).find(ViewType.Image.self).actualImage().name()
@@ -102,7 +102,7 @@ class ModernTimerViewSpec: QuickSpec {
                         .navigationStack()
                         .geometryReader()
                         .zStack()
-                        .vStack(2)
+                        .vStack(1)
                         .toolbar()
 
                     let settingsItem = try toolbar.item(2)
@@ -173,7 +173,7 @@ class ModernTimerViewSpec: QuickSpec {
                         .navigationStack()
                         .geometryReader()
                         .zStack()
-                        .vStack(2)
+                        .vStack(1)
 
                     expect(vStack) != nil
                 }

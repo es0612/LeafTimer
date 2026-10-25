@@ -40,14 +40,6 @@ struct TimerLayoutMetrics: Equatable {
         buttonDiameter * Self.leafOverlapRatio - leafSize(for: pattern)
     }
 
-    func leafBottomPadding(for pattern: LeafPattern) -> CGFloat {
-        switch pattern {
-        case .small: 105 * scale
-        case .mid: 150 * scale
-        case .big: 300 * scale
-        }
-    }
-
     func leafLeadingPadding(for pattern: LeafPattern) -> CGFloat {
         switch pattern {
         case .mid: 8 * scale
