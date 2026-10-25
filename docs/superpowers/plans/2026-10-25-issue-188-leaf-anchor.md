@@ -30,7 +30,7 @@
 
 1. **時刻の数字が木の手前に描かれること** — 葉を Button の background に移すと、VStack で後ろにある Button の background が Text より手前に描かれる (試作ではコロンが幹に隠れた)。今と同じく数字が手前に来ること → Task 2 Step 1 の `.zIndex(1)` と、Task 3 の big のスクショで確認
 2. **葉が重なった部分を押しても START が反応すること** — 葉の frame はボタンより大きく、上 20pt ほど重なる → Task 2 Step 1 の `.allowsHitTesting(false)` と、Task 3 Step 3 のタップ確認
-3. **VoiceOver が葉を別の要素として読まないこと** — Button の background に入れたことで、ボタンの読み上げが変わらないこと → Task 2 Step 1 の `.accessibilityHidden(true)`
+3. **VoiceOver が葉を別の要素として読まないこと** — Button の background に入れたことで、ボタンの読み上げが変わらないこと → Task 2 Step 1 の `.accessibilityHidden(true)`。テストは無く、コードレビューだけで確かめる
 4. **SE で big の木がナビゲーションバーに潜らないこと** — 固定すると木の上端はボタン位置で決まる。SE (content 高さ ≒ 600pt) でも上端がタイトルより下にあること → Task 3 の SE × big のスクショ
 5. **iPad (scale 1.35 で上限) で big の木が画面からはみ出さないこと** → Task 3 で iPad 13" を 1 枚撮る
 
@@ -49,7 +49,7 @@
   - `leafSize(for:)`: small 90 / mid **140** / big **290** (× scale)
   - `leafLeadingPadding(for:)`: mid **8** (× scale)、ほかは 0
   - `leafTrailingPadding(for:)`: 変更なし (small 22 × scale)
-  - `leafBottomPadding(for:)` は **削除** (葉の位置はボタン基準になるので使わない)
+  - `leafBottomPadding(for:)` は Task 2 で **削除** する (葉の位置はボタン基準になるので使わない。Task 1 の時点では `TimerView` がまだ呼ぶので残す)
 
 - [ ] **Step 1: テストを書き換える (RED)**
 
@@ -103,16 +103,43 @@ func testLeafOverlapFollowsButtonDiameter() {
 }
 ```
 
-- [ ] **Step 2: RED を確認する**
+- [ ] **Step 2: 重なりの計算だけ足して、値の RED を確認する**
 
-Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && make unit-tests 2>&1 | tail -30`
-Expected: `leafOverlapRatio` / `leafOffsetY` が無いのでコンパイルエラー (`has no member 'leafOverlapRatio'` / `'leafOffsetY'`)。これと違ったら止めて報告する
+`TimerLayoutMetrics` に `leafOverlapRatio` と `leafOffsetY(for:buttonDiameter:)` だけを足す。サイズ・padding は今の値 (mid 200 / big 350 / leading 11) のまま、`leafBottomPadding(for:)` も残す。`leafOffsetY` の doc comment に Issue #188 と「下端がボタン上端から直径 × 比率だけ下」を書く。
 
-- [ ] **Step 3: `TimerLayoutMetrics` を実装する**
+Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && make unit-tests 2>&1 | grep -E "AdaptiveLayoutTests.*(passed|failed)"`
+Expected: 失敗はちょうど次の 4 件。
 
-Interfaces のとおりに変える。`leafOffsetY` の doc comment に Issue #188 と「下端がボタン上端から直径 × 比率だけ下」を書く。`leafBottomPadding(for:)` は消す (この時点では `TimerView.swift:208` がまだ呼んでいるので、Task 2 と同じ commit にする)。
+- `testReferenceSizeValues` (mid 200≠140、big 350≠290、leading 11≠8)
+- `testSmallDeviceScalesDown`
+- `testLargeDeviceIsCapped`
+- `testLeafOverlapFollowsButtonDiameter`
 
-- [ ] **Step 4: Task 2 に進む** (ビルドが通るのは Task 2 の後。commit も Task 2 でまとめる)
+`testLeafOverlapsButtonByRatioOfDiameter` は small を使うので、この時点で通る。最初の実行で出力の行の形を 1 回見てから grep を信じる (ルール 3)。これと違ったら止めて報告する
+
+- [ ] **Step 3: mid / big を縮める (GREEN)**
+
+Interfaces のとおり、mid 140 / big 290 / mid の leading 8 にする。`leafBottomPadding(for:)` は Task 2 で消す (まだ `TimerView.swift:208` が呼んでいる)。
+
+Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && make unit-tests 2>&1 | grep -c "AdaptiveLayoutTests.*passed"`
+Expected: `9` (今の 7 件 + 新しい 2 件)。あわせて `** TEST SUCCEEDED **` があり、`** TEST FAILED **` が無いこと
+
+- [ ] **Step 4: mutation で新しいテストが効くことを確かめる**
+
+| 壊し方 | 落ちるべきテスト |
+|---|---|
+| `leafOverlapRatio` を `10.0 / 150.0` にする | `testLeafOverlapsButtonByRatioOfDiameter` / `testLeafOverlapFollowsButtonDiameter` |
+| `leafOffsetY` で `buttonDiameter` の代わりに `150` を使う | `testLeafOverlapFollowsButtonDiameter` |
+
+壊すたびに `make unit-tests` を走らせて、表のテストが落ちることを確かめてから元に戻す (big を 350 に戻す mutation は Step 2 の RED で済んでいる)
+
+- [ ] **Step 5: Commit**
+
+```bash
+cd /Users/shinya/workspace/claude/LeafTimer
+git add app/LeafTimer/View/TimerLayoutMetrics.swift app/LeafTimerTests/AdaptiveLayoutTests.swift
+git commit -m "feat(#188): TimerLayoutMetrics に葉の重なりの計算を足し、mid/big を縮める"
+```
 
 ### Task 2: `TimerView` で葉をボタンに固定する
 
@@ -129,27 +156,18 @@ Interfaces のとおりに変える。`leafOffsetY` の doc comment に Issue #1
 - START の `Button` に、`.buttonStyle(.plain)` の直後で `.background(alignment: .top) { … }` を付ける。中身は `GeometryReader` で直径 (= `proxy.size.height`) を取り、`leafLayer(metrics:buttonDiameter:)` を横中央に置く (`.frame(width: proxy.size.width)`)
 - `leafLayer` は `.padding(.bottom, …)` をやめ、`.offset(y: metrics.leafOffsetY(for: pattern, buttonDiameter: buttonDiameter))` で置く。`.allowsHitTesting(false)` と `.accessibilityHidden(true)` を付ける (Review Focus 2・3)
 - 時刻の `Text` に `.zIndex(1)` を付け、木より手前に描く (Review Focus 1)。コメントに Issue #188 と理由を書く
+- `TimerLayoutMetrics.leafBottomPadding(for:)` を消す (呼び出し元が無くなる)
 
-- [ ] **Step 2: テストを通す (GREEN)**
+- [ ] **Step 2: ビルドとテストを通す**
 
 Run: `cd /Users/shinya/workspace/claude/LeafTimer/app && make tests 2>&1 | tail -30`
-Expected: `** TEST SUCCEEDED **` があり、`** TEST FAILED **` が無い。`AdaptiveLayoutTests` は 9 件 (今の 7 件 + 新しい 2 件)
+Expected: `** TEST SUCCEEDED **` があり、`** TEST FAILED **` が無い
 
-- [ ] **Step 3: mutation で新しいテストが効くことを確かめる**
-
-| 壊し方 | 落ちるべきテスト |
-|---|---|
-| `leafOverlapRatio` を `10.0 / 150.0` にする | `testLeafOverlapsButtonByRatioOfDiameter` / `testLeafOverlapFollowsButtonDiameter` |
-| `leafOffsetY` で `buttonDiameter` の代わりに `150` を使う | `testLeafOverlapFollowsButtonDiameter` |
-| big を 350 に戻す | `testReferenceSizeValues` / `testSmallDeviceScalesDown` / `testLargeDeviceIsCapped` |
-
-壊すたびに `make unit-tests` を走らせて、表のテストが落ちることを確かめてから元に戻す
-
-- [ ] **Step 4: Commit**
+- [ ] **Step 3: Commit**
 
 ```bash
 cd /Users/shinya/workspace/claude/LeafTimer
-git add app/LeafTimer/View/TimerLayoutMetrics.swift app/LeafTimer/View/TimerView.swift app/LeafTimerTests/AdaptiveLayoutTests.swift
+git add app/LeafTimer/View/TimerLayoutMetrics.swift app/LeafTimer/View/TimerView.swift
 git commit -m "fix(#188): 葉を START ボタンの上端に固定し、文字サイズを上げても埋もれないようにする"
 ```
 
