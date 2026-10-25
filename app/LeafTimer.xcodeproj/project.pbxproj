@@ -97,6 +97,7 @@
 		E46EDAD3AE69466C5964C174 /* DefaultNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D8E028689D26973B9FDB51 /* DefaultNotificationScheduler.swift */; };
 		E5EE5B694F71609B83B26C7E /* ModernTimerViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */; };
 		F2B6E50A848C74D7C919E1B7 /* ResetSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58052409AAA0F0D30423F06C /* ResetSettingsSection.swift */; };
+		F80AF6EDA3ACBACC0DBE5F47 /* TimerLeafLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C2333188A280B6A4F67E6 /* TimerLeafLayerTests.swift */; };
 		FC0EFE04C6A0827F8110890E /* AdsBootstrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A467A0560BAC8023451DDC /* AdsBootstrapper.swift */; };
 		FF6B3A32F30034B86B7EB847 /* DebugStoreScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590C93D92F2E7D14E26F34BB /* DebugStoreScreenshotTests.swift */; };
 /* End PBXBuildFile section */
@@ -183,6 +184,7 @@
 		7DAD93010F495D56669DB0F5 /* OnboardingLocalizationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingLocalizationTests.swift; path = LeafTimerTests/OnboardingLocalizationTests.swift; sourceTree = SOURCE_ROOT; };
 		7FBD5086205B41F0F0930480 /* OnboardingGateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingGateTests.swift; path = LeafTimerTests/OnboardingGateTests.swift; sourceTree = SOURCE_ROOT; };
 		871026F448E8A6BBA6728E81 /* AppColorAssetTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppColorAssetTests.swift; path = LeafTimerTests/AppColorAssetTests.swift; sourceTree = SOURCE_ROOT; };
+		8D5C2333188A280B6A4F67E6 /* TimerLeafLayerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimerLeafLayerTests.swift; path = LeafTimerTests/TimerLeafLayerTests.swift; sourceTree = SOURCE_ROOT; };
 		8EF39A1AA793079782933CD2 /* SpyNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpyNotificationScheduler.swift; path = LeafTimerTests/SpyNotificationScheduler.swift; sourceTree = SOURCE_ROOT; };
 		8F6972DDE910DF33CF6B7C5E /* TimerLayoutMetrics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimerLayoutMetrics.swift; path = LeafTimer/View/TimerLayoutMetrics.swift; sourceTree = SOURCE_ROOT; };
 		93FFE81224FE3E8E00AA1BD1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 				3856FB7C24A8C714007F40E5 /* SpyTimerManager.swift */,
 				6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */,
 				367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */,
+				8D5C2333188A280B6A4F67E6 /* TimerLeafLayerTests.swift */,
 				04E65C23351FCE212D54E81B /* TimerNotificationIntegrationTests.swift */,
 				011A26D8BCAD28F9B1BFECC1 /* TimerViewModelAccessibilityTests.swift */,
 				3864B7E22494D82300948ACA /* TimerViewSpec.swift */,
@@ -743,6 +746,7 @@
 				3856FB7D24A8C714007F40E5 /* SpyTimerManager.swift in Sources */,
 				805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */,
 				669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */,
+				F80AF6EDA3ACBACC0DBE5F47 /* TimerLeafLayerTests.swift in Sources */,
 				BD6053872D5FAE53CF1D7F0E /* TimerNotificationIntegrationTests.swift in Sources */,
 				6E53F451AEEC9A8E3F11DB73 /* TimerViewModelAccessibilityTests.swift in Sources */,
 				3864B7E32494D82300948ACA /* TimerViewSpec.swift in Sources */,
