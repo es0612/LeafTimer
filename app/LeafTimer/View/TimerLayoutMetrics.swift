@@ -12,6 +12,9 @@ struct TimerLayoutMetrics: Equatable {
     /// 下限は SE 系の視認性、上限は iPad でのバルーン化防止。
     static let scaleRange: ClosedRange<CGFloat> = 0.55...1.35
 
+    /// Issue #188: 葉を START ボタンに重ねる深さの、ボタン直径に対する比率 (直径 150pt で 20pt)。
+    static let leafOverlapRatio: CGFloat = 20.0 / 150.0
+
     let scale: CGFloat
 
     init(contentSize: CGSize) {
@@ -25,9 +28,16 @@ struct TimerLayoutMetrics: Equatable {
     func leafSize(for pattern: LeafPattern) -> CGFloat {
         switch pattern {
         case .small: 90 * scale
-        case .mid: 200 * scale
-        case .big: 350 * scale
+        case .mid: 140 * scale
+        case .big: 290 * scale
         }
+    }
+
+    /// Issue #188: 葉の frame の上端をボタンの上端に合わせたあと、y 方向に動かす量。
+    /// 葉の下端がボタン上端から `buttonDiameter * leafOverlapRatio` だけ下に来る。
+    /// 直径は Dynamic Type で変わる (CircleButton.resolvedDiameter) ので、重なりも追従する。
+    func leafOffsetY(for pattern: LeafPattern, buttonDiameter: CGFloat) -> CGFloat {
+        buttonDiameter * Self.leafOverlapRatio - leafSize(for: pattern)
     }
 
     func leafBottomPadding(for pattern: LeafPattern) -> CGFloat {
@@ -40,7 +50,7 @@ struct TimerLayoutMetrics: Equatable {
 
     func leafLeadingPadding(for pattern: LeafPattern) -> CGFloat {
         switch pattern {
-        case .mid: 11 * scale
+        case .mid: 8 * scale
         default: 0
         }
     }
