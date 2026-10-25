@@ -29,4 +29,12 @@ final class TimerLeafLayerTests: XCTestCase {
 
         XCTAssertTrue(try leaf.accessibilityHidden())
     }
+
+    // Issue #190: GIFView は gifName が変わっても GIF を読み直さない。名前を id にして、
+    // 芽 → 若木 → 木 に変わるたびに作り直させる (#64 で分岐を 1 つにまとめてから効いていなかった)
+    func testLeafIsRecreatedWhenGifNameChanges() throws {
+        let leaf = try makeTimerView().body.inspect().find(ViewType.View<GIFView>.self)
+
+        XCTAssertEqual(try leaf.id(), AnyHashable(try leaf.actualView().gifName))
+    }
 }
