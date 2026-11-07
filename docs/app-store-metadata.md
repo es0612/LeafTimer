@@ -2,6 +2,7 @@
 
 - `asc-submission-prep` skill が説明文・キーワード・サブタイトル・URL・著作権の入力元として読む (What's New は `docs/RELEASE_v<ver>.md`)
 - 記載の無い項目は skill の `skip` 扱い (ASC の live 値を変えない)
+- name / subtitle を変えるには新しいバージョンの提出が必要 (ASC のアプリ情報ページの注記、2026-11-07)
 - 本文の機能記述はコードに合わせる: 作業時間 `ItemValue.workingTimeList` (5〜60 分)、休憩 `breakTimeList` (1〜10 分)、サウンド `soundList`
 
 ## ja
@@ -9,51 +10,68 @@
 - marketing_url: https://note.com/es0612swift
 - copyright: 2026 AsaPapaLab.
 
+### name
+
+LeafTimer - 葉が育つ集中タイマー
+
+### subtitle
+
+ポモドーロで勉強も作業もはかどる
+
+### keywords
+
+時間管理,休憩,生産性,仕事効率化,フォーカス,習慣,記録,学習,受験,資格,読書,テレワーク,在宅,雨音,自然音,BGM,カウントダウン,朝活,ルーティン,スタディ,試験,25分,気分転換
+
+### promotional_text
+
+雨音や川のせせらぎを流しながら、25分の集中と5分の休憩をくり返すだけ。タイマーが進むと、小さな葉が芽から木へと育ちます。静かに続けられるポモドーロタイマーです。
+
 ### description
 
-ASC の 1.4 の値から、コードと食い違う 3 箇所だけを直したもの (作業時間 5〜60 分 / 「完全オフライン動作」削除 / 「iOS 17最適化」削除)。
+1.6.2 で書き直したもの (#197)。機能は en-US の description と同じ内容をコードで確かめた。
 
 ```text
-LeafTimerは、ポモドーロテクニックを活用した集中力向上タイマーアプリです。
+LeafTimerは、静かに集中するためのシンプルなポモドーロタイマーです。
+25分の作業と5分の休憩をくり返すあいだ、画面の小さな葉がタイマーの進みに合わせて、芽から若木、木へと育ちます。
 
 【主な機能】
-・ポモドーロタイマー：25分作業 + 5分休憩の集中サイクル
-・カスタマイズ可能な時間設定：5分〜60分の作業時間、1分〜10分の休憩時間
-・豊富なサウンド選択：雨音、川のせせらぎ、無音から選択可能
-・今日の達成回数表示：モチベーション維持をサポート
-・バイブレーション通知：サイレントモードでも安心
-・シンプルで美しいインターフェース：集中を妨げないデザイン
+・ポモドーロタイマー：作業と休憩を交互にくり返す
+・時間の設定：作業は5〜60分、休憩は1〜10分
+・バックグラウンドの音：雨音、川のせせらぎ、BGM 3曲、無音から選べます
+・終了のお知らせ：アプリを閉じていても、作業や休憩の終わりを通知します
+・履歴：連続日数、最長の連続日数、累計セッション数、過去7日の回数
+・バイブレーション
+・VoiceOverと文字サイズの変更に対応
 
 【ポモドーロテクニックとは】
-25分間の集中作業と5分間の短い休憩を繰り返す時間管理術です。
-集中力の維持と疲労の軽減により、生産性の向上を図ります。
+25分の集中と5分の短い休憩をくり返す時間管理の方法です。こまめに休むことで集中が続き、疲れにくくなります。
 
-【こんな方におすすめ】
-・在宅ワークで集中力を高めたい方
-・ 勉強の効率を上げたい学生の方
-・ プロジェクト作業に集中したい方
-・ 時間管理を改善したい方
+【こんな方に】
+・在宅ワークで集中したい方
+・試験や資格の勉強をしている方
+・読書や作業の時間を区切りたい方
+・時間の使い方を見直したい方
 
-【主な特徴】
-・バッテリー効率重視：最適化された電力消費
-・プライバシー重視：個人データは端末内のみ保存
-
-LeafTimerで、より集中的で生産的な時間を過ごしましょう。
+記録はすべて端末の中だけに保存されます。
 ```
 
 ## en-US (v1.5 で英語ローカリゼーションを新規追加)
 
 ### name
 
-LeafTimer
+LeafTimer - Pomodoro Focus
 
 ### subtitle
 
-Pomodoro Focus Timer
+Calm timer for study and work
 
 ### keywords
 
-pomodoro,timer,focus,productivity,study,work,break,concentration,habit,streak
+productivity,concentration,habit,streak,break,routine,rain,sounds,student,exam,tomato,flow,rest
+
+### promotional_text
+
+Focus for 25 minutes, rest for 5, with soft rain or a river in the background. As the timer runs, a small leaf grows into a tree. A quiet Pomodoro timer.
 
 ### support_url
 
@@ -65,7 +83,7 @@ https://note.com/es0612swift
 
 ### description
 
-LeafTimer is a simple Pomodoro timer that helps you build a focus habit. As you keep focusing, a small leaf grows into a big tree.
+LeafTimer is a quiet, simple Pomodoro timer for focused work and study. As the timer runs, a small leaf grows from a sprout into a tree.
 
 Features
 - Pomodoro timer: alternate focused work and short breaks
