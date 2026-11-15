@@ -157,4 +157,39 @@ final class TimerNotificationIntegrationTests: XCTestCase {
         XCTAssertEqual(vm.breakState, true)
         XCTAssertEqual(spy.scheduledChains.count, 2)
     }
+
+    // Issue #205: 稼働中の手動リセット (TimerView の reset ボタン相当) でも
+    // 新しい endDate でチェーンを引き直す。張り直さないと開始時の時刻で通知が届く
+    func testManualResetWhileRunningReschedulesChainFromNewEndDate() {
+        let clock = FakeClock()
+        let (vm, spy, _, _) = makeViewModel(clock: clock)
+
+        vm.onPressedTimerButton()
+        XCTAssertEqual(spy.scheduledChains.count, 1)
+        let originalWorkEndFireDate = spy.scheduledChains[0][0].fireDate
+
+        clock.advance(by: 20 * 60)
+        vm.updateTime()
+        vm.reset()
+
+        XCTAssertEqual(spy.scheduledChains.count, 2)
+        let newChain = spy.scheduledChains[1]
+        XCTAssertEqual(newChain.count, 6)
+        XCTAssertEqual(newChain[0].titleKey, "notification.workEnd.title")
+        XCTAssertEqual(
+            newChain[0].fireDate,
+            clock.now().addingTimeInterval(TimeInterval(vm.fullTimeSecond))
+        )
+        XCTAssertNotEqual(newChain[0].fireDate, originalWorkEndFireDate)
+    }
+
+    // 停止中のリセットは通知を予約しない (予約は開始時に行う)
+    func testManualResetWhileStoppedDoesNotScheduleChain() {
+        let clock = FakeClock()
+        let (vm, spy, _, _) = makeViewModel(clock: clock)
+
+        vm.reset()
+
+        XCTAssertTrue(spy.scheduledChains.isEmpty)
+    }
 }
