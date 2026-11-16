@@ -119,6 +119,33 @@ final class TimerNotificationIntegrationTests: XCTestCase {
         XCTAssertTrue(spy.scheduledChains.isEmpty)
     }
 
+    // Issue #206: 停止中のまま日付をまたいで foreground に戻ったら、
+    // 前日の「今日 N」「連続 N」を今日の値に読み直す (統計は記録しない)
+    func testForegroundWhileStoppedReloadsTodayCountAndStreak() throws {
+        let clock = FakeClock()
+        let (vm, _, spyStats, _) = makeViewModel(clock: clock)
+        let todayDate = DateManager.convertStringToTime(string: DateManager.getToday())
+        let twoDaysAgoDate = try XCTUnwrap(Calendar.current.date(byAdding: .day, value: -2, to: todayDate))
+        let twoDaysAgo = DateManager.convertTimeToString(time: twoDaysAgoDate)
+        spyStats.stubLoadResult = SessionStats(
+            dailyCount: [twoDaysAgo: 8],
+            totalCount: 40,
+            currentStreak: 5,
+            longestStreak: 7,
+            lastSessionDate: twoDaysAgo
+        )
+        // kill されずに残っていたプロセスが表示していた前日の値
+        vm.todaysCount = 8
+        vm.currentStreak = 5
+
+        vm.handleWillEnterForeground()
+
+        XCTAssertEqual(vm.todaysCount, 0)
+        XCTAssertEqual(vm.currentStreak, 0, "最後の記録が 2 日前なので連続は途切れている")
+        XCTAssertEqual(vm.longestStreak, 7)
+        XCTAssertEqual(spyStats.recordSessionCallCount, 0)
+    }
+
     // 稼働中に設定画面から戻る (readData) → チェーン再予約され、2 件目は新 duration を反映
     func testReadDataWhileRunningReschedulesChainWithNewDuration() {
         let clock = FakeClock()

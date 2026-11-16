@@ -205,6 +205,9 @@ class TimerViewModel: ObservableObject {
     // audio 生存でバックグラウンド稼働し続けた場合は updateTime が進行済みのため
     // 跨ぎゼロ (no-op) になり二重カウントしない。
     func handleWillEnterForeground() {
+        // Issue #206: 停止中に日付をまたいで戻った場合も「今日 N」「連続 N」を今日の値に読み直す
+        loadCount()
+
         guard executeState, let endDate else { return }
 
         let result = PhaseReconciler.reconcile(
@@ -308,11 +311,11 @@ class TimerViewModel: ObservableObject {
         )
     }
 
-    func loadCount() {
+    func loadCount(today: String = DateManager.getToday()) {
         let stats = sessionStatsRepository.load()
-        let today = DateManager.getToday()
         todaysCount = stats.dailyCount[today] ?? 0
-        currentStreak = stats.currentStreak
+        // Issue #206: 最後の記録が今日・昨日でなければ途切れているので 0 を表示する
+        currentStreak = stats.streak(asOf: today)
         longestStreak = stats.longestStreak
     }
 

@@ -64,14 +64,7 @@ class LocalSessionStatsRepository: SessionStatsRepository {
     }
 
     private func isYesterday(_ candidate: String, of today: String) -> Bool {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
-        guard let todayDate = formatter.date(from: today),
-              let candidateDate = formatter.date(from: candidate),
-              let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: todayDate) else {
-            return false
-        }
-        return Calendar.current.isDate(candidateDate, inSameDayAs: yesterday)
+        SessionStats.isPreviousDay(candidate, of: today)
     }
 
     // MARK: - Migration

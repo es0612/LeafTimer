@@ -112,6 +112,61 @@ final class SessionStatsLogicTests: XCTestCase {
         XCTAssertEqual(stats.longestStreak, 3, "過去の最長は維持される")
     }
 
+    // MARK: - streak(asOf:) (Issue #206)
+
+    private func makeStats(currentStreak: Int, lastSessionDate: String?) -> SessionStats {
+        SessionStats(
+            dailyCount: [:],
+            totalCount: 10,
+            currentStreak: currentStreak,
+            longestStreak: 9,
+            lastSessionDate: lastSessionDate
+        )
+    }
+
+    func testStreakAsOf_sameDayKeepsStoredValue() {
+        let stats = makeStats(currentStreak: 5, lastSessionDate: "2026/05/28")
+        XCTAssertEqual(stats.streak(asOf: "2026/05/28"), 5)
+    }
+
+    func testStreakAsOf_yesterdayKeepsStoredValue() {
+        let stats = makeStats(currentStreak: 5, lastSessionDate: "2026/05/27")
+        XCTAssertEqual(stats.streak(asOf: "2026/05/28"), 5, "今日まだ記録していなくても昨日までの連続は続いている")
+    }
+
+    func testStreakAsOf_gapShowsZero() {
+        let stats = makeStats(currentStreak: 5, lastSessionDate: "2026/05/26")
+        XCTAssertEqual(stats.streak(asOf: "2026/05/28"), 0, "1 日以上空いたら途切れている")
+    }
+
+    func testStreakAsOf_noSessionShowsZero() {
+        let stats = makeStats(currentStreak: 0, lastSessionDate: nil)
+        XCTAssertEqual(stats.streak(asOf: "2026/05/28"), 0)
+    }
+
+    func testStreakAsOf_monthAndYearBoundaries() {
+        XCTAssertEqual(makeStats(currentStreak: 5, lastSessionDate: "2026/05/31").streak(asOf: "2026/06/01"), 5)
+        XCTAssertEqual(makeStats(currentStreak: 5, lastSessionDate: "2026/12/31").streak(asOf: "2027/01/01"), 5)
+        XCTAssertEqual(makeStats(currentStreak: 5, lastSessionDate: "2026/12/31").streak(asOf: "2027/01/02"), 0)
+        XCTAssertEqual(makeStats(currentStreak: 5, lastSessionDate: "2026/12/30").streak(asOf: "2027/01/01"), 0)
+    }
+
+    func testLoadAfterGap_displayZeroButStoredValueUntouched() {
+        let repo = LocalSessionStatsRepository(userDefaults: testDefaults)
+        _ = repo.recordSession(today: "2026/05/26")
+        _ = repo.recordSession(today: "2026/05/27")
+        _ = repo.recordSession(today: "2026/05/28")  // 3 連続
+
+        let loaded = repo.load()
+        XCTAssertEqual(loaded.streak(asOf: "2026/05/31"), 0, "休んだあとに開いたら途切れて見える")
+        XCTAssertEqual(loaded.currentStreak, 3, "保存値は書き換えない")
+        XCTAssertEqual(loaded.longestStreak, 3)
+
+        let recorded = repo.recordSession(today: "2026/05/31")
+        XCTAssertEqual(recorded.currentStreak, 1, "次の記録で 1 からやり直す")
+        XCTAssertEqual(recorded.streak(asOf: "2026/05/31"), 1)
+    }
+
     // MARK: - recentDailyCounts
 
     func testRecentDailyCountsIncludesToday() {
