@@ -133,9 +133,11 @@ class TimerViewModel: ObservableObject {
         }
 
         // 稼働中のリセット (phase 切替 / 手動リセット) では
-        // 新しい残り時間で endDate を張り直す (Issue #56)
+        // 新しい残り時間で endDate を張り直す (Issue #56)。
+        // 予約済みの通知チェーンも新しい endDate で引き直す (Issue #205)
         if executeState {
             endDate = now().addingTimeInterval(TimeInterval(currentTimeSecond))
+            rescheduleNotifications()
         }
     }
 
@@ -158,8 +160,7 @@ class TimerViewModel: ObservableObject {
             }
 
             switchBreakState()
-            reset()
-            rescheduleNotifications()
+            reset() // endDate と通知チェーンの張り直しを含む
 
             return
         }
