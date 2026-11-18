@@ -2,6 +2,7 @@
 
 - 対象: MARKETING_VERSION 1.6.2 (#198 で 1.6.1 から上げた)。ビルドは build 51 (PR #198 の merge で Xcode Cloud が作成、2026-11-07 に TestFlight で「提出準備完了」を確認)
 - build 51 は 2026-11-07 に却下された (Guideline 2.1(a))。iPadOS 27.2 で、UIScene ライフサイクル未対応による起動クラッシュが起きたため (#201)。再提出には #201 の merge 後に Xcode Cloud が作るビルドを使う。番号は TestFlight で確かめてから書く
+- 再提出したのは build 52 (PR #203 の merge `1260b6a` から作成)。承認され、2026-11-09 に配信された (iTunes lookup API の `currentVersionReleaseDate`)。`v1.6.2` タグは `1260b6a` に付けた (2026-11-18)
 - 入力元: v1.6.1 タグ以降の merged PR はバージョン上げ (#198) だけ。ストアの文言の変更は #197 (`docs/app-store-metadata.md`)
 - `asc-submission-prep` skill が「What's New」節を ASC の「このバージョンの最新情報」に使う
 - 名前・サブタイトル・キーワード・説明文・プロモーション用テキストは ja / en とも `docs/app-store-metadata.md` の値に変える。名前とサブタイトルは 1.6.2 の提出物に含まれることを ASC で確かめてから提出する
