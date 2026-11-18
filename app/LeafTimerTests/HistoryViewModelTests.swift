@@ -32,6 +32,25 @@ final class HistoryViewModelTests: XCTestCase {
         XCTAssertEqual(vm.last7Days.last?.count, 3)
     }
 
+    // Issue #206: 最後の記録が今日・昨日でなければ「現在 0 日連続」
+    func testLoadAfterGapShowsZeroCurrentStreak() {
+        let spy = SpySessionStatsRepository()
+        spy.stubLoadResult = SessionStats(
+            dailyCount: ["2026/05/25": 2],
+            totalCount: 50,
+            currentStreak: 4,
+            longestStreak: 10,
+            lastSessionDate: "2026/05/25"
+        )
+        let vm = HistoryViewModel(repository: spy)
+
+        vm.load(today: "2026/05/28")
+
+        XCTAssertEqual(vm.currentStreak, 0)
+        XCTAssertEqual(vm.longestStreak, 10)
+        XCTAssertEqual(vm.totalCount, 50)
+    }
+
     func testLoadEmptyShowsSevenZeros() {
         let spy = SpySessionStatsRepository()
         spy.stubLoadResult = .empty

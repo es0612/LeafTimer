@@ -15,7 +15,7 @@ class HistoryViewModel: ObservableObject {
 
     func load(today: String = DateManager.getToday()) {
         let stats = repository.load()
-        currentStreak = stats.currentStreak
+        currentStreak = stats.streak(asOf: today)
         longestStreak = stats.longestStreak
         totalCount = stats.totalCount
         last7Days = repository.recentDailyCounts(days: 7, endingAt: today)
