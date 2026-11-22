@@ -30,6 +30,8 @@
 	<string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LeafTimerAppStoreID</key>
+	<string>1520649806</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
