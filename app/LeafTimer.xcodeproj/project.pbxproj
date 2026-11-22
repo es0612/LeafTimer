@@ -55,6 +55,7 @@
 		50CF900C3AEE7EB0580402FA /* ReviewIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E76F08701A5811DDED6A33 /* ReviewIntegrationSpec.swift */; };
 		515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */; };
 		582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */; };
+		5AD45603906DF05901A527C6 /* SessionStatsCalendarMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC3DA4231F95E387C9E32D0 /* SessionStatsCalendarMigrationTests.swift */; };
 		5FB2C60994CAB86106615387 /* SpySessionStatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */; };
 		64681B733CC451A46991AD6A /* LocalizationTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC44EBCDB10A5A75ACC99A37 /* LocalizationTestSupport.swift */; };
 		669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */; };
@@ -230,6 +231,7 @@
 		F4E5BFB598B6047A011C144E /* LocalSessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalSessionStatsRepository.swift; path = LeafTimer/Components/LocalSessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
 		FC44EBCDB10A5A75ACC99A37 /* LocalizationTestSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalizationTestSupport.swift; path = LeafTimerTests/LocalizationTestSupport.swift; sourceTree = SOURCE_ROOT; };
 		FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreKitReviewRequester.swift; path = LeafTimer/Components/StoreKitReviewRequester.swift; sourceTree = SOURCE_ROOT; };
+		FFC3DA4231F95E387C9E32D0 /* SessionStatsCalendarMigrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsCalendarMigrationTests.swift; path = LeafTimerTests/SessionStatsCalendarMigrationTests.swift; sourceTree = SOURCE_ROOT; };
 		FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AboutSettingsSection.swift; path = LeafTimer/View/Settings/AboutSettingsSection.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -422,6 +424,7 @@
 				A5E76F08701A5811DDED6A33 /* ReviewIntegrationSpec.swift */,
 				EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */,
 				BC834270486A881C8CB18CB4 /* SceneLifecycleTests.swift */,
+				FFC3DA4231F95E387C9E32D0 /* SessionStatsCalendarMigrationTests.swift */,
 				5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */,
 				23BBF65B0E0977372AEB15F2 /* SessionStatsMigrationTests.swift */,
 				037C3033F9AEAEA675BC6C68 /* SettingsLocalizationTests.swift */,
@@ -764,6 +767,7 @@
 				50CF900C3AEE7EB0580402FA /* ReviewIntegrationSpec.swift in Sources */,
 				515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */,
 				EE3D191D97EBBB016D1D7037 /* SceneLifecycleTests.swift in Sources */,
+				5AD45603906DF05901A527C6 /* SessionStatsCalendarMigrationTests.swift in Sources */,
 				B242F79FF5F6E62F00EF36DA /* SessionStatsLogicTests.swift in Sources */,
 				CE4A6F850D48D726CA724A76 /* SessionStatsMigrationTests.swift in Sources */,
 				23B54FA3468C5D513D72FD66 /* SettingsLocalizationTests.swift in Sources */,
