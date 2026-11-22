@@ -55,10 +55,12 @@
 		50CF900C3AEE7EB0580402FA /* ReviewIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E76F08701A5811DDED6A33 /* ReviewIntegrationSpec.swift */; };
 		515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */; };
 		582E23040FA8ED370FF6A7BC /* TimerSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9633C291CA6739AD8BBCAE0C /* TimerSettingsSection.swift */; };
+		5AD45603906DF05901A527C6 /* SessionStatsCalendarMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC3DA4231F95E387C9E32D0 /* SessionStatsCalendarMigrationTests.swift */; };
 		5FB2C60994CAB86106615387 /* SpySessionStatsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA4D2E08BDE624ACD7B469 /* SpySessionStatsRepository.swift */; };
 		64681B733CC451A46991AD6A /* LocalizationTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC44EBCDB10A5A75ACC99A37 /* LocalizationTestSupport.swift */; };
 		669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */; };
 		6A36EA51A58AAAAA8EDAC83A /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7503E9E6CE84FD81C67E11C5 /* AppColor.swift */; };
+		6B5BE1CDA00DC37BED8AF328 /* DateKeyCalendarMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE29AAB6BACA2ECFAF9D54A9 /* DateKeyCalendarMigrationTests.swift */; };
 		6E53F451AEEC9A8E3F11DB73 /* TimerViewModelAccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011A26D8BCAD28F9B1BFECC1 /* TimerViewModelAccessibilityTests.swift */; };
 		805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */; };
 		82FD28D32A5791F39BF7AE3B /* DefaultTimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C9DA0155B11DA56E6D4288 /* DefaultTimerManagerTests.swift */; };
@@ -74,6 +76,7 @@
 		93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFE81324FF1BE500AA1BD1 /* DateManager.swift */; };
 		95B7D82B213A9D252C39E0F1 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A244D33CACD5F760C129A96C /* HistoryView.swift */; };
 		963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */; };
+		A0F8B41FF25A9A234027674B /* DateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1793F220FD64429D9040D6C3 /* DateManagerTests.swift */; };
 		A261847CF0295A51052889F8 /* OnboardingGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBD5086205B41F0F0930480 /* OnboardingGateTests.swift */; };
 		A9CA2FC2436DDDF5F5C56540 /* StatChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE728E085DB687FAD037351 /* StatChip.swift */; };
 		AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */; };
@@ -83,6 +86,7 @@
 		B70E83FDCE085D30BF9E8703 /* MockUserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B135F8247048DD2B815AA60A /* MockUserDefaultWrapper.swift */; };
 		BD6053872D5FAE53CF1D7F0E /* TimerNotificationIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E65C23351FCE212D54E81B /* TimerNotificationIntegrationTests.swift */; };
 		C1407F93645BA5CB0A1B0A20 /* ModernSettingViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CB59B9BEDD027B3A0A624A /* ModernSettingViewSpec.swift */; };
+		C3C7B504F7E5FCED65EB7F84 /* DateKeyCalendarMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2116DF094E69998D69B59C36 /* DateKeyCalendarMigration.swift */; };
 		C62791E3329348905B6A5F87 /* EnhancedSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F34D2A812A6B1BF5AE66D6A /* EnhancedSettingView.swift */; };
 		C9EE56FF711B43F4BB901859 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EECDE017FCF9DD6005CC13DD /* SceneDelegate.swift */; };
 		CE09B965B03E25E2311DACC8 /* OnboardingLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD93010F495D56669DB0F5 /* OnboardingLocalizationTests.swift */; };
@@ -124,8 +128,10 @@
 		0C7BB13FEE55FA28FD1D9045 /* SessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsRepository.swift; path = LeafTimer/Components/SessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
 		12FDA2C80A4547BB35C1BBD3 /* AdsBootstrapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdsBootstrapperTests.swift; path = LeafTimerTests/AdsBootstrapperTests.swift; sourceTree = SOURCE_ROOT; };
 		158C104A0A1B7740F4ED17C1 /* ModernTimerViewSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTimerViewSpec.swift; sourceTree = "<group>"; };
+		1793F220FD64429D9040D6C3 /* DateManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DateManagerTests.swift; path = LeafTimerTests/DateManagerTests.swift; sourceTree = SOURCE_ROOT; };
 		19D8E028689D26973B9FDB51 /* DefaultNotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultNotificationScheduler.swift; path = LeafTimer/Components/DefaultNotificationScheduler.swift; sourceTree = SOURCE_ROOT; };
 		1DDE2E67318AACEA8D89EF69 /* Pods_LeafTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeafTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2116DF094E69998D69B59C36 /* DateKeyCalendarMigration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DateKeyCalendarMigration.swift; path = LeafTimer/Components/DateKeyCalendarMigration.swift; sourceTree = SOURCE_ROOT; };
 		211BDEDDD0D57A60FDCBCF4F /* NotificationChainBuilderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationChainBuilderTests.swift; path = LeafTimerTests/NotificationChainBuilderTests.swift; sourceTree = SOURCE_ROOT; };
 		21C8396935CA4E06685E4C74 /* PhaseReconciler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PhaseReconciler.swift; path = LeafTimer/Components/PhaseReconciler.swift; sourceTree = SOURCE_ROOT; };
 		23BBF65B0E0977372AEB15F2 /* SessionStatsMigrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsMigrationTests.swift; path = LeafTimerTests/SessionStatsMigrationTests.swift; sourceTree = SOURCE_ROOT; };
@@ -217,6 +223,7 @@
 		D5D32D482EB811A900DECF70 /* bgm3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm3.mp3; sourceTree = "<group>"; };
 		DAA73A47111580D34B06501E /* LocalUserDefaultsWrapperTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalUserDefaultsWrapperTests.swift; path = LeafTimerTests/LocalUserDefaultsWrapperTests.swift; sourceTree = SOURCE_ROOT; };
 		DB9AAC2C4DF29323902F6AA6 /* SessionStats.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStats.swift; path = LeafTimer/Components/SessionStats.swift; sourceTree = SOURCE_ROOT; };
+		DE29AAB6BACA2ECFAF9D54A9 /* DateKeyCalendarMigrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DateKeyCalendarMigrationTests.swift; path = LeafTimerTests/DateKeyCalendarMigrationTests.swift; sourceTree = SOURCE_ROOT; };
 		E176D57E6ED7830F284CC7F0 /* GIFPlayerViewTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GIFPlayerViewTests.swift; path = LeafTimerTests/GIFPlayerViewTests.swift; sourceTree = SOURCE_ROOT; };
 		EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReviewRequestPolicySpec.swift; path = LeafTimerTests/ReviewRequestPolicySpec.swift; sourceTree = SOURCE_ROOT; };
 		EECDE017FCF9DD6005CC13DD /* SceneDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = LeafTimer/App/SceneDelegate.swift; sourceTree = SOURCE_ROOT; };
@@ -224,6 +231,7 @@
 		F4E5BFB598B6047A011C144E /* LocalSessionStatsRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalSessionStatsRepository.swift; path = LeafTimer/Components/LocalSessionStatsRepository.swift; sourceTree = SOURCE_ROOT; };
 		FC44EBCDB10A5A75ACC99A37 /* LocalizationTestSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalizationTestSupport.swift; path = LeafTimerTests/LocalizationTestSupport.swift; sourceTree = SOURCE_ROOT; };
 		FC5BDA9EDBD7184C762F2AD7 /* StoreKitReviewRequester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreKitReviewRequester.swift; path = LeafTimer/Components/StoreKitReviewRequester.swift; sourceTree = SOURCE_ROOT; };
+		FFC3DA4231F95E387C9E32D0 /* SessionStatsCalendarMigrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsCalendarMigrationTests.swift; path = LeafTimerTests/SessionStatsCalendarMigrationTests.swift; sourceTree = SOURCE_ROOT; };
 		FFE2E351DBFBBEAF8AE6EA6C /* AboutSettingsSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AboutSettingsSection.swift; path = LeafTimer/View/Settings/AboutSettingsSection.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -265,6 +273,7 @@
 				778C7E3BFF5D30AEC8A30D91 /* AdsConsentServices.swift */,
 				7503E9E6CE84FD81C67E11C5 /* AppColor.swift */,
 				2FBD29EC8547FD3C8868C106 /* AppLogger.swift */,
+				2116DF094E69998D69B59C36 /* DateKeyCalendarMigration.swift */,
 				93FFE81324FF1BE500AA1BD1 /* DateManager.swift */,
 				26906FD1FBF54E2B9DBCFD0D /* DebugStoreScreenshot.swift */,
 				3865AB4624CD26D3001B03E4 /* DefaultAudioManager.swift */,
@@ -392,6 +401,8 @@
 				CABE061EA25A9493CEA2D71A /* AudioSystemVerificationTests.swift */,
 				543E641FEA3219B656FB2E36 /* CircleButtonRatioTests.swift */,
 				5151B3410F58F7065CC50B28 /* DataPersistenceTests.swift */,
+				DE29AAB6BACA2ECFAF9D54A9 /* DateKeyCalendarMigrationTests.swift */,
+				1793F220FD64429D9040D6C3 /* DateManagerTests.swift */,
 				590C93D92F2E7D14E26F34BB /* DebugStoreScreenshotTests.swift */,
 				B7C9DA0155B11DA56E6D4288 /* DefaultTimerManagerTests.swift */,
 				E176D57E6ED7830F284CC7F0 /* GIFPlayerViewTests.swift */,
@@ -413,6 +424,7 @@
 				A5E76F08701A5811DDED6A33 /* ReviewIntegrationSpec.swift */,
 				EA977BF9073A2CCBD947391F /* ReviewRequestPolicySpec.swift */,
 				BC834270486A881C8CB18CB4 /* SceneLifecycleTests.swift */,
+				FFC3DA4231F95E387C9E32D0 /* SessionStatsCalendarMigrationTests.swift */,
 				5BFDCFCA9BA89831FE59428C /* SessionStatsLogicTests.swift */,
 				23BBF65B0E0977372AEB15F2 /* SessionStatsMigrationTests.swift */,
 				037C3033F9AEAEA675BC6C68 /* SettingsLocalizationTests.swift */,
@@ -688,6 +700,7 @@
 				4B785DC3E25235CD2CA540EF /* BackgroundTaskKeeper.swift in Sources */,
 				3818BC6B24E6D5BB0070C612 /* Binding+extension.swift in Sources */,
 				3865AB4924CD3888001B03E4 /* CircleButton.swift in Sources */,
+				C3C7B504F7E5FCED65EB7F84 /* DateKeyCalendarMigration.swift in Sources */,
 				93FFE81424FF1BE500AA1BD1 /* DateManager.swift in Sources */,
 				84701434A5AC71D9271820D2 /* DebugStoreScreenshot.swift in Sources */,
 				3865AB4724CD26D3001B03E4 /* DefaultAudioManager.swift in Sources */,
@@ -732,6 +745,8 @@
 				963EF4D63578A80E831E1348 /* AudioSystemVerificationTests.swift in Sources */,
 				0A48268940D40F73F0B14574 /* CircleButtonRatioTests.swift in Sources */,
 				AA4DC0FF04EDCB116B7E1601 /* DataPersistenceTests.swift in Sources */,
+				6B5BE1CDA00DC37BED8AF328 /* DateKeyCalendarMigrationTests.swift in Sources */,
+				A0F8B41FF25A9A234027674B /* DateManagerTests.swift in Sources */,
 				FF6B3A32F30034B86B7EB847 /* DebugStoreScreenshotTests.swift in Sources */,
 				82FD28D32A5791F39BF7AE3B /* DefaultTimerManagerTests.swift in Sources */,
 				DFA99213C93B4A65B8D89363 /* GIFPlayerViewTests.swift in Sources */,
@@ -752,6 +767,7 @@
 				50CF900C3AEE7EB0580402FA /* ReviewIntegrationSpec.swift in Sources */,
 				515A801883C4B7E486578D92 /* ReviewRequestPolicySpec.swift in Sources */,
 				EE3D191D97EBBB016D1D7037 /* SceneLifecycleTests.swift in Sources */,
+				5AD45603906DF05901A527C6 /* SessionStatsCalendarMigrationTests.swift in Sources */,
 				B242F79FF5F6E62F00EF36DA /* SessionStatsLogicTests.swift in Sources */,
 				CE4A6F850D48D726CA724A76 /* SessionStatsMigrationTests.swift in Sources */,
 				23B54FA3468C5D513D72FD66 /* SettingsLocalizationTests.swift in Sources */,

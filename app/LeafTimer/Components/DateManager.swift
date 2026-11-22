@@ -1,22 +1,34 @@
 import Foundation
 
 enum DateManager {
-    static func getToday(format: String = "yyyy/MM/dd") -> String {
-        let now = Date()
+    /// Issue #211: 日付キー (yyyy/MM/dd) の formatter。端末の暦 (和暦・仏暦) や数字 (アラビア数字) に
+    /// 左右されないよう、グレゴリオ暦 + en_US_POSIX に固定する。タイムゾーンは端末に従う。
+    /// タイムゾーンの変更を拾えるよう、static にキャッシュせず毎回作る。
+    static func makeKeyFormatter() -> DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateFormat = format
-        return formatter.string(from: now as Date)
+        formatter.calendar = keyCalendar()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "yyyy/MM/dd"
+        return formatter
+    }
+
+    /// Issue #211: 日付キーの前後日の計算に使う暦 (グレゴリオ暦・端末のタイムゾーン)。
+    static func keyCalendar() -> Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone.current
+        return calendar
+    }
+
+    static func getToday() -> String {
+        makeKeyFormatter().string(from: Date())
     }
 
     static func convertStringToTime(string: String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        return dateFormatter.date(from: string) ?? Date()
+        makeKeyFormatter().date(from: string) ?? Date()
     }
 
     static func convertTimeToString(time: Date) -> String {
-        let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "yyyy/MM/dd"
-        return dateformatter.string(from: time)
+        makeKeyFormatter().string(from: time)
     }
 }
