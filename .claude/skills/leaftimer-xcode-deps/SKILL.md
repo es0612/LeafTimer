@@ -1,6 +1,6 @@
 ---
 name: leaftimer-xcode-deps
-description: Use when touching LeafTimer's Xcode project or dependencies — adding/removing Swift files or targets (pbxproj), Podfile / Podfile.lock / Gemfile / Gemfile.lock, SPM Package.resolved, CI install steps for CocoaPods/Bundler, ruby checkers wired into make, or choosing a test framework / test pod version.
+description: Use when touching LeafTimer's Xcode project or dependencies — adding/removing Swift files or targets (pbxproj), Podfile / Podfile.lock / Gemfile / Gemfile.lock, SPM Package.resolved, CI install steps for CocoaPods/Bundler, ruby checkers wired into make, secrets for Dependabot PRs, or choosing a test framework / test pod version.
 ---
 
 # LeafTimer Xcode 構成・依存
@@ -14,6 +14,13 @@ CLAUDE.md ルール 26 / 27 / 28 / 29 / 43 の実体。各項目の事故経緯�
 - 素の `pod` / `gem install cocoapods` / `pod _<ver>_` に戻さない。macos runner の `pod` は brew ruby の RubyGems binstub で常に最新 install 版を activate するため、lock 版へ downgrade できない。
 - Gemfile.lock と Podfile.lock の `COCOAPODS:` 行の一致は `make cocoapods-lock-check` (tests チェーン内) が守る。
 - Xcode Cloud の `ci_post_clone.sh` は master 限定トリガーで PR 検証できない。#147 で brew の `ruby@3.4` (keg-only、PATH 先頭) + `bundle exec pod install` に移した (Xcode Cloud には brew の cocoapods 1.17.0 が preinstall 済みで、素の `pod` は lock の 1.16.2 とずれていた。build 45 のログで確認)。受け入れは merge 後の Xcode Cloud ログの `cocoapods via bundler: 1.16.2` 行で見る。
+
+## Dependabot の PR と secrets
+
+- Dependabot が作る PR の Actions は、Actions 用の secrets を読めない。`pr-tests.yml` が使う `KEYS_PLIST_BASE64` / `GOOGLE_SERVICE_INFO_PLIST_BASE64` は、Dependabot 用の secrets にも同じ名前で登録してある (2026-11-18、#204)。workflow に secret を足したら、Dependabot 側にも登録する。
+- 値は認証情報なので Claude は扱わない。ユーザーに `! base64 -i <file> | tr -d '\n' | gh secret set <NAME> --app dependabot` を貼って実行してもらう。
+- 登録したら `gh secret list --app dependabot` で名前があるかを確かめ、PR に `@dependabot recreate` とコメントして CI を回し直す。merge してよい根拠は、`pr-tests` が実際に走って緑になったことにする (secrets 不足のときは早い段階で落ちる)。
+- `claude-review` は bot の actor を拒否して落ちるが、merge に必須のチェックは `pr-tests` だけ (#214)。
 
 ## make に ruby checker を足す時 (ルール 27)
 
