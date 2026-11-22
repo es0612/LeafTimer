@@ -15,6 +15,9 @@ enum DateKeyCalendarMigration {
         let legacyFormatter = DateFormatter()
         legacyFormatter.locale = legacyLocale
         legacyFormatter.dateFormat = "yyyy/MM/dd"
+        // 書式に無い要素 (中国暦の 60 年周期・時刻) を now の正午で補う。正午にするのは、
+        // 夏時間が 0 時に始まる日 (Cairo など) も読めるようにするため (最終レビュー I-2)
+        legacyFormatter.defaultDate = DateManager.keyCalendar().date(bySettingHour: 12, minute: 0, second: 0, of: now)
         let keyFormatter = DateManager.makeKeyFormatter()
         guard let tomorrow = DateManager.keyCalendar().date(byAdding: .day, value: 1, to: now) else {
             return stats

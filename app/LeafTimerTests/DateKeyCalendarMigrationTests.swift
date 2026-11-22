@@ -71,6 +71,28 @@ final class DateKeyCalendarMigrationTests: XCTestCase {
         XCTAssertNil(result.lastSessionDate)
     }
 
+    // 中国暦の yyyy は 60 年周期の中の年。旧 formatter に defaultDate (now の正午) が無いと
+    // 周期を補えず紀元前の年になり、範囲外で変換されない (最終レビュー I-2)
+    func test_chineseKeysBecomeGregorian() {
+        let result = migrate(stats(["0043/10/14": 2], last: "0043/10/14"), Locale(identifier: "zh_CN@calendar=chinese"))
+
+        XCTAssertEqual(result.dailyCount, ["2026/11/22": 2])
+        XCTAssertEqual(result.lastSessionDate, "2026/11/22")
+    }
+
+    // Cairo は 2026-04-24 (金) の 0 時に夏時間が始まり、その日の 0 時が存在しない。
+    // defaultDate が無いと旧 formatter が nil を返し、キーが元のまま残る (最終レビュー I-2)
+    func test_keyOnDaylightSavingStartDayIsConverted() throws {
+        let originalTimeZone = NSTimeZone.default
+        NSTimeZone.default = try XCTUnwrap(TimeZone(identifier: "Africa/Cairo"))
+        defer { NSTimeZone.default = originalTimeZone }
+
+        let result = migrate(stats(["٢٠٢٦/٠٤/٢٤": 1], last: "٢٠٢٦/٠٤/٢٤"), egyptian)
+
+        XCTAssertEqual(result.dailyCount, ["2026/04/24": 1])
+        XCTAssertEqual(result.lastSessionDate, "2026/04/24")
+    }
+
     // ar_EG は暦がグレゴリオ暦でも、数字がアラビア数字で保存されている
     func test_arabicDigitKeysBecomeASCII() {
         let result = migrate(stats(["٢٠٢٦/١١/٢٢": 5], last: "٢٠٢٦/١١/٢٢"), egyptian)
