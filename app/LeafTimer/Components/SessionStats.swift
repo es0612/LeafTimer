@@ -33,13 +33,13 @@ extension SessionStats {
 
     /// candidate ("yyyy/MM/dd") が today の前日か。recordSession の判定と共通にする。
     static func isPreviousDay(_ candidate: String, of today: String) -> Bool {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
+        let formatter = DateManager.makeKeyFormatter()
+        let calendar = DateManager.keyCalendar()
         guard let todayDate = formatter.date(from: today),
               let candidateDate = formatter.date(from: candidate),
-              let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: todayDate) else {
+              let yesterday = calendar.date(byAdding: .day, value: -1, to: todayDate) else {
             return false
         }
-        return Calendar.current.isDate(candidateDate, inSameDayAs: yesterday)
+        return calendar.isDate(candidateDate, inSameDayAs: yesterday)
     }
 }

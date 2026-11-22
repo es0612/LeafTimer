@@ -14,12 +14,9 @@ enum DebugStoreScreenshot {
     static let breakStateArgument = "-BreakState"
 
     /// 過去 7 日 (today を含む) の件数と、見栄えのする streak / 累計の固定値。
-    static func sampleStats(today: Date, calendar: Calendar = Calendar(identifier: .gregorian)) -> SessionStats {
+    static func sampleStats(today: Date, calendar: Calendar = DateManager.keyCalendar()) -> SessionStats {
         let counts = [3, 5, 2, 6, 4, 7, 4]
-        let formatter = DateFormatter()
-        formatter.calendar = calendar
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy/MM/dd"
+        let formatter = DateManager.makeKeyFormatter()
 
         var dailyCount: [String: Int] = [:]
         for (offset, count) in counts.enumerated() {
