@@ -172,18 +172,27 @@ final class TimerNotificationIntegrationTests: XCTestCase {
         XCTAssertEqual(spyStats.recordSessionCallCount, 0)
     }
 
-    // Issue #212: 稼働中に日付が変わっても、読み直すだけで記録はしない
-    func testSignificantTimeChangeWhileRunningDoesNotRecordSession() {
+    // Issue #212: 稼働中に日付が変わっても読み直す。読み直すだけで記録はしない
+    func testSignificantTimeChangeWhileRunningReloadsWithoutRecordingSession() {
         let clock = FakeClock()
         let (vm, _, spyStats, _) = makeViewModel(clock: clock)
 
         vm.onPressedTimerButton()
         clock.advance(by: 60)
+        let today = DateManager.getToday()
+        spyStats.stubLoadResult = SessionStats(
+            dailyCount: [today: 2],
+            totalCount: 40,
+            currentStreak: 3,
+            longestStreak: 7,
+            lastSessionDate: today
+        )
         NotificationCenter.default.post(name: UIApplication.significantTimeChangeNotification, object: nil)
 
+        XCTAssertEqual(vm.todaysCount, 2)
+        XCTAssertEqual(vm.currentStreak, 3)
         XCTAssertEqual(spyStats.recordSessionCallCount, 0)
         XCTAssertEqual(vm.executeState, true)
-        XCTAssertEqual(vm.todaysCount, 0)
     }
 
     // 稼働中に設定画面から戻る (readData) → チェーン再予約され、2 件目は新 duration を反映
