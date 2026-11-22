@@ -21,11 +21,17 @@ final class StoreKitReviewRequester: ReviewRequesting {
     }
 
     func openAppStoreReviewPage() {
-        guard let appID = Bundle.main.object(forInfoDictionaryKey: "LeafTimerAppStoreID") as? String,
-              !appID.isEmpty,
-              let url = URL(string: "https://apps.apple.com/app/id\(appID)?action=write-review") else {
+        let appID = Bundle.main.object(forInfoDictionaryKey: "LeafTimerAppStoreID") as? String
+        guard let url = Self.reviewPageURL(appID: appID) else {
             return
         }
         UIApplication.shared.open(url)
+    }
+
+    static func reviewPageURL(appID: String?) -> URL? {
+        guard let appID, !appID.isEmpty else {
+            return nil
+        }
+        return URL(string: "https://apps.apple.com/app/id\(appID)?action=write-review")
     }
 }
