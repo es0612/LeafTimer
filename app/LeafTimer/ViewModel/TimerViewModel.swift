@@ -96,6 +96,14 @@ class TimerViewModel: ObservableObject {
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
+
+        // Issue #212: 前面のまま 0 時をまたいだら「今日 N」「連続 N」を読み直す
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(significantTimeChange),
+            name: UIApplication.significantTimeChangeNotification,
+            object: nil
+        )
     }
 
     // MARK: - Methods
@@ -200,6 +208,16 @@ class TimerViewModel: ObservableObject {
 
     @objc private func willEnterForeground() {
         handleWillEnterForeground()
+    }
+
+    @objc private func significantTimeChange() {
+        handleSignificantTimeChange()
+    }
+
+    // Issue #212: 前面のまま 0 時をまたいだら「今日 N」「連続 N」を読み直す (記録はしない)。
+    // 読み直すだけなので、稼働中かどうかで分けない。
+    func handleSignificantTimeChange() {
+        loadCount()
     }
 
     // Issue #54: suspend 中に跨いだフェーズを壁時計から一括反映する。

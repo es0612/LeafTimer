@@ -1,3 +1,4 @@
+import UIKit
 import XCTest
 
 @testable import LeafTimer
@@ -144,6 +145,54 @@ final class TimerNotificationIntegrationTests: XCTestCase {
         XCTAssertEqual(vm.currentStreak, 0, "最後の記録が 2 日前なので連続は途切れている")
         XCTAssertEqual(vm.longestStreak, 7)
         XCTAssertEqual(spyStats.recordSessionCallCount, 0)
+    }
+
+    // Issue #212: 前面のまま停止中に 0 時をまたいだら (significantTimeChange)、
+    // 前日の「今日 N」「連続 N」を今日の値に読み直す (統計は記録しない)
+    func testSignificantTimeChangeWhileStoppedReloadsTodayCountAndStreak() {
+        let clock = FakeClock()
+        let (vm, _, spyStats, _) = makeViewModel(clock: clock)
+        let today = DateManager.getToday()
+        spyStats.stubLoadResult = SessionStats(
+            dailyCount: [today: 2],
+            totalCount: 40,
+            currentStreak: 3,
+            longestStreak: 7,
+            lastSessionDate: today
+        )
+        // 0 時前から表示していた前日の値
+        vm.todaysCount = 8
+        vm.currentStreak = 5
+
+        NotificationCenter.default.post(name: UIApplication.significantTimeChangeNotification, object: nil)
+
+        XCTAssertEqual(vm.todaysCount, 2)
+        XCTAssertEqual(vm.currentStreak, 3)
+        XCTAssertEqual(vm.longestStreak, 7)
+        XCTAssertEqual(spyStats.recordSessionCallCount, 0)
+    }
+
+    // Issue #212: 稼働中に日付が変わっても読み直す。読み直すだけで記録はしない
+    func testSignificantTimeChangeWhileRunningReloadsWithoutRecordingSession() {
+        let clock = FakeClock()
+        let (vm, _, spyStats, _) = makeViewModel(clock: clock)
+
+        vm.onPressedTimerButton()
+        clock.advance(by: 60)
+        let today = DateManager.getToday()
+        spyStats.stubLoadResult = SessionStats(
+            dailyCount: [today: 2],
+            totalCount: 40,
+            currentStreak: 3,
+            longestStreak: 7,
+            lastSessionDate: today
+        )
+        NotificationCenter.default.post(name: UIApplication.significantTimeChangeNotification, object: nil)
+
+        XCTAssertEqual(vm.todaysCount, 2)
+        XCTAssertEqual(vm.currentStreak, 3)
+        XCTAssertEqual(spyStats.recordSessionCallCount, 0)
+        XCTAssertEqual(vm.executeState, true)
     }
 
     // 稼働中に設定画面から戻る (readData) → チェーン再予約され、2 件目は新 duration を反映
