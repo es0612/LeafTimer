@@ -27,7 +27,7 @@ CLAUDE.md ルール 12 / 30 / 31 / 32 / 42 の実体。汎用手順は global sk
 
 ## 画面の準備 (ルール 32)
 
-- **起動済みの Simulator は使わない。** 別のリポの session が同じ Simulator で UI テストやストアスクショを撮っていることがある。2026-10-25 #188 では、OtetsudaiCoin の `xcodebuild test` が使っていた iPhone 17 Pro に、こちらが appearance・content_size・Reduce Motion を書き込み、相手の撮影を汚した。撮影や検証には `xcrun simctl create leaftimer-<issue>-<機種> "<機種>"` で専用の Simulator を作り、UDID を指定して使う。`booted` は複数台が起動していると曖昧になるので、`simctl ui` / `spawn` でも UDID を書く。始める前に `pgrep -fl 'xcodebuild test'` で、他の session のテストの destination を確かめる。`make unit-tests` の既定 (`iPhone 17`) を使うことは問題ない
+- **起動済みの Simulator は使わない。** 別のリポの session が同じ Simulator で UI テストやストアスクショを撮っていることがある。2026-10-25 #188 では、OtetsudaiCoin の `xcodebuild test` が使っていた iPhone 17 Pro に、こちらが appearance・content_size・Reduce Motion を書き込み、相手の撮影を汚した。撮影や検証には `xcrun simctl create leaftimer-<issue>-<機種> "<機種>"` で専用の Simulator を作り、UDID を指定して使う。`booted` は複数台が起動していると曖昧になるので、`simctl ui` / `spawn` でも UDID を書く。始める前に `pgrep -fl 'xcodebuild test'` で、他の session のテストの destination を確かめる。`make unit-tests` の既定 (`iPhone 17`) は、他の session が同じ `iPhone 17` で `xcodebuild test` を走らせていなければ使ってよい。走っていると取り合って `Mach error -308 server died` で落ちる (2026-11-28 #223: ShimaenagaGame と重なった)。そのときは `make tests SIMULATOR=<専用 Simulator の名前>` で回す
 - Dynamic Type: `xcrun simctl ui <UDID> content_size <値>`。標準域 `extra-small`〜`extra-extra-extra-large`、拡張域 `accessibility-medium`〜`accessibility-extra-extra-extra-large` (= AX5)。
 - onboarding: install 直後の初回起動は onboarding の fullScreenCover が最前面に出る。他画面を撮る時は、起動引数 `-hasSeenOnboarding YES` を `simctl launch` に渡すのが確実 (引数ドメインが最優先。永続しないので、次に引数なしで起動すると onboarding が戻る)。onboarding 自体は引数なしの fresh install で撮る。
 - `xcrun simctl spawn <UDID> defaults write jp.ema.LeafTimer <key> …` が書くのはアプリのコンテナではなく、device 側の `data/Library/Preferences/jp.ema.LeafTimer.plist`。アプリからは **コンテナに同じキーが無い時だけ** 読める。コンテナに値があればそちらが勝つので、一度アプリが書いたキーは spawn で上書きできない (2026-10-24 #168 で実測: 書く前の初回起動では効き、seed 後の false 書き込みは効かない)。コンテナの plist の直書きは cfprefsd に戻される。
@@ -38,7 +38,7 @@ CLAUDE.md ルール 12 / 30 / 31 / 32 / 42 の実体。汎用手順は global sk
 ## tap の自動化 (ルール 32)
 
 - simctl に tap は無い。cliclick (brew 導入済み) で Simulator ウィンドウ座標を直接クリックする (osascript の System Events click は -25204 で不可)。2026-10-25 #188 では `cliclick c:<x>,<y>` が届かず、`cliclick dd:<x>,<y> w:150 du:<x>,<y>` (押してから 150ms 後に離す) で届いた。押しても変化しない時は、まずボタンの中央を押す対照実験で「クリックが届いているか」を確かめる
-- クリックの前に、Simulator を最前面のアプリにし (`tell application "Simulator" to activate`)、自分の機種のウィンドウを `perform action "AXRaise" of (first window whose name starts with "<機種名>")` で前に出す。`get name of window 1` で自分のウィンドウが先頭かを確かめる。複数の Simulator のウィンドウや別アプリ (ターミナル) が重なっていると、クリックが別の Simulator や別アプリに当たる
+- クリックの前に、Simulator を最前面のアプリにし (`tell application "Simulator" to activate`)、自分の機種のウィンドウを `perform action "AXRaise" of (first window whose name starts with "<機種名>")` で前に出す。`get name of window 1` で自分のウィンドウが先頭かを確かめる。ただしこれは Simulator の中の順番しか見ておらず、別アプリが上にあっても自分の名前を返す (2026-11-28 #223: 他 session の VS Code が上にあり、クリックがそちらに当たった)。クリックの直前に `screencapture -x -R<x>,<y>,<w>,<h>` でその領域を撮り、Simulator が映っていることを確かめる。複数の Simulator のウィンドウや別アプリ (ターミナル) が重なっていると、クリックが別の Simulator や別アプリに当たる
 - 座標は `osascript -e 'tell application "System Events" to tell process "Simulator" to get {name, position, size} of every window'` からデバイス座標比で換算する。`screencapture -x -R<x>,<y>,<w>,<h>` でウィンドウを撮って、狙う位置を目で確かめる。cliclick drag によるスクロールは未検証
 - Mac の画面がロック中だと、`screencapture` は真っ黒になり、Simulator のウィンドウ数は 0 と返る。そのときクリックは確かめられないので、ロックの解除をオーナーに頼む
 
