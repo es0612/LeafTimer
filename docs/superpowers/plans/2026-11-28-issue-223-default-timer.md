@@ -77,7 +77,7 @@ git commit -m "feat: UserDefaultsWrapper にキーが保存済みかを返す ha
 - Consumes: Task 1 の `hasValue(key:)`
 - Produces: `ItemValue.defaultWorkingTimeIndex = 4`、`ItemValue.defaultBreakTimeIndex = 4`（`static let`）。`TimerDefaultSettingsTests` に `makeViewModel(wrapper: MockUserDefaultWrapper) -> TimerViewModel`（`SpyTimerManager` / `SpyAudioManager` / `SpySessionStatsRepository` / `MockReviewRequester` / `SpyNotificationScheduler` を渡す。`OnboardingGateTests.swift:51-57` と同じ組み方）と、画面を開いたときと同じ `vm.readData(); vm.openScreen()` を呼ぶ `open(_ vm:)`。Task 3 も使う。
 
-- [ ] **Step 1: 失敗するテストを書く** — `TimerDefaultSettingsTests.swift` を作り `make add-file FILE=LeafTimerTests/TimerDefaultSettingsTests.swift TARGET=test` で配線する。テスト 3 件:
+- [ ] **Step 1: 失敗するテストを書く** — `TimerDefaultSettingsTests.swift` を作り `cd /Users/shinya/workspace/claude/LeafTimer/app && make add-file FILE=LeafTimerTests/TimerDefaultSettingsTests.swift TARGET=test` で配線する。テスト 3 件:
 
 ```swift
 // 新規インストール: 何も保存されていない
@@ -126,7 +126,7 @@ func testExistingUserWithoutSavedSettingsKeepsOldDefaults() {
 
 - [ ] **Step 2: 失敗を確かめる** — `-only-testing:LeafTimerTests/TimerDefaultSettingsTests`（コマンドの形は Task 1 Step 2 と同じ）。Expected: `ItemValue.defaultWorkingTimeIndex` が無いためコンパイルエラー。先に 2 つの定数だけ足して再実行すると、`testFirstLaunchStartsWithPomodoroDefaults` が 7 件の assertion で failed（300≠1500、60≠300、300≠1500、vibration false、0≠4、0≠4、vibrationIsOn false）、`testFirstLaunchKeepsValuesSavedByOldVersion` が 1 件で failed（workingSound 0≠2）、`testExistingUserWithoutSavedSettingsKeepsOldDefaults` は passed（回帰の番人。Step 5 で mutation を見る）。
 - [ ] **Step 3: 実装する** — `TimerViewModel.init` の `hasLaunchedBefore == 0` の中で、`workingSound = 0`・`breakSound = 0`・`workingTime = ItemValue.defaultWorkingTimeIndex`・`breakTime = ItemValue.defaultBreakTimeIndex`・`vibration = true` を、`hasValue(key:)` が false のキーにだけ保存する。最後に `hasLaunchedBefore = 1` を保存する（今と同じ）。`ResetSettingsSection.swift` の `4` 2 か所を同じ定数に置き換え、`DebugStoreScreenshot.swift:48` のコメントを直す。
-- [ ] **Step 4: 通ることを確かめる** — Step 2 と同じコマンド。Expected: 3 件 passed。`-only-testing:LeafTimerTests/OnboardingGateTests` も流し、`testFirstLaunchWritesDefaultsUsingEnumKeys` が passed のままであること。
+- [ ] **Step 4: 通ることを確かめる** — Step 2 と同じコマンド。Expected: 3 件 passed。`-only-testing:LeafTimerTests/OnboardingGateTests -only-testing:LeafTimerTests/TimerNotificationIntegrationTests` も流し、全件 passed のままであること（空の Mock で作る VM は、init で 25/5/ON が書かれるようになるため）。
 - [ ] **Step 5: mutation（テスト 1 件 : mutation 1 つ）** — 1 つずつ入れて Step 2 のコマンドを流し、failed を見てから元に戻す。
   - `testFirstLaunchStartsWithPomodoroDefaults` ← `workingTime` の保存行を消す
   - `testFirstLaunchKeepsValuesSavedByOldVersion` ← `hasValue` の判定を外して必ず保存する
@@ -209,4 +209,4 @@ git mv docs/superpowers/specs/2026-11-28-issue-223-default-timer.md docs/superpo
 git commit -m "docs: #223 の plan と spec を archive へ移す"
 ```
 
-- [ ] **Step 4: PR を作る** — `git fetch && gh pr list --state all --head fix/issue-223-default-timer` で既存 PR が無いことを確かめてから push し、`gh pr create`。本文は `Refs #223`（`Closes` にしない。配信後に新規インストールで 25:00 を確かめてから手で close する）。merge はこの plan に含めない（ルール 22）。
+- [ ] **Step 4: PR を作る** — `git fetch && gh pr list --state all --head fix/issue-223-default-timer` で既存 PR が無いことを確かめてから push し、`gh pr create`。本文には、同じブランチに #223 と無関係の commit `73305e7`（`leaftimer-xcode-deps` に plutil の注意を足した）が入っていることを書く。本文は `Refs #223`（`Closes` にしない。配信後に新規インストールで 25:00 を確かめてから手で close する）。merge はこの plan に含めない（ルール 22）。
