@@ -37,6 +37,14 @@ final class LocalUserDefaultsWrapperTests: XCTestCase {
         XCTAssertEqual(wrapper.loadData(key: "LocalUserDefaultsWrapperTests.int") as Int, 7)
     }
 
+    // Issue #223: 0 を保存しても「保存済み」と判定する (integer(forKey:) != 0 で代用していないことの確認)
+    func testHasValueIsTrueOnlyAfterSave() {
+        let key = "LocalUserDefaultsWrapperTests.hasValue"
+        XCTAssertFalse(wrapper.hasValue(key: key))
+        wrapper.saveData(key: key, value: 0)
+        XCTAssertTrue(wrapper.hasValue(key: key))
+    }
+
     func testIntMissingKeyReturnsZero() {
         XCTAssertEqual(wrapper.loadData(key: "never.saved") as Int, 0)
     }

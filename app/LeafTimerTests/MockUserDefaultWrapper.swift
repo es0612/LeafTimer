@@ -56,6 +56,11 @@ class MockUserDefaultWrapper: UserDefaultsWrapper {
         return boolStorage[key] ?? mockBoolValue
     }
 
+    // mockIntValue / mockBoolValue は「保存済み」に数えない
+    func hasValue(key: String) -> Bool {
+        intStorage[key] != nil || boolStorage[key] != nil
+    }
+
     // MARK: - Helper Methods for Testing
 
     func reset() {
