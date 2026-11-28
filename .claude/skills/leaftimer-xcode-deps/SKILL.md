@@ -39,7 +39,7 @@ CLAUDE.md ルール 26 / 27 / 28 / 29 / 43 の実体。各項目の事故経緯�
 
 ## Info.plist にキーを足す時
 
-- `plutil -insert` / `-replace` を使わず、Edit で該当行だけ足す。`plutil` は書き出し時に既存キーも並べ替えるので、1 キーの追加でも別のキーが動いた差分になる (2026-11-28 実測: `-insert` 1 回で `NSUserTrackingUsageDescription` が移動し 9 行の差分)。
+- `plutil -insert` / `-replace` を使わず、Edit で該当行だけ足す。`plutil` は書き出し時に既存キーも並べ替えるので、1 キーの追加でも別のキーが動いた差分になる (2026-11-28 実測: `-insert` 1 回で `NSUserTrackingUsageDescription` が移動し 変わった行は 6 行)。
 - 変更後は `git diff --stat` で、足した行数だけの差分か確かめる。
 
 ## SPM の Package.resolved (ルール 29)
