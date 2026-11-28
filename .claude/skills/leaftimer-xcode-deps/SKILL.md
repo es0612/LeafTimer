@@ -1,6 +1,6 @@
 ---
 name: leaftimer-xcode-deps
-description: Use when touching LeafTimer's Xcode project or dependencies — adding/removing Swift files or targets (pbxproj), Podfile / Podfile.lock / Gemfile / Gemfile.lock, SPM Package.resolved, CI install steps for CocoaPods/Bundler, ruby checkers wired into make, secrets for Dependabot PRs, or choosing a test framework / test pod version.
+description: Use when touching LeafTimer's Xcode project or dependencies — adding/removing Swift files or targets (pbxproj), Podfile / Podfile.lock / Gemfile / Gemfile.lock, SPM Package.resolved, CI install steps for CocoaPods/Bundler, ruby checkers wired into make, secrets for Dependabot PRs, adding keys to Info.plist, or choosing a test framework / test pod version.
 ---
 
 # LeafTimer Xcode 構成・依存
@@ -36,6 +36,11 @@ CLAUDE.md ルール 26 / 27 / 28 / 29 / 43 の実体。各項目の事故経緯�
 - orphan (target 未 attach) は `make precheck` が検出する。扱いは liveness grep でなく「放棄 → 削除 / 配線忘れ → attach」の意図判断で決める (材料: git log の最終更新時期 + live 等価実装の有無)。意図的な orphan は `ruby bin/xcode-precheck.rb --update-baseline` で baseline に追加する。
 - target 削除も手編集せず xcodeproj gem の one-off で行う。`target.remove_from_project` は `XCBuildConfiguration` と `TargetAttributes` を連鎖削除しないので、受け入れは文字列 grep でなく構造検査 (`make pbxproj-structure-check`、precheck 内) で行い、`pod install && make sort` を 2 回回して pbxproj が安定することを確認する。
 - SPM 参照の除去も同じ gem の one-off: `frameworks_build_phase.remove_build_file` → `package_product_dependencies.delete` + `remove_from_project` → `root_object.package_references.delete` + `remove_from_project`。検証は fresh な `-derivedDataPath` で `xcodebuild test` を回し、`SourcePackages/checkouts` が生成されないことを実測する (既定 DerivedData の stale な SPM 成果物がリンク切れを隠す)。
+
+## Info.plist にキーを足す時
+
+- `plutil -insert` / `-replace` を使わず、Edit で該当行だけ足す。`plutil` は書き出し時に既存キーも並べ替えるので、1 キーの追加でも別のキーが動いた差分になる (2026-11-28 実測: `-insert` 1 回で `NSUserTrackingUsageDescription` が移動し 9 行の差分)。
+- 変更後は `git diff --stat` で、足した行数だけの差分か確かめる。
 
 ## SPM の Package.resolved (ルール 29)
 
