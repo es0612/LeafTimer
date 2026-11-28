@@ -64,6 +64,7 @@ final class TimerDefaultSettingsTests: XCTestCase {
         wrapper.setValue(for: UserDefaultItem.breakTime.rawValue, value: 0)
         wrapper.setValue(for: UserDefaultItem.vibration.rawValue, value: false)
         wrapper.setValue(for: UserDefaultItem.workingSound.rawValue, value: 2)
+        wrapper.setValue(for: UserDefaultItem.breakSound.rawValue, value: 3)
         let vm = makeViewModel(wrapper: wrapper)
         open(vm)
 
@@ -71,6 +72,7 @@ final class TimerDefaultSettingsTests: XCTestCase {
         XCTAssertEqual(vm.fullBreakTimeSecond, 1 * 60)
         XCTAssertFalse(vm.vibration)
         XCTAssertEqual(wrapper.loadData(key: UserDefaultItem.workingSound.rawValue) as Int, 2)
+        XCTAssertEqual(wrapper.loadData(key: UserDefaultItem.breakSound.rawValue) as Int, 3)
     }
 
     // 設定を一度も触っていない既存ユーザー: 5 分・1 分・OFF のまま
