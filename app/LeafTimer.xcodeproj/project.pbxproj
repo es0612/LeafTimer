@@ -47,6 +47,7 @@
 		38C95EF325D7270D00D80736 /* AdsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C95EF225D7270D00D80736 /* AdsView.swift */; };
 		38C95EF825D7326A00D80736 /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C95EF725D7326A00D80736 /* KeyManager.swift */; };
 		39F5ED8D7127B635F2F365BB /* SpyNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF39A1AA793079782933CD2 /* SpyNotificationScheduler.swift */; };
+		3BE2E5EEB221C3012CA55CF1 /* TimerDefaultSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2609FC7E8967B373214E5D9C /* TimerDefaultSettingsTests.swift */; };
 		4949E43268700D0FE92D5C7E /* StoreKitReviewRequesterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D591D9672667EBE54650ADA /* StoreKitReviewRequesterTests.swift */; };
 		4AADD9370722D4EF75BEEFFE /* OnboardingViewSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2EF99A674961229F205D53 /* OnboardingViewSpec.swift */; };
 		4B3F84E614141CB9249F435F /* LocalUserDefaultsWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA73A47111580D34B06501E /* LocalUserDefaultsWrapperTests.swift */; };
@@ -136,6 +137,7 @@
 		21C8396935CA4E06685E4C74 /* PhaseReconciler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PhaseReconciler.swift; path = LeafTimer/Components/PhaseReconciler.swift; sourceTree = SOURCE_ROOT; };
 		23BBF65B0E0977372AEB15F2 /* SessionStatsMigrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionStatsMigrationTests.swift; path = LeafTimerTests/SessionStatsMigrationTests.swift; sourceTree = SOURCE_ROOT; };
 		23ED1D09D4BEF82C29287D48 /* BackgroundTaskKeeper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BackgroundTaskKeeper.swift; path = LeafTimer/App/BackgroundTaskKeeper.swift; sourceTree = SOURCE_ROOT; };
+		2609FC7E8967B373214E5D9C /* TimerDefaultSettingsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TimerDefaultSettingsTests.swift; path = LeafTimerTests/TimerDefaultSettingsTests.swift; sourceTree = SOURCE_ROOT; };
 		26906FD1FBF54E2B9DBCFD0D /* DebugStoreScreenshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DebugStoreScreenshot.swift; path = LeafTimer/Components/DebugStoreScreenshot.swift; sourceTree = SOURCE_ROOT; };
 		2AFDEFDC3D18E25A6C17C7FA /* OnboardingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = LeafTimer/View/OnboardingView.swift; sourceTree = SOURCE_ROOT; };
 		2FBD29EC8547FD3C8868C106 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 				6CD2388AFF3537F36562A156 /* StatLocalizationTests.swift */,
 				9D591D9672667EBE54650ADA /* StoreKitReviewRequesterTests.swift */,
 				367A1939D36F08DBA924500D /* TimerCoreLogicSpec.swift */,
+				2609FC7E8967B373214E5D9C /* TimerDefaultSettingsTests.swift */,
 				8D5C2333188A280B6A4F67E6 /* TimerLeafLayerTests.swift */,
 				04E65C23351FCE212D54E81B /* TimerNotificationIntegrationTests.swift */,
 				011A26D8BCAD28F9B1BFECC1 /* TimerViewModelAccessibilityTests.swift */,
@@ -778,6 +781,7 @@
 				805461750A8F83B7A5F713B1 /* StatLocalizationTests.swift in Sources */,
 				4949E43268700D0FE92D5C7E /* StoreKitReviewRequesterTests.swift in Sources */,
 				669C987E4610024B49B6A047 /* TimerCoreLogicSpec.swift in Sources */,
+				3BE2E5EEB221C3012CA55CF1 /* TimerDefaultSettingsTests.swift in Sources */,
 				F80AF6EDA3ACBACC0DBE5F47 /* TimerLeafLayerTests.swift in Sources */,
 				BD6053872D5FAE53CF1D7F0E /* TimerNotificationIntegrationTests.swift in Sources */,
 				6E53F451AEEC9A8E3F11DB73 /* TimerViewModelAccessibilityTests.swift in Sources */,

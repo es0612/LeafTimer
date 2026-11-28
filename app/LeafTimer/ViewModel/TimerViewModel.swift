@@ -78,10 +78,17 @@ class TimerViewModel: ObservableObject {
 
         loadCount()
 
-        // Set default sound settings on first launch only
+        // Set default settings on first launch only
         if userDefaultWrapper.loadData(key: UserDefaultItem.hasLaunchedBefore.rawValue) == 0 {
-            userDefaultWrapper.saveData(key: UserDefaultItem.workingSound.rawValue, value: 0)
-            userDefaultWrapper.saveData(key: UserDefaultItem.breakSound.rawValue, value: 0)
+            // Issue #223: hasLaunchedBefore は v1.4 で入ったため、v1.3 以前から上げた人もここを通る。
+            // その人が選んだ値を上書きしないよう、未保存のキーにだけ既定値を書く。
+            saveDefaultIfAbsent(UserDefaultItem.workingSound, value: 0)
+            saveDefaultIfAbsent(UserDefaultItem.breakSound, value: 0)
+            saveDefaultIfAbsent(UserDefaultItem.workingTime, value: ItemValue.defaultWorkingTimeIndex)
+            saveDefaultIfAbsent(UserDefaultItem.breakTime, value: ItemValue.defaultBreakTimeIndex)
+            if !userDefaultWrapper.hasValue(key: UserDefaultItem.vibration.rawValue) {
+                userDefaultWrapper.saveData(key: UserDefaultItem.vibration.rawValue, value: true)
+            }
             userDefaultWrapper.saveData(key: UserDefaultItem.hasLaunchedBefore.rawValue, value: 1)
         }
 
@@ -259,6 +266,11 @@ class TimerViewModel: ObservableObject {
         }
 
         rescheduleNotifications()
+    }
+
+    private func saveDefaultIfAbsent(_ item: UserDefaultItem, value: Int) {
+        guard !userDefaultWrapper.hasValue(key: item.rawValue) else { return }
+        userDefaultWrapper.saveData(key: item.rawValue, value: value)
     }
 
     func read(item: String) -> Int {
