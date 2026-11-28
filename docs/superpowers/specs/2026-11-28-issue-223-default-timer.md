@@ -18,6 +18,7 @@
 
 ## 作り方（Approaches）
 - 初期値: `register(defaults:)` は使わない。設定を触っていない既存ユーザーも 25 分に変わってしまうため。代わりに、`TimerViewModel.init` の既存の初回起動判定（`hasLaunchedBefore == 0`、`TimerViewModel.swift:81-86`）の中で、`workingTime = 4`・`breakTime = 4`・`vibration = true` も保存する。既存ユーザーは `hasLaunchedBefore == 1` なので、この処理を通らない。
+- ただし `hasLaunchedBefore` は v1.4（2025-11-07、`9837155`）で入ったので、v1.3 以前から直接上げた人もこの処理を通る。その人が自分で選んだ値を守るため、`UserDefaultsWrapper` に `hasValue(key:) -> Bool` を足し、初回起動の処理では **未保存のキーだけ** 書く（2026-11-28 PO 判断）。音の 2 項目も同じ扱いにする（今は v1.3 以前の人の音の選択を 0 で上書きしている。実装する人の判断でそろえた）。残る例外は「v1.3 以前で設定を一度も触らず、そのまま 1.6.3 に上げた人」で、この人は 25 分・5 分・バイブ ON になる。
 - 未開始の見分け方: **A（採用）** `readData()` で変更前の長さを覚えておき、`executeState == false` で `currentTimeSecond` が変更前の長さ（休憩中なら `fullBreakTimeSecond`、作業中なら `fullTimeSecond`）と同じなら、新しい長さに置き直す。状態は増やさない。B（不採用）は「開始済み」フラグを足す案で、開始・リセット・フェーズの切り替えの 3 か所でフラグを更新する必要があるため採らなかった。A の弱点は、開始して 1 秒以内に止めたときも未開始と判定されること。実害はほぼない。
 - 一時停止中（残り時間が変更前の長さと違う）は、残り時間を保つ（2026-11-28 PO 判断）。新しい長さは次のフェーズから効く。
 
@@ -27,6 +28,6 @@
 - `DebugStoreScreenshot.swift:48` のコメント「アプリの初期値は 5 分」を実態に合わせる。
 
 ## 物差し
-- ユニットテスト: 新規インストールなら 25 分・5 分・バイブ ON、`hasLaunchedBefore == 1` で未保存なら 5 分・1 分・OFF のまま、停止中・未開始で設定を変えたら新しい長さ、一時停止中なら残り時間を保つ。各テストに mutation 1 つ（CLAUDE.md ルール 8）。
+- ユニットテスト: 新規インストールなら 25 分・5 分・バイブ ON、`hasLaunchedBefore == 1` で未保存なら 5 分・1 分・OFF のまま、`hasLaunchedBefore` 未保存でも保存済みの時間・音・バイブはそのまま、停止中・未開始で設定を変えたら新しい長さ、一時停止中なら残り時間を保つ。各テストに mutation 1 つ（CLAUDE.md ルール 8）。
 - Simulator: アプリを消して入れ直した最初の画面が 25:00 であること（`leaftimer-simulator-verification`）。
 - 1.6.3 配信後: 新規インストールで 25:00 から始まることを確かめて #223 を close する（merge 時点では close しない。PR は `Refs #223`）。
