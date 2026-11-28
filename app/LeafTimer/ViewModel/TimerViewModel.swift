@@ -278,10 +278,18 @@ class TimerViewModel: ObservableObject {
     }
 
     func readData() {
+        // Issue #223: 変更前の今のフェーズの長さ。止まっていて残り時間がこれと同じなら未開始とみなす
+        let previousPhaseSecond = breakState ? fullBreakTimeSecond : fullTimeSecond
+
         fullTimeSecond = ItemValue
             .workingTimeList[read(item: UserDefaultItem.workingTime.rawValue)]
         fullBreakTimeSecond = ItemValue
             .breakTimeList[read(item: UserDefaultItem.breakTime.rawValue)]
+
+        // 未開始なら新しい長さを残り時間にすぐ反映する。一時停止中・稼働中は残り時間を保つ
+        if !executeState && currentTimeSecond == previousPhaseSecond {
+            currentTimeSecond = breakState ? fullBreakTimeSecond : fullTimeSecond
+        }
 
         vibration = userDefaultWrapper.loadData(key: UserDefaultItem.vibration.rawValue)
 
