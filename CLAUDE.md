@@ -17,7 +17,7 @@
 
 ### Bash・検証の規律
 
-1. ビルド/テスト系コマンドは毎回同一コマンド内で `cd /Users/shinya/workspace/claude/LeafTimer/app &&` を前置する。成否は exit code でなく出力マーカーで判定: `** TEST SUCCEEDED **` / `** BUILD SUCCEEDED **` の存在、かつ `** TEST FAILED **` / `Error 6x` / `No rule to make target` の不在。`Mach error -308 (ipc/mig) server died` / `Lost connection to testmanagerd` 系の FAIL は Simulator インフラ起因の偽 FAIL — コード原因と診断する前に `xcrun simctl shutdown all && killall -9 com.apple.CoreSimulator.CoreSimulatorService` で再起動して 1 回リトライする。
+1. ビルド/テスト系コマンドは毎回同一コマンド内で `cd /Users/shinya/workspace/claude/LeafTimer/app &&` を前置する。成否は exit code でなく出力マーカーで判定: `** TEST SUCCEEDED **` / `** BUILD SUCCEEDED **` の存在、かつ `** TEST FAILED **` / `Error 6x` / `No rule to make target` の不在。`Mach error -308 (ipc/mig) server died` / `Lost connection to testmanagerd` 系の FAIL は Simulator インフラ起因の偽 FAIL — コード原因と診断する前に `xcrun simctl shutdown all && killall -9 com.apple.CoreSimulator.CoreSimulatorService` で再起動して 1 回リトライする。**ただし先に `pgrep -fl xcodebuild` を見て、他の session が同じ機種名で走っていたら kill せず、専用 Simulator (`SIMULATOR=<作った名前>`) でやり直す** (#223)。
 2. パイプ (`| tail` / `| grep`) は元コマンドの exit code を隠す。shell は zsh なので `${PIPESTATUS[0]}` は無効 (bash 専用) — `set -o pipefail` を前置するか `${pipestatus[1]}` (小文字・1-indexed) を使う。
 3. 成否判定の grep パターンは推測で書かず、対象ツールの実際の成功出力を 1 回見てから「成功マーカーの存在 + 失敗マーカーの不在」の両条件で書く。**make ターゲット名が既存のディレクトリ／ファイルと同名なら `.PHONY` が必須** (無いと `is up to date` を出して何もせず exit 0 になる)。
 4. zsh では `grep --include="*.swift"` のように glob を必ずクォートし、`no matches found` (コマンド不成立) と本当の 0 件を区別する。**このハーネスの `grep` は ripgrep 実装で `.gitignore` を尊重する** — 「参照ゼロ」を主張する検証は `/usr/bin/grep` で取り直す。
