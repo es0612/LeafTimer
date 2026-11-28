@@ -6,6 +6,9 @@ protocol UserDefaultsWrapper {
 
     func saveData(key: String, value: Bool)
     func loadData(key: String) -> Bool
+
+    /// Issue #223: キーが保存済みか (値が 0 / false でも保存済みなら true)
+    func hasValue(key: String) -> Bool
 }
 
 class LocalUserDefaultsWrapper: UserDefaultsWrapper {
@@ -37,5 +40,9 @@ class LocalUserDefaultsWrapper: UserDefaultsWrapper {
         userDefaults.bool(forKey: key)
 
         // default false
+    }
+
+    func hasValue(key: String) -> Bool {
+        userDefaults.object(forKey: key) != nil
     }
 }

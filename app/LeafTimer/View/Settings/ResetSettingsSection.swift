@@ -77,8 +77,8 @@ struct ResetSettingsSection: View {
 // Extension for ViewModel reset functionality
 extension SettingViewModel {
     func resetToDefaults() {
-        workingTime = 4  // 25 minutes (index 4)
-        breakTime = 4    // 5 minutes (index 4)
+        workingTime = ItemValue.defaultWorkingTimeIndex  // 25 minutes
+        breakTime = ItemValue.defaultBreakTimeIndex      // 5 minutes
         workingSound = 0 // No sound
         breakSound = 0   // No sound
         vibrationIsOn = true

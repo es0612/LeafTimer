@@ -45,7 +45,7 @@ enum DebugStoreScreenshot {
         defaults.set(data, forKey: "sessionStats")
         defaults.set(true, forKey: "statsMigrated")
         defaults.set(true, forKey: UserDefaultItem.hasSeenOnboarding.rawValue)
-        // ポモドーロの標準 25 分で撮る (アプリの初期値は 5 分)
+        // ポモドーロの標準 25 分で撮る (新規インストールの初期値と同じ。設定を触っていない既存ユーザーの 5 分を上書きして撮る)
         if let index = ItemValue.workingTimeList.firstIndex(of: 25 * 60) {
             defaults.set(index, forKey: UserDefaultItem.workingTime.rawValue)
         }

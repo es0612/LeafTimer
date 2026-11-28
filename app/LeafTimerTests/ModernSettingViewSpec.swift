@@ -159,4 +159,8 @@ class MockUserDefaultsWrapper: UserDefaultsWrapper {
 
         fatalError("Unexpected type")
     }
+
+    func hasValue(key: String) -> Bool {
+        savedData[key] != nil
+    }
 }

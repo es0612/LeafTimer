@@ -78,10 +78,17 @@ class TimerViewModel: ObservableObject {
 
         loadCount()
 
-        // Set default sound settings on first launch only
+        // Set default settings on first launch only
         if userDefaultWrapper.loadData(key: UserDefaultItem.hasLaunchedBefore.rawValue) == 0 {
-            userDefaultWrapper.saveData(key: UserDefaultItem.workingSound.rawValue, value: 0)
-            userDefaultWrapper.saveData(key: UserDefaultItem.breakSound.rawValue, value: 0)
+            // Issue #223: hasLaunchedBefore は v1.4 で入ったため、v1.3 以前から上げた人もここを通る。
+            // その人が選んだ値を上書きしないよう、未保存のキーにだけ既定値を書く。
+            saveDefaultIfAbsent(UserDefaultItem.workingSound, value: 0)
+            saveDefaultIfAbsent(UserDefaultItem.breakSound, value: 0)
+            saveDefaultIfAbsent(UserDefaultItem.workingTime, value: ItemValue.defaultWorkingTimeIndex)
+            saveDefaultIfAbsent(UserDefaultItem.breakTime, value: ItemValue.defaultBreakTimeIndex)
+            if !userDefaultWrapper.hasValue(key: UserDefaultItem.vibration.rawValue) {
+                userDefaultWrapper.saveData(key: UserDefaultItem.vibration.rawValue, value: true)
+            }
             userDefaultWrapper.saveData(key: UserDefaultItem.hasLaunchedBefore.rawValue, value: 1)
         }
 
@@ -261,15 +268,28 @@ class TimerViewModel: ObservableObject {
         rescheduleNotifications()
     }
 
+    private func saveDefaultIfAbsent(_ item: UserDefaultItem, value: Int) {
+        guard !userDefaultWrapper.hasValue(key: item.rawValue) else { return }
+        userDefaultWrapper.saveData(key: item.rawValue, value: value)
+    }
+
     func read(item: String) -> Int {
         userDefaultWrapper.loadData(key: item)
     }
 
     func readData() {
+        // Issue #223: 変更前の今のフェーズの長さ。止まっていて残り時間がこれと同じなら未開始とみなす
+        let previousPhaseSecond = breakState ? fullBreakTimeSecond : fullTimeSecond
+
         fullTimeSecond = ItemValue
             .workingTimeList[read(item: UserDefaultItem.workingTime.rawValue)]
         fullBreakTimeSecond = ItemValue
             .breakTimeList[read(item: UserDefaultItem.breakTime.rawValue)]
+
+        // 未開始なら新しい長さを残り時間にすぐ反映する。一時停止中・稼働中は残り時間を保つ
+        if !executeState && currentTimeSecond == previousPhaseSecond {
+            currentTimeSecond = breakState ? fullBreakTimeSecond : fullTimeSecond
+        }
 
         vibration = userDefaultWrapper.loadData(key: UserDefaultItem.vibration.rawValue)
 

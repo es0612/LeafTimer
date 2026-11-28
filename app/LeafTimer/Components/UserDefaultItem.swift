@@ -19,6 +19,10 @@ enum UserDefaultItem: String {
 }
 
 enum ItemValue {
+    /// Issue #223: 新規インストールと「設定を初期値に戻す」の既定値 (25 分・5 分)
+    static let defaultWorkingTimeIndex = 4
+    static let defaultBreakTimeIndex = 4
+
     static let workingTimeList = [5 * 60, 10 * 60, 15 * 60, 20 * 60, 25 * 60, 30 * 60, 35 * 60, 40 * 60, 45 * 60, 50 * 60, 55 * 60, 60 * 60]
     static let workingTimeListString = [
         NSLocalizedString("time.5_minutes", comment: "5 minutes"),
